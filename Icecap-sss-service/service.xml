@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="osp.icecap.sss">
+	<author>Jerry H. Seo, Won Cheol Ryu</author>
+	<namespace>SSS</namespace>
+	<entity name="Term" local-service="true" uuid="true" remote-service="true">
+		
+		<!-- PK fields -->
+		<column name="termId" primary="true" type="long"></column>
+
+		<!-- Audit fields -->
+		<column name="groupId" type="long"></column>
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+
+		<!-- Status fields -->
+		<column name="status" type="int" />
+
+		<!-- Descriptive  fields -->
+		<column name="name" type="String"></column>
+		<column name="version" type="String"></column>
+		<column name="type" type="String"></column>
+		<column name="displayName" localized="true" type="String"></column>
+		<column name="definition" localized="true" type="String"></column>
+		<column name="tooltip" localized="true" type="String"></column>
+		<column name="synonyms" type="String"></column>
+		<column name="standardized" type="boolean"></column>
+		
+		<!-- type attribute JSON -->
+		<column name="attributesJSON" type="String"></column>
+		
+		<order>
+			<order-column name="createDate" order-by="desc" />
+		</order>
+		
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="Status" return-type="Collection">
+			<finder-column name="status" />
+		</finder>
+		<finder name="G_U" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="G_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="U_S" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="G_U_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="userId" />
+			<finder-column name="status" />
+		</finder>
+		
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
+		
+		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
+	</entity>
+	
+	<exceptions>
+        <exception>InvalidTerm</exception>
+	</exceptions>
+</service-builder>

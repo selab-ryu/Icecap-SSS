@@ -1,0 +1,22 @@
+<%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
+<%@page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.SelectOption"%>
+<%
+	List<SelectOption> options = new ArrayList<>();
+	String[] parameterTypes = IcecapSSSTermTypes.getTypes();
+	for( String parameterType : parameterTypes ){
+		if( term != null && term.getType().equals(parameterType) ){
+			options.add( new SelectOption(parameterType, parameterType, true) );
+		}
+		else{
+			options.add( new SelectOption(parameterType, parameterType) );
+		}
+	}
+	
+	String strType = LanguageUtil.get(locale, "parameter-type");
+	out.println(strType);
+	
+%>
+<clay:select
+			label="<%= LanguageUtil.get(locale, "parameter-type")%>"
+			name="parameterType"
+			options="<%= options %>" />

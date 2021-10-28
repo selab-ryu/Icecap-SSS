@@ -1,0 +1,7 @@
+Bundle-Name: Icecap-sss-web
+Bundle-SymbolicName: osp.icecap.sss.web
+Bundle-Version: 1.0.0
+Export-Package: osp.icecap.sss.web.constants
+Import-Package: \
+	\
+	*

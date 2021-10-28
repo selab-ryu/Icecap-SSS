@@ -1,0 +1,26 @@
+<aui:fieldset-group markupView="lexicon">
+	<aui:fieldset label="term-type">
+	<aui:select name="termType" label="">
+		<%
+		final String[] parameterTypes = IcecapSSSTermTypes.getTypes();
+		for( String parameterType : parameterTypes ){
+			if( term != null && parameterType.equals( term.getType() )){
+		%>
+			<aui:option label="<%=parameterType %>" value="<%=parameterType %>" selected="<%= true %>"/>
+		<%
+			}
+			else if( parameterType.equals("Phone") ){
+		%>
+				<aui:option label="<%=parameterType %>" value="<%=parameterType %>" selected="<%= true %>"/>
+		<%
+			}
+			else {
+		%>
+				<aui:option label="<%=parameterType %>" value="<%=parameterType %>"/>
+		<%
+			}
+		}
+		%>
+	</aui:select>
+	</aui:fieldset>
+</aui:fieldset-group>

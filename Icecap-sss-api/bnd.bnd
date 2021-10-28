@@ -1,0 +1,13 @@
+Bundle-Name: Icecap SSS API
+Bundle-SymbolicName: osp.icecap.sss.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	osp.icecap.sss.exception,\
+	osp.icecap.sss.model,\
+	osp.icecap.sss.service,\
+	osp.icecap.sss.service.persistence,\
+	osp.icecap.sss.constants,\
+	osp.icecap.sss.util.comparator,\
+	osp.icecap.sss.search
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Icecap-sss-service/service.xml

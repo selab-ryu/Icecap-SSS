@@ -1,0 +1,20 @@
+create table SSS_Term (
+	uuid_ VARCHAR(75) null,
+	termId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	status INTEGER,
+	name VARCHAR(75) null,
+	version VARCHAR(75) null,
+	type_ VARCHAR(75) null,
+	displayName STRING null,
+	definition STRING null,
+	tooltip STRING null,
+	synonyms VARCHAR(75) null,
+	standardized BOOLEAN,
+	attributesJSON TEXT null
+);
