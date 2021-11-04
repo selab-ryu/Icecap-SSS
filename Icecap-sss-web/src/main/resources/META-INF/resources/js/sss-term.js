@@ -1,4 +1,4 @@
-(function() {
+(function(SSS) {
     'use strict';
 
     if (SSS) {
@@ -7,6 +7,7 @@
     	SSS = {};
     }
     
+    console.log( 'SSS object:', SSS);
 	SSS.Term = function(){
 		var Term = this;
 		Term.version='20211019';
@@ -1510,5 +1511,13 @@
 
 			return true;
 		};
+		
+		Term.getEditForm = function(actionUrl, formName, formId, method, cssClass ){
+			var $form = $('<form class="form" action="'+actionUrl+'" name="'+formName+'" id='+formId+'" method='+method+'>');
+			$form.append($('<input>'));
+			
+			console.log( $form );
+			return $form;
+		}
 	};
-})();
+})(SSS);

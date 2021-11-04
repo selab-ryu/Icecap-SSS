@@ -25,8 +25,6 @@ import java.io.ObjectOutput;
 
 import java.util.Date;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 import osp.icecap.sss.model.Term;
 
 /**
@@ -35,7 +33,6 @@ import osp.icecap.sss.model.Term;
  * @author Jerry H. Seo, Won Cheol Ryu
  * @generated
  */
-@ProviderType
 public class TermCacheModel implements CacheModel<Term>, Externalizable {
 
 	@Override

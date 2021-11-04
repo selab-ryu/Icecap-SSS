@@ -158,7 +158,7 @@ public class TermActionDropdownItemsProvider {
 
 			ActionURL deleteURL = _renderResponse.createActionURL();
 
-			deleteURL.setParameter(ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_EDIT);
+			deleteURL.setParameter(ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_DELETE);
 			deleteURL.setParameter(Constants.CMD, Constants.DELETE);
 			deleteURL.setParameter("redirect", _getRedirectURL());
 			deleteURL.setParameter(
@@ -178,7 +178,7 @@ public class TermActionDropdownItemsProvider {
 			return dropdownItem -> {
 				dropdownItem.setHref(
 					_renderResponse.createRenderURL(), "mvcRenderCommandName",
-					MVCCommandNames.ACTION_TERM_EDIT, Constants.CMD, Constants.UPDATE,
+					MVCCommandNames.ACTION_TERM_UPDATE, Constants.CMD, Constants.UPDATE,
 					"redirect", _getRedirectURL(), IcecapSSSWebKeys.TERM_ID,
 					_term.getTermId());
 
@@ -193,7 +193,7 @@ public class TermActionDropdownItemsProvider {
 			ActionURL moveToTrashURL = _renderResponse.createActionURL();
 
 			moveToTrashURL.setParameter(
-				ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_EDIT);
+				ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_UPDATE);
 			moveToTrashURL.setParameter(Constants.CMD, Constants.MOVE_TO_TRASH);
 			moveToTrashURL.setParameter("redirect", _getRedirectURL());
 			moveToTrashURL.setParameter(

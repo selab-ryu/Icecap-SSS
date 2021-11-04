@@ -1,10 +1,9 @@
-(function() {
+(function(w) {
     'use strict';
-
-    if (SSS) {
-        if (SSS.TermTypes) return;
+    if (w.SSS ) {
+        if (w.SSS.TermTypes) return;
     } else{
-    	SSS = {};
+    	w.SSS = {};
     }
 
     SSS.TermTypes = {
@@ -204,6 +203,38 @@
                 result += mask[Math.floor(Math.random() * mask.length)];
             } 
             return result;
+        },
+        getLocalizedInputValue(inputId, availableLanguageIds ){
+        	//console.log('availableLanguageIds:', availableLanguageIds);
+        	var listItem = {};
+        	listItem.displayName = {};
+        	availableLanguageIds.forEach( function(id){
+        		var localizedId = inputId+'_'+id;
+        		listItem.displayName[id] = $('#'+localizedId).val();
+        	});
+        	
+        	//console.log('Localized List Item: ', listItem);
+        	return listItem;
+        },
+        setLocalizedInputValue(inputId, $parent, availableLanguageIds, displayName ){
+        	//console.log('availableLanguageIds:', availableLanguageIds);
+        	availableLanguageIds.forEach( function(id){
+        		var localizedId = inputId+'_'+id;
+        		if( displayName[id] ){
+        			$('#'+localizedId).val( displayName[id]);
+        			$('#'+inputId).val(displayName[id]);
+        		}
+        	});
+			$parent.find('.form-text').empty();
+        },
+        clearLocalizedInputValue(inputId, $parent, availableLanguageIds){
+        	//console.log('availableLanguageIds:', availableLanguageIds);
+        	availableLanguageIds.forEach( function(id){
+        		var localizedId = inputId+'_'+id;
+        			$('#'+localizedId).val('');
+        			$('#'+inputId).val('');
+        	});
+			$parent.find('.form-text').empty();
         }
     }; // End of SSS.Util
 
@@ -216,4 +247,4 @@
         }
     }; // End of SSS.Debug
 
-})();
+})(window);

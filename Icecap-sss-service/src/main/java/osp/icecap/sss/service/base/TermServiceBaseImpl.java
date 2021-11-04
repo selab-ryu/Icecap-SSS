@@ -45,7 +45,7 @@ import osp.icecap.sss.service.persistence.TermPersistence;
  */
 public abstract class TermServiceBaseImpl
 	extends BaseServiceImpl
-	implements TermService, AopService, IdentifiableOSGiService {
+	implements AopService, IdentifiableOSGiService, TermService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -101,8 +101,8 @@ public abstract class TermServiceBaseImpl
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
@@ -144,5 +144,9 @@ public abstract class TermServiceBaseImpl
 	@Reference
 	protected com.liferay.asset.kernel.service.AssetEntryService
 		assetEntryService;
+
+	@Reference
+	protected com.liferay.asset.kernel.service.AssetLinkLocalService
+		assetLinkLocalService;
 
 }

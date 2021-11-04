@@ -69,6 +69,7 @@
 		</finder>
 		
 		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetLink" />
 	</entity>
 	
 	<exceptions>

@@ -1,3 +1,5 @@
+<%@page import="com.liferay.portal.kernel.util.StringUtil"%>
+<%@page import="osp.icecap.sss.constants.MVCCommandNames"%>
 <%@page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil"%>
 <%@page import="com.liferay.asset.kernel.model.AssetEntry"%>
 <%@page import="osp.icecap.sss.web.taglib.clay.TermVerticalCard"%>
@@ -5,7 +7,6 @@
 <%@page import="osp.icecap.sss.web.util.TermActionDropdownItemsProvider"%>
 <%@page import="com.liferay.portal.kernel.security.permission.ActionKeys"%>
 <%@page import="osp.icecap.sss.web.security.permission.resource.TermModelPermission"%>
-<%@page import="com.liferay.petra.string.StringUtil"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.liferay.portal.kernel.util.Constants"%>
@@ -57,17 +58,15 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				modelVar="term"
 			>
 				<liferay-portlet:renderURL varImpl="rowURL">
-					<portlet:param name="mvcRenderCommandName" value="/html/TermManager/edit_term" />
+					<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_TERM_EDIT %>" />
 					<portlet:param name="redirect" value="<%=portletURL.toString()%>" />
 					<portlet:param name="termId" value="<%=String.valueOf(term.getTermId())%>" />
 				</liferay-portlet:renderURL>
 
 				<%
 					Map<String, Object> rowData = new HashMap<>();
-
-				//				rowData.put("actions", StringUtil.merge(termDisplayContext.getAvailableActions(term)));
-
-						row.setData(rowData);
+					rowData.put("actions", StringUtil.merge(termDisplayContext.getAvailableActions(term)));
+					row.setData(rowData);
 				%>
 
 				<c:choose>
