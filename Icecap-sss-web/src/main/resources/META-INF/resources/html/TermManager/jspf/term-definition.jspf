@@ -40,6 +40,8 @@
 
 			<%@include file="./term-boolean.jspf" %>
 
+			<%@include file="./term-list.jspf" %>
+
 
 		</aui:fieldset>
 	</aui:container>

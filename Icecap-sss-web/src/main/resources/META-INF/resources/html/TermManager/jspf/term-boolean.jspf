@@ -1,4 +1,4 @@
-		<aui:fieldset label="term-string">
+		<aui:fieldset label="term-boolean">
 			<aui:row>
 				<aui:col md="12">
 					<p>None Attributes</p>
