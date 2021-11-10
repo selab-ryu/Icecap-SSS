@@ -1,0 +1,29 @@
+		<aui:fieldset label="term-numeric">
+			<aui:row>
+				<aui:col md="3">
+					<aui:input name="numericMinValue" label="term-numeric-min-value" required="true" ></aui:input>
+				</aui:col>
+				<aui:col md="3">
+					<aui:input name="numericMinBoundary" label="term-numeric-min-boundary" required="true" ></aui:input>
+				</aui:col>
+				<aui:col md="3">
+					<aui:input name="numericMaxValue" label="term-numeric-min-value" required="true" ></aui:input>
+				</aui:col>
+				<aui:col md="3">
+					<aui:input name="numericMaxBoundary" label="term-numeric-min-boundary" required="true" ></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="text" name="unit" label="term-numeric-unit"></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="6">
+					<aui:input type="checkbox" name="uncertainty" label="term-numeric-uncertainty"></aui:input>
+				</aui:col>
+				<aui:col md="6">
+					<aui:input type="checkbox" name="sweepable" label="term-numeric-sweepable"></aui:input>
+				</aui:col>
+			</aui:row>
+		</aui:fieldset>

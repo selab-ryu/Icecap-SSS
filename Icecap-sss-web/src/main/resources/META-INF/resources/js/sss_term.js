@@ -389,7 +389,6 @@
 			if( arguments.length === 1 )
 				NT.deserialize(jsonObject);
 		}; // End of NumericTerm
-		
 		Term.newNumericTerm = function( jsonObject ){
 			switch( arguments.length ){
 				case 0:
@@ -1437,8 +1436,7 @@
 					console.log( 'Arguments mismatch: newArrayTerm()');
 					return null;
 			}
-		};//17. end of 16. ArrayTerm
-		
+		};//17. end of 16. ArrayTerm		
 			
 		// 18. GroupTerm
 		var GroupTerm = function( jsonObject ){

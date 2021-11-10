@@ -1,0 +1,7 @@
+		<aui:fieldset label="term-string">
+			<aui:row>
+				<aui:col md="12">
+					<p>None Attributes</p>
+				</aui:col>
+			</aui:row>
+		</aui:fieldset>

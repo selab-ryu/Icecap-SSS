@@ -1,0 +1,15 @@
+		<aui:fieldset label="term-string">
+			<aui:row>
+				<aui:col md="6">
+					<aui:input name="stringMinLength" label="term-string-min-length" required="true" ></aui:input>
+				</aui:col>
+				<aui:col md="6">
+					<aui:input name="stringMaxLength" label="term-string-max-length" required="true" ></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="text" name="validationRule" label="term-string-validation-rule" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>
+		</aui:fieldset>

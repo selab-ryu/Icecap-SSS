@@ -1,22 +1,46 @@
 <aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="term-name-definition">
-		<aui:container>
-				<aui:row>
-					<aui:col md="4">
-								<aui:input name="name" label="parameter-name" inlineField="<%=true %>" required="true" placeholder="ex) parameterName"></aui:input>
-					</aui:col>
-					<aui:col md="2">
-								<aui:input name="version" label="term-version" inlineField="<%=true %>" required="true"></aui:input>
-					</aui:col>
-					<aui:col md="6">
-								<aui:input name="displayName" label="term-display-name" localized="true" required="true" model="<%= Term.class %>"></aui:input>
-					</aui:col>
-				</aui:row>
-				<aui:row>
-					<aui:col md="12">
-								<aui:input type="textarea" name="definition" label="term-definition" localized="true" model="<%= Term.class %>"></aui:input>
-					</aui:col>
-				</aui:row>
-		</aui:container>
-	</aui:fieldset>
+	<aui:container>
+		<aui:fieldset label="term-name-definition">
+			<aui:row>
+				<aui:col md="4">
+					<aui:input name="name" label="parameter-name" inlineField="<%=true %>" required="true" placeholder="ex) parameterName"></aui:input>
+				</aui:col>
+				<aui:col md="2">
+					<aui:input name="version" label="term-version" inlineField="<%=true %>" required="true"></aui:input>
+				</aui:col>
+				<aui:col md="6">
+					<aui:input name="displayName" label="term-display-name" localized="true" required="true" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="text" name="category" label="term-category" required="true" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="textarea" name="definition" label="term-definition" localized="true" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>			
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="text" name="alias" label="term-alias" localized="true" required="true" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:col md="12">
+					<aui:input type="text" name="tooltip" label="term-tooltip" localized="true" model="<%= Term.class %>"></aui:input>
+				</aui:col>
+			</aui:row>
+
+
+			<%@include file="./term-string.jspf" %>
+
+			<%@include file="./term-numeric.jspf" %>
+
+			<%@include file="./term-boolean.jspf" %>
+
+
+		</aui:fieldset>
+	</aui:container>
 </aui:fieldset-group>
