@@ -8,6 +8,10 @@ create table SSS_Term (
 	createDate DATE null,
 	modifiedDate DATE null,
 	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null,
+	lastPublishDate DATE null,
 	name VARCHAR(75) null,
 	version VARCHAR(75) null,
 	type_ VARCHAR(75) null,
@@ -15,6 +19,5 @@ create table SSS_Term (
 	definition STRING null,
 	tooltip STRING null,
 	synonyms VARCHAR(75) null,
-	standardized BOOLEAN,
 	attributesJSON TEXT null
 );

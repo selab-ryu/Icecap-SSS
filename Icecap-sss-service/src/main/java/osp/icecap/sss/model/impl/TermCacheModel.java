@@ -61,7 +61,7 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,14 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		sb.append(modifiedDate);
 		sb.append(", status=");
 		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
+		sb.append(", lastPublishDate=");
+		sb.append(lastPublishDate);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", version=");
@@ -95,8 +103,6 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		sb.append(tooltip);
 		sb.append(", synonyms=");
 		sb.append(synonyms);
-		sb.append(", standardized=");
-		sb.append(standardized);
 		sb.append(", attributesJSON=");
 		sb.append(attributesJSON);
 		sb.append("}");
@@ -142,6 +148,28 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		}
 
 		termImpl.setStatus(status);
+		termImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			termImpl.setStatusByUserName("");
+		}
+		else {
+			termImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			termImpl.setStatusDate(null);
+		}
+		else {
+			termImpl.setStatusDate(new Date(statusDate));
+		}
+
+		if (lastPublishDate == Long.MIN_VALUE) {
+			termImpl.setLastPublishDate(null);
+		}
+		else {
+			termImpl.setLastPublishDate(new Date(lastPublishDate));
+		}
 
 		if (name == null) {
 			termImpl.setName("");
@@ -192,8 +220,6 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 			termImpl.setSynonyms(synonyms);
 		}
 
-		termImpl.setStandardized(standardized);
-
 		if (attributesJSON == null) {
 			termImpl.setAttributesJSON("");
 		}
@@ -222,6 +248,11 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		modifiedDate = objectInput.readLong();
 
 		status = objectInput.readInt();
+
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
+		lastPublishDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		version = objectInput.readUTF();
 		type = objectInput.readUTF();
@@ -229,8 +260,6 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		definition = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
 		synonyms = objectInput.readUTF();
-
-		standardized = objectInput.readBoolean();
 		attributesJSON = objectInput.readUTF();
 	}
 
@@ -262,6 +291,18 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		objectOutput.writeLong(modifiedDate);
 
 		objectOutput.writeInt(status);
+
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(lastPublishDate);
 
 		if (name == null) {
 			objectOutput.writeUTF("");
@@ -312,8 +353,6 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 			objectOutput.writeUTF(synonyms);
 		}
 
-		objectOutput.writeBoolean(standardized);
-
 		if (attributesJSON == null) {
 			objectOutput.writeUTF("");
 		}
@@ -331,6 +370,10 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 	public long createDate;
 	public long modifiedDate;
 	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
+	public long lastPublishDate;
 	public String name;
 	public String version;
 	public String type;
@@ -338,7 +381,6 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 	public String definition;
 	public String tooltip;
 	public String synonyms;
-	public boolean standardized;
 	public String attributesJSON;
 
 }

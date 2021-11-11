@@ -33,7 +33,7 @@ public class TermServiceWrapper
 	@Override
 	public osp.icecap.sss.model.Term addTerm(
 			String name, String version, String type, String strDisplayName,
-			String strDefinition, String strTooltip, String[] synonyms,
+			String strDefinition, String strTooltip, String synonyms,
 			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {

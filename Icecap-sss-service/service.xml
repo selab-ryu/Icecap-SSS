@@ -17,8 +17,14 @@
 		<column name="createDate" type="Date"></column>
 		<column name="modifiedDate" type="Date"></column>
 
-		<!-- Status fields -->
+		<!-- Status fields for workflow -->
 		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		
+		<!-- Field for Staging --> 
+		<column name="lastPublishDate" type="Date" />
 
 		<!-- Descriptive  fields -->
 		<column name="name" type="String"></column>
@@ -28,7 +34,6 @@
 		<column name="definition" localized="true" type="String"></column>
 		<column name="tooltip" localized="true" type="String"></column>
 		<column name="synonyms" type="String"></column>
-		<column name="standardized" type="boolean"></column>
 		
 		<!-- type attribute JSON -->
 		<column name="attributesJSON" type="String"></column>
@@ -68,8 +73,12 @@
 			<finder-column name="name" />
 		</finder>
 		
-		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
-		<reference package-path="com.liferay.portlet.asset" entity="AssetLink" />
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetLink" package-path="com.liferay.portlet.asset" />
+		<reference entity="RatingsStats" package-path="com.liferay.portlet.ratings" />
+		<reference entity="TrashEntry" package-path="com.liferay.portlet.trash" />
+		<reference entity="TrashVersion" package-path="com.liferay.portlet.trash" />
+		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 	</entity>
 	
 	<exceptions>

@@ -44,7 +44,7 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelPermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 public class TermActionDropdownItemsProvider {
 	public TermActionDropdownItemsProvider(
@@ -352,13 +352,12 @@ public class TermActionDropdownItemsProvider {
 
 		private boolean _hasDeletePermission() {
 			try {
-				return TermModelPermission.contains(
+				return TermModelResourcePermission.contains(
 					_permissionChecker, _term, ActionKeys.DELETE);
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			catch (PortalException pe) {
-				pe.printStackTrace();
-			}
-			
 			return false;
 		}
 
@@ -377,11 +376,11 @@ public class TermActionDropdownItemsProvider {
 
 		private boolean _hasPermissionsPermission() {
 			try {
-				return TermModelPermission.contains(
+				return TermModelResourcePermission.contains(
 					_permissionChecker, _term, ActionKeys.PERMISSIONS);
-			}
-			catch (PortalException pe) {
-				pe.printStackTrace();
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 			return false;
@@ -389,11 +388,11 @@ public class TermActionDropdownItemsProvider {
 
 		private boolean _hasUpdatePermission() {
 			try {
-				return TermModelPermission.contains(
+				return TermModelResourcePermission.contains(
 					_permissionChecker, _term, ActionKeys.UPDATE);
-			}
-			catch (PortalException pe) {
-				pe.printStackTrace();
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 			return false;

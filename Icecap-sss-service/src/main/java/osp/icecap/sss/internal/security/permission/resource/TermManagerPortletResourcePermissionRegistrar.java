@@ -18,10 +18,19 @@ import org.osgi.service.component.annotations.Reference;
 import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 
-@Component (immediate=true)
+@Component (
+		immediate=true,
+		service = {}
+)
 public class TermManagerPortletResourcePermissionRegistrar {
+	private ServiceRegistration<PortletResourcePermission> _serviceRegistration;
+	
+	@Reference
+	private StagingPermission _stagingPermission;
+	
 	@Activate
 	public void activate(BundleContext bundleContext) {
+		
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 		properties.put("resource.name", IcecapSSSConstants.RESOURCE_NAME);
@@ -29,21 +38,16 @@ public class TermManagerPortletResourcePermissionRegistrar {
 		_serviceRegistration = bundleContext.registerService(
 				PortletResourcePermission.class,
 				PortletResourcePermissionFactory.create(
-						IcecapSSSConstants.RESOURCE_NAME, 
+						IcecapSSSConstants.RESOURCE_NAME,
 						new StagedPortletPermissionLogic(
-											_stagingPermission, 
-											IcecapSSSWebPortletKeys.TERM_MANAGER)),
+								_stagingPermission, 
+								IcecapSSSWebPortletKeys.TERM_MANAGER)),
 				properties);
-	}
-
+		
+	};
+		
 	@Deactivate
 	public void deactivate() {
 		_serviceRegistration.unregister();
 	}
-
-	private ServiceRegistration<PortletResourcePermission> _serviceRegistration;
-
-	@Reference
-	private StagingPermission _stagingPermission;
-
 }

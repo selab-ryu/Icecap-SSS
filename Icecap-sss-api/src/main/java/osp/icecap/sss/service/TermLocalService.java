@@ -75,7 +75,7 @@ public interface TermLocalService
 			String name, String version, String type,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
-			String[] synonyms, String attributes, ServiceContext sc)
+			String synonyms, String attributes, ServiceContext sc)
 		throws PortalException;
 
 	/**
@@ -88,6 +88,8 @@ public interface TermLocalService
 	public Term addTerm(Term term);
 
 	public int countAllTerms();
+
+	public int countApprovedTerms(long groupId);
 
 	public int countTermsByG_S(long groupId, int status);
 
@@ -221,6 +223,12 @@ public interface TermLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getAllTerms(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getApprovedTerms(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getApprovedTerms(long groupId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
@@ -364,12 +372,16 @@ public interface TermLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public Term removeTerm(long termId) throws PortalException;
 
+	public Term updateStatus(
+			long userId, long termId, int status, ServiceContext sc)
+		throws PortalException, SystemException;
+
 	@Indexable(type = IndexableType.REINDEX)
 	public Term updateTerm(
 			long termId, String name, String version, String type,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
-			String[] synonyms, String attributes, ServiceContext sc)
+			String synonyms, String attributes, ServiceContext sc)
 		throws PortalException;
 
 	/**

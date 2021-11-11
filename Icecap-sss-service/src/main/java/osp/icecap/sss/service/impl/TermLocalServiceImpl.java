@@ -21,6 +21,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -82,7 +84,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
 			Map<Locale, String> tooltipMap,
-			String[] synonyms,
+			String synonyms,
 			String attributes, // attributes for each type
 			ServiceContext sc) throws PortalException {
 		
@@ -99,19 +101,24 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setDisplayNameMap(displayNameMap);
 		term.setDefinitionMap(definitionMap);
 		term.setTooltipMap(tooltipMap);
+		term.setSynonyms(synonyms);
 		if( attributes != null ) {
-			term.setAttributesJSON(attributes.toString());
+			term.setAttributesJSON(attributes);
 		}
 		
 		Date now = new Date();
+		User user = super.userLocalService.getUser(sc.getUserId());
 		term.setCompanyId(sc.getCompanyId());
 		term.setGroupId(sc.getScopeGroupId());
-		term.setUserId(sc.getUserId());
+		term.setUserId(user.getUserId());
+		term.setUserName(user.getFullName());
 		term.setCreateDate(now);
 		term.setModifiedDate(now);
-		term.setStandardized(false);
 		
 		term.setStatus(WorkflowConstants.STATUS_DRAFT);
+		term.setStatusByUserId(sc.getUserId());
+		term.setStatusByUserName(user.getFullName());
+		term.setStatusDate(sc.getModifiedDate(null));
 		
 		super.termPersistence.update(term);
 		
@@ -151,6 +158,11 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			0, 0, null);
 		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
 		indexer.reindex(term);
+		
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
+				term.getGroupId(), term.getUserId(), Term.class.getName(), 
+				term.getPrimaryKey(), term, sc);
+		
 		return term;
 	}
 	
@@ -163,21 +175,26 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
 			Map<Locale, String> tooltipMap,
-			String[] synonyms,
+			String synonyms,
 			String attributes, // attributes for each type
 			ServiceContext sc) throws PortalException {
 		Term term = super.termPersistence.findByPrimaryKey(termId);
 		
 		term.setName(name);
 		term.setVersion(version);
-		term.setDisplayNameMap(displayNameMap);
 		term.setType(type);
+		term.setDisplayNameMap(displayNameMap);
+		term.setDefinitionMap(definitionMap);
+		term.setTooltipMap(tooltipMap);
+		term.setSynonyms(synonyms);
 		if( attributes != null ) {
-			term.setAttributesJSON(attributes.toString());
+			term.setAttributesJSON(attributes);
 		}
 		
 		term.setUserId(sc.getUserId());
 		term.setModifiedDate(new Date() );
+		
+		super.termPersistence.update(term);
 		
 		super.resourceLocalService.updateResources(
 				term.getCompanyId(),
@@ -212,6 +229,32 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				0, 0, null);
 		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
 		indexer.reindex(term);
+		
+		return term;
+	}
+	
+	public Term updateStatus(
+			long userId, 
+			long termId, 
+			int status,
+			ServiceContext sc) throws PortalException, SystemException {
+
+		User user = userLocalService.getUser(userId);
+		Term term = super.termPersistence.findByPrimaryKey(termId);
+
+		term.setStatus(status);
+		term.setStatusByUserId(userId);
+		term.setStatusByUserName(user.getFullName());
+		term.setStatusDate(new Date());
+
+		super.termPersistence.update(term);
+		
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+			super.assetEntryLocalService.updateVisible(Term.class.getName(), termId, true);
+		} else {
+			super.assetEntryLocalService.updateVisible(Term.class.getName(), termId, false);
+		}
+
 		return term;
 	}
 	
@@ -229,6 +272,11 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		
 		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
 		indexer.delete(term);
+		
+		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
+			    term.getCompanyId(), term.getGroupId(),
+			    Term.class.getName(), term.getTermId());
+		
 		return term;
 	}
 	
@@ -294,6 +342,16 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	}
 	public int countTermsByG_U_S( long groupId, long userId, int status ){
 		return super.termPersistence.countByG_U_S(groupId, userId, status);
+	}
+	
+	public List<Term> getApprovedTerms( long groupId ){
+		return super.termPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+	}
+	public List<Term> getApprovedTerms( long groupId, int start, int end ){
+		return super.termPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end);
+	}
+	public int countApprovedTerms( long groupId ) {
+		return super.termPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
 	}
 	
 	public String getName( long termId, Locale locale ) throws NoSuchTermException {

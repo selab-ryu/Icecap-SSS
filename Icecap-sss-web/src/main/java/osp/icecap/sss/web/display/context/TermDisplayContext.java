@@ -44,11 +44,12 @@ import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
 
+import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalServiceUtil;
-import osp.icecap.sss.web.security.permission.resource.TermModelPermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 public class TermDisplayContext {
 	public TermDisplayContext(
@@ -77,10 +78,34 @@ public class TermDisplayContext {
 			PermissionChecker permissionChecker =
 				themeDisplay.getPermissionChecker();
 
-			if (TermModelPermission.contains(
-					permissionChecker, term, ActionKeys.DELETE)) {
+			if (TermModelResourcePermission.contains(
+					permissionChecker, term, IcecapSSSActionKeys.DELETE_TERM)) {
 
-				availableActionDropdownItems.add("deleteTerm");
+				availableActionDropdownItems.add(IcecapSSSActionKeys.DELETE_TERM);
+			}
+			
+			if (TermModelResourcePermission.contains(
+					permissionChecker, term, IcecapSSSActionKeys.UPDATE_TERM)) {
+
+				availableActionDropdownItems.add(IcecapSSSActionKeys.UPDATE_TERM);
+			}
+			
+			if (TermModelResourcePermission.contains(
+					permissionChecker, term, IcecapSSSActionKeys.ADD_TERM)) {
+
+				availableActionDropdownItems.add(IcecapSSSActionKeys.ADD_TERM);
+			}
+
+			if (TermModelResourcePermission.contains(
+					permissionChecker, term, IcecapSSSActionKeys.REVIEW_TERM)) {
+
+				availableActionDropdownItems.add(IcecapSSSActionKeys.REVIEW_TERM);
+			}
+
+			if (TermModelResourcePermission.contains(
+					permissionChecker, term, IcecapSSSActionKeys.APPROVE_TERM)) {
+
+				availableActionDropdownItems.add(IcecapSSSActionKeys.APPROVE_TERM);
 			}
 
 			return availableActionDropdownItems;

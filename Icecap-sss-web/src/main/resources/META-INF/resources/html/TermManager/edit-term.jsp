@@ -46,14 +46,20 @@
 	display:block;
 }
 </style>
+<%
+%>
 <liferay-asset:asset-categories-error />
 <liferay-asset:asset-tags-error />
 
 <aui:container>
-	<aui:form >
+	<aui:form  >
 		<aui:row>
 			<aui:col md="3" cssClass="term-type-section">
 				<%@include file="jspf/parameter-type.jspf" %>
+			</aui:col>
+			<aui:col md="7"></aui:col>
+			<aui:col md="2" >
+				<clay:link href="<%=redirect %>" icon="list" label="view-term-list" />
 			</aui:col>
 		</aui:row>
 		<aui:row>
@@ -66,18 +72,36 @@
 				<%@include file="jspf/categorization.jspf" %>
 			</aui:col>
 		</aui:row>
+		<aui:input type="hidden" name="termJSON"></aui:input>
 		<aui:button-row>
-			<aui:button type="submit" name="submit" value="<%=submitButtonLabel %>"></aui:button>
-			<aui:button type="reset" name="clear" value="<%= LanguageUtil.get(locale, "clear", "Clear") %>"></aui:button>
+			<aui:button 
+					type="submit" 
+					name="submit" 
+					value="<%=submitButtonLabel %>">
+			</aui:button>
+			<aui:button 
+					type="reset" 
+					name="clear" 
+					value="<%= LanguageUtil.get(locale, "clear", "Clear") %>">
+			</aui:button>
+			<aui:button 
+					type="button" 
+					name="cancel" 
+					value="<%= LanguageUtil.get(locale, "cancel", "Cancel") %>"
+					href="<%= redirect %>">
+			</aui:button>
 		</aui:button-row>
 	</aui:form> 
 </aui:container>
 
 
 <script>
-var term = new SSS.Term();
 
-$('#<portlet:namespace/>termType').val("<%= IcecapSSSTermTypes.NUMERIC%>");
-$('#<portlet:namespace/>termType').trigger('change');
+$(document).ready(function(){
+	var term = new SSS.Term();
+	
+	$('#<portlet:namespace/>termType').val('<%= IcecapSSSTermTypes.NUMERIC%>');
+	$('#<portlet:namespace/>termType').trigger('change');
+});
 
 </script>

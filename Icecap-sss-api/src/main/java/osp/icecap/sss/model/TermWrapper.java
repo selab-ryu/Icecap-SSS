@@ -51,6 +51,10 @@ public class TermWrapper
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("status", getStatus());
+		attributes.put("statusByUserId", getStatusByUserId());
+		attributes.put("statusByUserName", getStatusByUserName());
+		attributes.put("statusDate", getStatusDate());
+		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("name", getName());
 		attributes.put("version", getVersion());
 		attributes.put("type", getType());
@@ -58,7 +62,6 @@ public class TermWrapper
 		attributes.put("definition", getDefinition());
 		attributes.put("tooltip", getTooltip());
 		attributes.put("synonyms", getSynonyms());
-		attributes.put("standardized", isStandardized());
 		attributes.put("attributesJSON", getAttributesJSON());
 
 		return attributes;
@@ -120,6 +123,30 @@ public class TermWrapper
 			setStatus(status);
 		}
 
+		Long statusByUserId = (Long)attributes.get("statusByUserId");
+
+		if (statusByUserId != null) {
+			setStatusByUserId(statusByUserId);
+		}
+
+		String statusByUserName = (String)attributes.get("statusByUserName");
+
+		if (statusByUserName != null) {
+			setStatusByUserName(statusByUserName);
+		}
+
+		Date statusDate = (Date)attributes.get("statusDate");
+
+		if (statusDate != null) {
+			setStatusDate(statusDate);
+		}
+
+		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
+
+		if (lastPublishDate != null) {
+			setLastPublishDate(lastPublishDate);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -160,12 +187,6 @@ public class TermWrapper
 
 		if (synonyms != null) {
 			setSynonyms(synonyms);
-		}
-
-		Boolean standardized = (Boolean)attributes.get("standardized");
-
-		if (standardized != null) {
-			setStandardized(standardized);
 		}
 
 		String attributesJSON = (String)attributes.get("attributesJSON");
@@ -390,6 +411,16 @@ public class TermWrapper
 	}
 
 	/**
+	 * Returns the last publish date of this term.
+	 *
+	 * @return the last publish date of this term
+	 */
+	@Override
+	public Date getLastPublishDate() {
+		return model.getLastPublishDate();
+	}
+
+	/**
 	 * Returns the modified date of this term.
 	 *
 	 * @return the modified date of this term
@@ -420,16 +451,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Returns the standardized of this term.
-	 *
-	 * @return the standardized of this term
-	 */
-	@Override
-	public boolean getStandardized() {
-		return model.getStandardized();
-	}
-
-	/**
 	 * Returns the status of this term.
 	 *
 	 * @return the status of this term
@@ -437,6 +458,46 @@ public class TermWrapper
 	@Override
 	public int getStatus() {
 		return model.getStatus();
+	}
+
+	/**
+	 * Returns the status by user ID of this term.
+	 *
+	 * @return the status by user ID of this term
+	 */
+	@Override
+	public long getStatusByUserId() {
+		return model.getStatusByUserId();
+	}
+
+	/**
+	 * Returns the status by user name of this term.
+	 *
+	 * @return the status by user name of this term
+	 */
+	@Override
+	public String getStatusByUserName() {
+		return model.getStatusByUserName();
+	}
+
+	/**
+	 * Returns the status by user uuid of this term.
+	 *
+	 * @return the status by user uuid of this term
+	 */
+	@Override
+	public String getStatusByUserUuid() {
+		return model.getStatusByUserUuid();
+	}
+
+	/**
+	 * Returns the status date of this term.
+	 *
+	 * @return the status date of this term
+	 */
+	@Override
+	public Date getStatusDate() {
+		return model.getStatusDate();
 	}
 
 	/**
@@ -596,13 +657,83 @@ public class TermWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this term is standardized.
+	 * Returns <code>true</code> if this term is approved.
 	 *
-	 * @return <code>true</code> if this term is standardized; <code>false</code> otherwise
+	 * @return <code>true</code> if this term is approved; <code>false</code> otherwise
 	 */
 	@Override
-	public boolean isStandardized() {
-		return model.isStandardized();
+	public boolean isApproved() {
+		return model.isApproved();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is denied.
+	 *
+	 * @return <code>true</code> if this term is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied() {
+		return model.isDenied();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is a draft.
+	 *
+	 * @return <code>true</code> if this term is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft() {
+		return model.isDraft();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is expired.
+	 *
+	 * @return <code>true</code> if this term is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired() {
+		return model.isExpired();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is inactive.
+	 *
+	 * @return <code>true</code> if this term is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive() {
+		return model.isInactive();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is incomplete.
+	 *
+	 * @return <code>true</code> if this term is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete() {
+		return model.isIncomplete();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is pending.
+	 *
+	 * @return <code>true</code> if this term is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending() {
+		return model.isPending();
+	}
+
+	/**
+	 * Returns <code>true</code> if this term is scheduled.
+	 *
+	 * @return <code>true</code> if this term is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled() {
+		return model.isScheduled();
 	}
 
 	@Override
@@ -798,6 +929,16 @@ public class TermWrapper
 	}
 
 	/**
+	 * Sets the last publish date of this term.
+	 *
+	 * @param lastPublishDate the last publish date of this term
+	 */
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		model.setLastPublishDate(lastPublishDate);
+	}
+
+	/**
 	 * Sets the modified date of this term.
 	 *
 	 * @param modifiedDate the modified date of this term
@@ -828,16 +969,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Sets whether this term is standardized.
-	 *
-	 * @param standardized the standardized of this term
-	 */
-	@Override
-	public void setStandardized(boolean standardized) {
-		model.setStandardized(standardized);
-	}
-
-	/**
 	 * Sets the status of this term.
 	 *
 	 * @param status the status of this term
@@ -845,6 +976,46 @@ public class TermWrapper
 	@Override
 	public void setStatus(int status) {
 		model.setStatus(status);
+	}
+
+	/**
+	 * Sets the status by user ID of this term.
+	 *
+	 * @param statusByUserId the status by user ID of this term
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		model.setStatusByUserId(statusByUserId);
+	}
+
+	/**
+	 * Sets the status by user name of this term.
+	 *
+	 * @param statusByUserName the status by user name of this term
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		model.setStatusByUserName(statusByUserName);
+	}
+
+	/**
+	 * Sets the status by user uuid of this term.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this term
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+		model.setStatusByUserUuid(statusByUserUuid);
+	}
+
+	/**
+	 * Sets the status date of this term.
+	 *
+	 * @param statusDate the status date of this term
+	 */
+	@Override
+	public void setStatusDate(Date statusDate) {
+		model.setStatusDate(statusDate);
 	}
 
 	/**

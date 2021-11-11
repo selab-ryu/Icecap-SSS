@@ -11,6 +11,10 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="lastPublishDate" type="Date" />
 		<field name="name" type="String" />
 		<field name="version" type="String" />
 		<field name="type" type="String" />
@@ -18,7 +22,6 @@
 		<field localized="true" name="definition" type="String" />
 		<field localized="true" name="tooltip" type="String" />
 		<field name="synonyms" type="String" />
-		<field name="standardized" type="boolean" />
 		<field name="attributesJSON" type="String">
 			<hint name="max-length">8000</hint>
 		</field>

@@ -64,7 +64,7 @@ public class TermServiceSoap {
 
 	public static osp.icecap.sss.model.TermSoap addTerm(
 			String name, String version, String type, String strDisplayName,
-			String strDefinition, String strTooltip, String[] synonyms,
+			String strDefinition, String strTooltip, String synonyms,
 			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws RemoteException {

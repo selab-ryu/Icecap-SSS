@@ -55,7 +55,7 @@ public class TermServiceHttp {
 	public static osp.icecap.sss.model.Term addTerm(
 			HttpPrincipal httpPrincipal, String name, String version,
 			String type, String strDisplayName, String strDefinition,
-			String strTooltip, String[] synonyms, String attributes,
+			String strTooltip, String synonyms, String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -137,7 +137,7 @@ public class TermServiceHttp {
 
 	private static final Class<?>[] _addTermParameterTypes0 = new Class[] {
 		String.class, String.class, String.class, String.class, String.class,
-		String.class, String[].class, String.class,
+		String.class, String.class, String.class,
 		com.liferay.portal.kernel.service.ServiceContext.class
 	};
 	private static final Class<?>[] _getTermParameterTypes1 = new Class[] {

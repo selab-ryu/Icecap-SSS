@@ -32,9 +32,11 @@ import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
+import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermManagerPermission;
+import osp.icecap.sss.web.security.permission.resource.TermManagerPortletResourcePermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 public class TermManagementToolbarDisplayContext extends SearchContainerManagementToolbarDisplayContext{
 
@@ -53,7 +55,7 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 
 			_trashHelper = trashHelper;
 			_displayStyle = displayStyle;
-
+			
 			_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY);
 	}
 
@@ -99,17 +101,18 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 			cmd = Constants.MOVE_TO_TRASH;
 		}
 
-		context.put("deleteTermsCmd", cmd);
+		context.put(IcecapSSSWebKeys.CMD_DELETE_TERMS, cmd);
 
 		PortletURL deleteTermsURL = liferayPortletResponse.createActionURL();
 
-		deleteTermsURL.setParameter(
-			ActionRequest.ACTION_NAME, "/html/TermManager/edit_term");
+		deleteTermsURL.getRenderParameters().setValue(ActionRequest.ACTION_NAME, MVCCommandNames.RENDER_TERM_EDIT);
+		
+		System.out.println("ActionRequest.ACTION_NAME: "+ActionRequest.ACTION_NAME);
 
-		context.put("deleteTermsURL", deleteTermsURL.toString());
+		context.put(IcecapSSSWebKeys.URL_DELETE_TERMS, deleteTermsURL.toString());
 
 		context.put(
-			"trashEnabled",
+			IcecapSSSWebKeys.TRASH_ENABLED,
 			_trashHelper.isTrashEnabled(_themeDisplay.getScopeGroupId()));
 
 		return context;
@@ -118,33 +121,28 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 	@Override
 	public CreationMenu getCreationMenu() {
 
-		/*
-		try {
-			if (!TermManagerPermission.contains(
-				_themeDisplay.getPermissionChecker(),
-				_themeDisplay.getScopeGroupId(),
-				ActionKeys.ADD_ENTRY)) {
-
-				return null;
-			}
-		} catch (PortalException e) {
-			e.printStackTrace();
+		if( TermManagerPortletResourcePermission.contains(
+				_themeDisplay.getPermissionChecker(), 
+				_themeDisplay.getScopeGroupId(), 
+				IcecapSSSActionKeys.ADD_TERM)) {
+			return new CreationMenu() {
+				{
+					addDropdownItem(
+							dropdownItem -> {
+								dropdownItem.setHref(
+										liferayPortletResponse.createRenderURL(),
+										"mvcRenderCommandName", MVCCommandNames.RENDER_TERM_EDIT,
+										"redirect", currentURLObj.toString(),
+										Constants.CMD, Constants.ADD);
+								dropdownItem.setLabel(
+										LanguageUtil.get(request, "add-term"));
+							});
+				}
+			};
 		}
-		*/
 
-		return new CreationMenu() {
-			{
-				addDropdownItem(
-					dropdownItem -> {
-						dropdownItem.setHref(
-							liferayPortletResponse.createRenderURL(),
-							"mvcRenderCommandName", MVCCommandNames.RENDER_TERM_EDIT,
-							"redirect", currentURLObj.toString());
-						dropdownItem.setLabel(
-							LanguageUtil.get(request, "add-term"));
-					});
-			}
-		};
+		System.out.println("Group "+_themeDisplay.getScopeGroupId()+ " is not permitted for ADD_TERM");
+		return null; 
 	}
 
 	@Override
@@ -188,10 +186,10 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 	public String getSearchActionURL() {
 		PortletURL searchURL = liferayPortletResponse.createRenderURL();
 
-		searchURL.setParameter("mvcRenderCommandName", "/html/TermManager/term_list");
+		searchURL.setParameter("mvcRenderCommandName", MVCCommandNames.RENDER_TERM_LIST);
 
 		String navigation = ParamUtil.getString(
-			request, "navigation", "terms");
+			super.request, "navigation", "terms");
 
 		searchURL.setParameter("navigation", navigation);
 
@@ -205,7 +203,7 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 	public List<ViewTypeItem> getViewTypeItems() {
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
-		portletURL.setParameter("mvcRenderCommandName", "/html/TermManager/term_list");
+		portletURL.setParameter("mvcRenderCommandName", MVCCommandNames.RENDER_TERM_LIST);
 
 		if (searchContainer.getDelta() > 0) {
 			portletURL.setParameter(
@@ -275,11 +273,11 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 	private PortletURL _getCurrentSortingURL() {
 		PortletURL sortingURL = getPortletURL();
 
-		sortingURL.setParameter("mvcRenderCommandName", "/html/TermManager/term_list");
+		sortingURL.setParameter("mvcRenderCommandName", MVCCommandNames.RENDER_TERM_LIST);
 
 		sortingURL.setParameter(SearchContainer.DEFAULT_CUR_PARAM, "0");
 
-		String keywords = ParamUtil.getString(request, "keywords");
+		String keywords = ParamUtil.getString(super.request, "keywords");
 
 		if (Validator.isNotNull(keywords)) {
 			sortingURL.setParameter("keywords", keywords);

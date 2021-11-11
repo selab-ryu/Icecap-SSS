@@ -17,10 +17,10 @@ package osp.icecap.sss.model;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
-import com.liferay.portal.kernel.model.StagedAuditedModel;
+import com.liferay.portal.kernel.model.StagedGroupedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 
 import java.util.Date;
 import java.util.Locale;
@@ -41,8 +41,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface TermModel
-	extends BaseModel<Term>, GroupedModel, LocalizedModel, ShardedModel,
-			StagedAuditedModel {
+	extends BaseModel<Term>, LocalizedModel, ShardedModel, StagedGroupedModel,
+			WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -213,6 +213,7 @@ public interface TermModel
 	 *
 	 * @return the status of this term
 	 */
+	@Override
 	public int getStatus();
 
 	/**
@@ -220,7 +221,89 @@ public interface TermModel
 	 *
 	 * @param status the status of this term
 	 */
+	@Override
 	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this term.
+	 *
+	 * @return the status by user ID of this term
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this term.
+	 *
+	 * @param statusByUserId the status by user ID of this term
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this term.
+	 *
+	 * @return the status by user uuid of this term
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this term.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this term
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this term.
+	 *
+	 * @return the status by user name of this term
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this term.
+	 *
+	 * @param statusByUserName the status by user name of this term
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this term.
+	 *
+	 * @return the status date of this term
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this term.
+	 *
+	 * @param statusDate the status date of this term
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
+	 * Returns the last publish date of this term.
+	 *
+	 * @return the last publish date of this term
+	 */
+	@Override
+	public Date getLastPublishDate();
+
+	/**
+	 * Sets the last publish date of this term.
+	 *
+	 * @param lastPublishDate the last publish date of this term
+	 */
+	@Override
+	public void setLastPublishDate(Date lastPublishDate);
 
 	/**
 	 * Returns the name of this term.
@@ -585,27 +668,6 @@ public interface TermModel
 	public void setSynonyms(String synonyms);
 
 	/**
-	 * Returns the standardized of this term.
-	 *
-	 * @return the standardized of this term
-	 */
-	public boolean getStandardized();
-
-	/**
-	 * Returns <code>true</code> if this term is standardized.
-	 *
-	 * @return <code>true</code> if this term is standardized; <code>false</code> otherwise
-	 */
-	public boolean isStandardized();
-
-	/**
-	 * Sets whether this term is standardized.
-	 *
-	 * @param standardized the standardized of this term
-	 */
-	public void setStandardized(boolean standardized);
-
-	/**
 	 * Returns the attributes json of this term.
 	 *
 	 * @return the attributes json of this term
@@ -619,6 +681,70 @@ public interface TermModel
 	 * @param attributesJSON the attributes json of this term
 	 */
 	public void setAttributesJSON(String attributesJSON);
+
+	/**
+	 * Returns <code>true</code> if this term is approved.
+	 *
+	 * @return <code>true</code> if this term is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this term is denied.
+	 *
+	 * @return <code>true</code> if this term is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this term is a draft.
+	 *
+	 * @return <code>true</code> if this term is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this term is expired.
+	 *
+	 * @return <code>true</code> if this term is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this term is inactive.
+	 *
+	 * @return <code>true</code> if this term is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this term is incomplete.
+	 *
+	 * @return <code>true</code> if this term is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this term is pending.
+	 *
+	 * @return <code>true</code> if this term is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this term is scheduled.
+	 *
+	 * @return <code>true</code> if this term is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 	@Override
 	public String[] getAvailableLanguageIds();

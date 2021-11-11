@@ -32,7 +32,7 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelPermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 public class TermAssetRenderer extends BaseJSPAssetRenderer<Term> {
 
@@ -121,16 +121,16 @@ public class TermAssetRenderer extends BaseJSPAssetRenderer<Term> {
 
 	@Override
 	public boolean hasEditPermission(PermissionChecker permissionChecker) throws PortalException {
-		return TermModelPermission.contains(permissionChecker, _term.getTermId(), ActionKeys.UPDATE);
+		return TermModelResourcePermission.contains(permissionChecker, _term.getTermId(), ActionKeys.UPDATE);
 	}
 
 	@Override
 	public boolean hasViewPermission(PermissionChecker permissionChecker) throws PortalException {
-		return TermModelPermission.contains(permissionChecker, _term.getTermId(), ActionKeys.VIEW);
+		return TermModelResourcePermission.contains(permissionChecker, _term.getTermId(), ActionKeys.VIEW);
 	}
 
 	public boolean hasDeletePermission(PermissionChecker permissionChecker) throws PortalException {
-		return TermModelPermission.contains(permissionChecker, _term.getTermId(), ActionKeys.DELETE);
+		return TermModelResourcePermission.contains(permissionChecker, _term.getTermId(), ActionKeys.DELETE);
 	}
 
 	@Override

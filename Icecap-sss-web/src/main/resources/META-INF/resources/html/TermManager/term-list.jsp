@@ -6,7 +6,7 @@
 <%@page import="osp.icecap.sss.constants.IcecapSSSConstants"%>
 <%@page import="osp.icecap.sss.web.util.TermActionDropdownItemsProvider"%>
 <%@page import="com.liferay.portal.kernel.security.permission.ActionKeys"%>
-<%@page import="osp.icecap.sss.web.security.permission.resource.TermModelPermission"%>
+<%@page import="osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.liferay.portal.kernel.util.Constants"%>
@@ -21,8 +21,8 @@
 
 
 <%
-	TermDisplayContext termDisplayContext = 
-	(TermDisplayContext)renderRequest.getAttribute(TermDisplayContext.class.getName());
+TermDisplayContext termDisplayContext = 
+(TermDisplayContext)renderRequest.getAttribute(TermDisplayContext.class.getName());
 
 String displayStyle = termDisplayContext.getDisplayStyle();
 SearchContainer<Term> termSearchContainer = termDisplayContext.getSearchContainer();
@@ -82,7 +82,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				
 							<h2 class="h5">
 								<c:choose>
-									<c:when test="<%=TermModelPermission.contains(permissionChecker, term, ActionKeys.UPDATE)%>">
+									<c:when test="<%=TermModelResourcePermission.contains(permissionChecker, term, ActionKeys.UPDATE)%>">
 										<aui:a href="<%=rowURL.toString()%>">
 											<%=term.getDisplayName(locale)%>
 										</aui:a>
@@ -131,7 +131,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 					<c:otherwise>
 						<liferay-ui:search-container-column-text
 							cssClass="table-cell-expand table-cell-minw-200 table-title"
-							href="<%=TermModelPermission.contains(permissionChecker, term, ActionKeys.UPDATE) ? rowURL : null%>"
+							href="<%=TermModelResourcePermission.contains(permissionChecker, term, ActionKeys.UPDATE) ? rowURL : null%>"
 							name="display-name"
 							orderable="<%= false %>"
 							value="<%= term.getDisplayName(locale) %>"

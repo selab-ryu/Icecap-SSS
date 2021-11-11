@@ -40,6 +40,10 @@ public class TermSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setStatus(model.getStatus());
+		soapModel.setStatusByUserId(model.getStatusByUserId());
+		soapModel.setStatusByUserName(model.getStatusByUserName());
+		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setName(model.getName());
 		soapModel.setVersion(model.getVersion());
 		soapModel.setType(model.getType());
@@ -47,7 +51,6 @@ public class TermSoap implements Serializable {
 		soapModel.setDefinition(model.getDefinition());
 		soapModel.setTooltip(model.getTooltip());
 		soapModel.setSynonyms(model.getSynonyms());
-		soapModel.setStandardized(model.isStandardized());
 		soapModel.setAttributesJSON(model.getAttributesJSON());
 
 		return soapModel;
@@ -173,6 +176,38 @@ public class TermSoap implements Serializable {
 		_status = status;
 	}
 
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	public String getStatusByUserName() {
+		return _statusByUserName;
+	}
+
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -229,18 +264,6 @@ public class TermSoap implements Serializable {
 		_synonyms = synonyms;
 	}
 
-	public boolean getStandardized() {
-		return _standardized;
-	}
-
-	public boolean isStandardized() {
-		return _standardized;
-	}
-
-	public void setStandardized(boolean standardized) {
-		_standardized = standardized;
-	}
-
 	public String getAttributesJSON() {
 		return _attributesJSON;
 	}
@@ -258,6 +281,10 @@ public class TermSoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private Date _lastPublishDate;
 	private String _name;
 	private String _version;
 	private String _type;
@@ -265,7 +292,6 @@ public class TermSoap implements Serializable {
 	private String _definition;
 	private String _tooltip;
 	private String _synonyms;
-	private boolean _standardized;
 	private String _attributesJSON;
 
 }

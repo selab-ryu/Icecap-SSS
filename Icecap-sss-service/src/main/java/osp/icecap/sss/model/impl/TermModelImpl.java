@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
@@ -86,11 +87,13 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"status", Types.INTEGER}, {"name", Types.VARCHAR},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
+		{"lastPublishDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
 		{"version", Types.VARCHAR}, {"type_", Types.VARCHAR},
 		{"displayName", Types.VARCHAR}, {"definition", Types.VARCHAR},
 		{"tooltip", Types.VARCHAR}, {"synonyms", Types.VARCHAR},
-		{"standardized", Types.BOOLEAN}, {"attributesJSON", Types.VARCHAR}
+		{"attributesJSON", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -106,6 +109,10 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
@@ -113,12 +120,11 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		TABLE_COLUMNS_MAP.put("definition", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("synonyms", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("standardized", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("attributesJSON", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SSS_Term (uuid_ VARCHAR(75) null,termId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,name VARCHAR(75) null,version VARCHAR(75) null,type_ VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,standardized BOOLEAN,attributesJSON TEXT null)";
+		"create table SSS_Term (uuid_ VARCHAR(75) null,termId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,name VARCHAR(75) null,version VARCHAR(75) null,type_ VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,attributesJSON TEXT null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SSS_Term";
 
@@ -177,6 +183,10 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setStatus(soapModel.getStatus());
+		model.setStatusByUserId(soapModel.getStatusByUserId());
+		model.setStatusByUserName(soapModel.getStatusByUserName());
+		model.setStatusDate(soapModel.getStatusDate());
+		model.setLastPublishDate(soapModel.getLastPublishDate());
 		model.setName(soapModel.getName());
 		model.setVersion(soapModel.getVersion());
 		model.setType(soapModel.getType());
@@ -184,7 +194,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		model.setDefinition(soapModel.getDefinition());
 		model.setTooltip(soapModel.getTooltip());
 		model.setSynonyms(soapModel.getSynonyms());
-		model.setStandardized(soapModel.isStandardized());
 		model.setAttributesJSON(soapModel.getAttributesJSON());
 
 		return model;
@@ -358,6 +367,22 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		attributeGetterFunctions.put("status", Term::getStatus);
 		attributeSetterBiConsumers.put(
 			"status", (BiConsumer<Term, Integer>)Term::setStatus);
+		attributeGetterFunctions.put("statusByUserId", Term::getStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserId", (BiConsumer<Term, Long>)Term::setStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", Term::getStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<Term, String>)Term::setStatusByUserName);
+		attributeGetterFunctions.put("statusDate", Term::getStatusDate);
+		attributeSetterBiConsumers.put(
+			"statusDate", (BiConsumer<Term, Date>)Term::setStatusDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", Term::getLastPublishDate);
+		attributeSetterBiConsumers.put(
+			"lastPublishDate",
+			(BiConsumer<Term, Date>)Term::setLastPublishDate);
 		attributeGetterFunctions.put("name", Term::getName);
 		attributeSetterBiConsumers.put(
 			"name", (BiConsumer<Term, String>)Term::setName);
@@ -379,9 +404,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		attributeGetterFunctions.put("synonyms", Term::getSynonyms);
 		attributeSetterBiConsumers.put(
 			"synonyms", (BiConsumer<Term, String>)Term::setSynonyms);
-		attributeGetterFunctions.put("standardized", Term::getStandardized);
-		attributeSetterBiConsumers.put(
-			"standardized", (BiConsumer<Term, Boolean>)Term::setStandardized);
 		attributeGetterFunctions.put("attributesJSON", Term::getAttributesJSON);
 		attributeSetterBiConsumers.put(
 			"attributesJSON",
@@ -582,6 +604,71 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 	public int getOriginalStatus() {
 		return _originalStatus;
+	}
+
+	@JSON
+	@Override
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	@Override
+	public String getStatusByUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getStatusByUserName() {
+		if (_statusByUserName == null) {
+			return "";
+		}
+		else {
+			return _statusByUserName;
+		}
+	}
+
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	@JSON
+	@Override
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	@Override
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	@JSON
+	@Override
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
 	}
 
 	@JSON
@@ -984,23 +1071,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 	@JSON
 	@Override
-	public boolean getStandardized() {
-		return _standardized;
-	}
-
-	@JSON
-	@Override
-	public boolean isStandardized() {
-		return _standardized;
-	}
-
-	@Override
-	public void setStandardized(boolean standardized) {
-		_standardized = standardized;
-	}
-
-	@JSON
-	@Override
 	public String getAttributesJSON() {
 		if (_attributesJSON == null) {
 			return "";
@@ -1019,6 +1089,86 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(Term.class.getName()));
+	}
+
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDenied() {
+		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInactive() {
+		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isIncomplete() {
+		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isScheduled() {
+		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public long getColumnBitmask() {
@@ -1175,6 +1325,10 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		termImpl.setCreateDate(getCreateDate());
 		termImpl.setModifiedDate(getModifiedDate());
 		termImpl.setStatus(getStatus());
+		termImpl.setStatusByUserId(getStatusByUserId());
+		termImpl.setStatusByUserName(getStatusByUserName());
+		termImpl.setStatusDate(getStatusDate());
+		termImpl.setLastPublishDate(getLastPublishDate());
 		termImpl.setName(getName());
 		termImpl.setVersion(getVersion());
 		termImpl.setType(getType());
@@ -1182,7 +1336,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		termImpl.setDefinition(getDefinition());
 		termImpl.setTooltip(getTooltip());
 		termImpl.setSynonyms(getSynonyms());
-		termImpl.setStandardized(isStandardized());
 		termImpl.setAttributesJSON(getAttributesJSON());
 
 		termImpl.resetOriginalValues();
@@ -1319,6 +1472,34 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 		termCacheModel.status = getStatus();
 
+		termCacheModel.statusByUserId = getStatusByUserId();
+
+		termCacheModel.statusByUserName = getStatusByUserName();
+
+		String statusByUserName = termCacheModel.statusByUserName;
+
+		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
+			termCacheModel.statusByUserName = null;
+		}
+
+		Date statusDate = getStatusDate();
+
+		if (statusDate != null) {
+			termCacheModel.statusDate = statusDate.getTime();
+		}
+		else {
+			termCacheModel.statusDate = Long.MIN_VALUE;
+		}
+
+		Date lastPublishDate = getLastPublishDate();
+
+		if (lastPublishDate != null) {
+			termCacheModel.lastPublishDate = lastPublishDate.getTime();
+		}
+		else {
+			termCacheModel.lastPublishDate = Long.MIN_VALUE;
+		}
+
 		termCacheModel.name = getName();
 
 		String name = termCacheModel.name;
@@ -1374,8 +1555,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		if ((synonyms != null) && (synonyms.length() == 0)) {
 			termCacheModel.synonyms = null;
 		}
-
-		termCacheModel.standardized = isStandardized();
 
 		termCacheModel.attributesJSON = getAttributesJSON();
 
@@ -1478,6 +1657,10 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private Date _lastPublishDate;
 	private String _name;
 	private String _originalName;
 	private String _version;
@@ -1489,7 +1672,6 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 	private String _tooltip;
 	private String _tooltipCurrentLanguageId;
 	private String _synonyms;
-	private boolean _standardized;
 	private String _attributesJSON;
 	private long _columnBitmask;
 	private Term _escapedModel;

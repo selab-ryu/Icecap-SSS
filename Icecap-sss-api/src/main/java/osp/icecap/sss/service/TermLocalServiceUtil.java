@@ -41,8 +41,8 @@ public class TermLocalServiceUtil {
 			String name, String version, String type,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap,
-			String[] synonyms, String attributes,
+			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -65,6 +65,10 @@ public class TermLocalServiceUtil {
 
 	public static int countAllTerms() {
 		return getService().countAllTerms();
+	}
+
+	public static int countApprovedTerms(long groupId) {
+		return getService().countApprovedTerms(groupId);
 	}
 
 	public static int countTermsByG_S(long groupId, int status) {
@@ -249,6 +253,18 @@ public class TermLocalServiceUtil {
 		int start, int end) {
 
 		return getService().getAllTerms(start, end);
+	}
+
+	public static java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
+		long groupId) {
+
+		return getService().getApprovedTerms(groupId);
+	}
+
+	public static java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
+		long groupId, int start, int end) {
+
+		return getService().getApprovedTerms(groupId, start, end);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
@@ -467,12 +483,21 @@ public class TermLocalServiceUtil {
 		return getService().removeTerm(termId);
 	}
 
+	public static osp.icecap.sss.model.Term updateStatus(
+			long userId, long termId, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return getService().updateStatus(userId, termId, status, sc);
+	}
+
 	public static osp.icecap.sss.model.Term updateTerm(
 			long termId, String name, String version, String type,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap,
-			String[] synonyms, String attributes,
+			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 

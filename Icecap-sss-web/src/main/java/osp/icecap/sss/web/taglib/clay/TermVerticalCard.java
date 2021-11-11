@@ -17,7 +17,7 @@ import javax.portlet.RenderResponse;
 
 import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelPermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 import osp.icecap.sss.web.util.TermActionDropdownItemsProvider;
 
 public class TermVerticalCard extends BaseVerticalCard {
@@ -66,19 +66,17 @@ public class TermVerticalCard extends BaseVerticalCard {
 		@Override
 		public String getHref() {
 			try {
-				if (!TermModelPermission.contains(
+				if (!TermModelResourcePermission.contains(
 						_permissionChecker, _term, ActionKeys.UPDATE)) {
 
 					return null;
 				}
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-				return _termURL;
-			}
-			catch (PortalException pe) {
-				pe.printStackTrace();
-			}
-			
-			return null;
+			return _termURL;
 		}
 
 		@Override

@@ -21,7 +21,7 @@ import osp.icecap.sss.web.display.context.TermDisplayContext;
 	    immediate = true,
 	    property = {
 	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_MANAGER,
-	        "mvc.command.name=/",
+	        "mvc.command.name="+MVCCommandNames.RENDER_ROOT,
 	        "mvc.command.name="+MVCCommandNames.RENDER_TERM_LIST
 	    },
 	    service = MVCRenderCommand.class

@@ -27,7 +27,7 @@ import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalService;
 import osp.icecap.sss.web.asset.renderer.TermAssetRenderer;
-import osp.icecap.sss.web.security.permission.resource.TermModelPermission;
+import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 @Component(
 		immediate = true,
@@ -112,7 +112,7 @@ public class TermAssetRendererFactory extends BaseAssetRendererFactory<Term> {
 			PermissionChecker permissionChecker, 
 			long groupId, 
 			long classTypeId) throws Exception {
-		return TermModelPermission.contains(
+		return TermModelResourcePermission.contains(
 				permissionChecker, groupId, ActionKeys.ADD_ENTRY);
 	}
 
@@ -122,7 +122,7 @@ public class TermAssetRendererFactory extends BaseAssetRendererFactory<Term> {
 			long classPK, 
 			String actionId) throws Exception {
 
-		return TermModelPermission.contains(
+		return TermModelResourcePermission.contains(
 				permissionChecker, classPK, actionId);
 	}
 	

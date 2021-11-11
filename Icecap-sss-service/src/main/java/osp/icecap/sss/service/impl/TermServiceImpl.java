@@ -69,7 +69,7 @@ public class TermServiceImpl extends TermServiceBaseImpl {
 			String strDisplayName,
 			String strDefinition,
 			String strTooltip,
-			String[] synonyms,
+			String synonyms,
 			String attributes, // attributes for each type
 			ServiceContext sc) throws PortalException {
 		
