@@ -1,4 +1,4 @@
-		<aui:fieldset label="term-numeric">
+		<aui:fieldset label="term-numeric" data-row-type="Numeric">
 			<aui:row>
 				<aui:col md="3">
 					<aui:input name="numericMinValue" label="term-numeric-min-value" required="true" ></aui:input>

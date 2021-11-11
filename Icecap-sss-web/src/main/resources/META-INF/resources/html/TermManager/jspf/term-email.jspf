@@ -1,4 +1,4 @@
-		<aui:fieldset label="term-boolean" data-row-type="Boolean">
+		<aui:fieldset label="term-email" data-row-type="EMail">
 			<aui:row>
 				<aui:col md="12">
 					<p>None Attributes</p>

@@ -1,0 +1,32 @@
+		<aui:fieldset label="term-array" data-row-type="Array">
+			<aui:row>
+				<aui:col md="2">
+					<liferay-ui:message key="term-array-type"/>
+				</aui:col>
+				<aui:col md="2">
+					<aui:input type="radio" name="arrayUnitType" label="term-array-type-string" value="String"></aui:input>
+				</aui:col>
+				<aui:col md="2">
+					<aui:input type="radio" name="arrayUnitType" label="term-array-type-numeric" value="Numeric"></aui:input>
+				</aui:col>
+			</aui:row>
+
+			<aui:container>
+				<aui:row>			
+					<aui:col md="4">
+						<aui:input type="text" name="elementUnit" label="term-array-element-unit"></aui:input>
+					</aui:col>
+					<aui:col md="4">
+						<span>&#8491;</span>
+					</aui:col>
+				</aui:row>
+				<aui:row>
+					<aui:col md="2">
+						<liferay-ui:message key="term-array-element-uncertainty"/>
+					</aui:col>
+					<aui:col md="2">
+						<aui:input type="checkbox" name="elementUncertainty" label="term-array-element-uncertainty-approve"></aui:input>
+					</aui:col>
+				</aui:row>
+			</aui:container>
+		</aui:fieldset>

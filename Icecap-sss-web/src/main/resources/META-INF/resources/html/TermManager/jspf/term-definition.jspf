@@ -1,6 +1,6 @@
 <aui:fieldset-group markupView="lexicon">
-	<aui:container>
-		<aui:fieldset label="term-name-definition">
+	<aui:container id="termContainer">
+		<aui:fieldset label="term-name-definition" data-row-type="common">
 			<aui:row>
 				<aui:col md="4">
 					<aui:input name="name" label="parameter-name" inlineField="<%=true %>" required="true" placeholder="ex) parameterName"></aui:input>
@@ -32,17 +32,29 @@
 					<aui:input type="text" name="tooltip" label="term-tooltip" localized="true" model="<%= Term.class %>"></aui:input>
 				</aui:col>
 			</aui:row>
-
-
-			<%@include file="./term-string.jspf" %>
-
-			<%@include file="./term-numeric.jspf" %>
-
-			<%@include file="./term-boolean.jspf" %>
-
-			<%@include file="./term-list.jspf" %>
-
-
 		</aui:fieldset>
+
+		<%@include file="./term-string.jspf" %>	
+
+		<%@include file="./term-numeric.jspf" %>
+
+		<%@include file="./term-boolean.jspf" %>
+
+		<%@include file="./term-list.jspf" %>
+
+		<%@include file="./term-array.jspf" %>
+
+		<%@include file="./term-date.jspf" %>
+
+		<%@include file="./term-phone.jspf" %>
+		
+		<%@include file="./term-email.jspf" %>
+
+		<%@include file="./term-listArray.jspf" %>
+
+		<%@include file="./term-matrix.jspf" %>
+
+
+
 	</aui:container>
 </aui:fieldset-group>

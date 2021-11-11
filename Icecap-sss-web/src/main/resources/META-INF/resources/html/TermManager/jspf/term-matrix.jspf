@@ -1,0 +1,10 @@
+		<aui:fieldset label="term-matrix" data-row-type="Matrix">
+			<aui:row>
+				<aui:col md="6">
+					<aui:input type="text" name="xDimension" label="term-matrix-x-dimension"></aui:input>
+				</aui:col>
+				<aui:col md="6">
+					<aui:input type="text" name="yDimension" label="term-matrix-y-dimension"></aui:input>
+				</aui:col>
+			</aui:row>
+		</aui:fieldset>

@@ -1,0 +1,10 @@
+		<aui:fieldset label="term-phone" data-row-type="Phone">
+			<aui:row>
+				<aui:col md="12">
+					<aui:select name="countryCode" label="term-phone-country-code">
+						<aui:option value="082"> <liferay-ui:message key="term-phone-ko-kr"/> </aui:option>
+						<aui:option value="001"> <liferay-ui:message key="term-phone-en-us"/> </aui:option>
+					</aui:select>
+				</aui:col>
+			</aui:row>
+		</aui:fieldset>

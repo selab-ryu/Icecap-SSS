@@ -1,0 +1,22 @@
+		<aui:fieldset label="term-listArray" data-row-type="ListArray">
+			<aui:row>
+				<aui:col md="8">
+					<aui:select name="listItems" label="term-listArray-items">
+						<aui:option value="default">Chooe List Item</aui:option>
+					</aui:select>
+				</aui:col>
+				<aui:col md="4">
+					<aui:button name="addItem" value="term-listArray-add-item"></aui:button>
+				</aui:col>
+			</aui:row>
+			<aui:row>
+				<aui:container cssClass="item-container">
+					<aui:col md="6">
+						<aui:input type="text" name="listItemName" label="term-list-item-name" localized="true"></aui:input>
+					</aui:col>
+					<aui:col md="6">
+						<aui:input type="text" name="listItemValue" label="term-list-item-value"></aui:input>
+					</aui:col>
+				</aui:container>
+			</aui:row>
+		</aui:fieldset>

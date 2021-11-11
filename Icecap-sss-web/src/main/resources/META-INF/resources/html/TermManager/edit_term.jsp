@@ -32,3 +32,45 @@
 	</aui:form>
 </aui:container>
 
+<script>
+$(function() {
+	var TERM_TYPE = '<portlet:namespace/>termType',
+		TERM_CONTAINER = '<portlet:namespace/>termContainer';
+
+	var TERM_TYPE_ID = '#'+TERM_TYPE,
+		TERM_CONTAINER_ID = '#'+TERM_CONTAINER;
+
+	$(TERM_TYPE_ID).on('change', function() {
+		var typeElem = $(this);
+		var typeVal = typeElem.val() || '';
+
+		console.log(typeVal);
+
+		// type is not selected
+		if(typeVal === '') {
+			
+		} else { // type selected
+
+		}
+
+		$(TERM_CONTAINER_ID).find('[data-row-type]').each(function(i, termWrapper) {
+			var rowType = $(termWrapper).data('rowType');
+			console.log(rowType);
+			switch(rowType) {
+				case "common" :
+				case typeVal :
+					$(termWrapper).show();
+					
+					// loading term data to UI
+
+					break;
+				default:
+					$(termWrapper).hide();
+					break;
+			}
+		});
+	});
+
+	$(TERM_TYPE_ID).trigger('change');
+});
+</script>

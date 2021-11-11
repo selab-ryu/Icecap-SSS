@@ -1,4 +1,4 @@
-		<aui:fieldset label="term-list">
+		<aui:fieldset label="term-list" data-row-type="List">
 			<aui:row>
 				<aui:col md="12">
 					<aui:select name="listItems" label="term-list-items">
@@ -6,14 +6,22 @@
 					</aui:select>
 				</aui:col>
 			</aui:row>
-			<aui:row>
-				<aui:container cssClass="item-container">
+			<aui:container cssClass="item-container">
+				<aui:row>
 					<aui:col md="6">
 						<aui:input type="text" name="listItemName" label="term-list-item-name" localized="true"></aui:input>
 					</aui:col>
 					<aui:col md="6">
 						<aui:input type="text" name="listItemValue" label="term-list-item-value"></aui:input>
 					</aui:col>
-				</aui:container>
-			</aui:row>
+				</aui:row>
+				<aui:row>
+					<aui:col md="2">
+						<aui:button name="listItemSave" value="term-list-item-save"></aui:button>
+					</aui:col>
+					<aui:col md="2">
+						<aui:button name="listItemDelete" value="term-list-item-delete"></aui:button>
+					</aui:col>
+				</aui:row>
+			</aui:container>
 		</aui:fieldset>

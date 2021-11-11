@@ -1,4 +1,4 @@
-		<aui:fieldset label="term-string">
+		<aui:fieldset label="term-string" data-row-type="String">
 			<aui:row>
 				<aui:col md="6">
 					<aui:input name="stringMinLength" label="term-string-min-length" required="true" ></aui:input>
