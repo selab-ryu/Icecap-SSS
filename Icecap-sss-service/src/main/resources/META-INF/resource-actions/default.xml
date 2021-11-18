@@ -34,7 +34,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	</model-resource>
 	
 	<model-resource>
-		<model-name>ocp.icecap.sss.model.Term</model-name>
+		<model-name>osp.icecap.sss.model.Term</model-name>
 		<portlet-ref>
 			<portlet-name>osp_icecap_sss_web_TermManagerPortlet</portlet-name>
 		</portlet-ref>

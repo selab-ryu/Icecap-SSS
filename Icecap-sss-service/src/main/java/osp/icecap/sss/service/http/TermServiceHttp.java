@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import osp.icecap.sss.service.TermServiceUtil;
 
 /**
@@ -50,6 +52,7 @@ import osp.icecap.sss.service.TermServiceUtil;
  * @see TermServiceSoap
  * @generated
  */
+@ProviderType
 public class TermServiceHttp {
 
 	public static osp.icecap.sss.model.Term addTerm(
@@ -72,26 +75,24 @@ public class TermServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
+			catch (Exception e) {
+				if (e instanceof
 						com.liferay.portal.kernel.exception.PortalException) {
 
 					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+						e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+					e);
 			}
 
 			return (osp.icecap.sss.model.Term)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
@@ -110,26 +111,24 @@ public class TermServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
+			catch (Exception e) {
+				if (e instanceof
 						com.liferay.portal.kernel.exception.PortalException) {
 
 					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+						e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+					e);
 			}
 
 			return (osp.icecap.sss.model.Term)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 

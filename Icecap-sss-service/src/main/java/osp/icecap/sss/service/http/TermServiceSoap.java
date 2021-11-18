@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.rmi.RemoteException;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import osp.icecap.sss.service.TermServiceUtil;
 
 /**
@@ -60,6 +62,7 @@ import osp.icecap.sss.service.TermServiceUtil;
  * @see TermServiceHttp
  * @generated
  */
+@ProviderType
 public class TermServiceSoap {
 
 	public static osp.icecap.sss.model.TermSoap addTerm(
@@ -76,10 +79,10 @@ public class TermServiceSoap {
 
 			return osp.icecap.sss.model.TermSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -92,10 +95,10 @@ public class TermServiceSoap {
 
 			return osp.icecap.sss.model.TermSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 

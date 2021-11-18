@@ -135,7 +135,6 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				true, 
 				true);
 		System.out.println("Resource Finished....");
-		/*
 		
 		super.assetEntryLocalService.updateEntry(
 			term.getUserId(), 
@@ -161,6 +160,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			null, 
 			null,
 			0, 0, null);
+		/*
 		
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
 				term.getGroupId(), term.getUserId(), Term.class.getName(), 

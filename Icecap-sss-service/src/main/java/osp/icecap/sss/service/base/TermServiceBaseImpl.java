@@ -45,7 +45,7 @@ import osp.icecap.sss.service.persistence.TermPersistence;
  */
 public abstract class TermServiceBaseImpl
 	extends BaseServiceImpl
-	implements AopService, IdentifiableOSGiService, TermService {
+	implements TermService, AopService, IdentifiableOSGiService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -101,8 +101,8 @@ public abstract class TermServiceBaseImpl
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
