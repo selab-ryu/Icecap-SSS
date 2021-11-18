@@ -3,6 +3,8 @@ package osp.icecap.sss.constants;
 public class IcecapSSSWebKeys {
 	public static final String TERM_DISPLAY_CONTEXT = "termDisplayContext";
 	public static final String TERM_ID = "termId";
+	public static final String TERM_TYPE = "termType";
+	public static final String SELECTED_TERM_TYPE = "selectedTermType";
 	public static final String TERM = "term";
 	public static final String DISPLAY_STYLE = "displayStyle";
 	public static final String TRASH_ENABLED = "trashEnabled";

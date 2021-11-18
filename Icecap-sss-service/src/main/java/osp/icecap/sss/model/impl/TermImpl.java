@@ -19,8 +19,12 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
+
+import osp.icecap.sss.constants.IcecapSSSTermAttributes;
+import osp.icecap.sss.util.IcecapSSSUtil;
 
 /**
  * The extended model implementation for the Term service. Represents a row in the &quot;SSS_Term&quot; database table, with each column mapped to a property of this class.
@@ -37,11 +41,19 @@ public class TermImpl extends TermBaseImpl {
 	}
 
 	public String getDisplayTitle( Locale locale ) {
-		return getDisplayName( locale ) + " ver. " + getVersion();
+		return getDisplayName( locale ) + " ver. " + getTermVersion();
 	}
 	
 	public JSONObject getAttributesJSONObject() throws JSONException {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(getAttributesJSON());
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.TERM_TYPE), getTermType() );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.TERM_NAME), getTermName() );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.TERM_VERSION), getTermVersion() );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.DISPLAY_NAME), IcecapSSSUtil.mapToJson(getDisplayNameMap()) );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.DEFINITION), IcecapSSSUtil.mapToJson(getDefinitionMap()) );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.SYNONYMS), getSynonyms() );
+		jsonObject.put(IcecapSSSTermAttributes.toJsonAttr(IcecapSSSTermAttributes.TOOLTIP), IcecapSSSUtil.mapToJson(getTooltipMap()) );
+
 		return jsonObject;
 	}
 }

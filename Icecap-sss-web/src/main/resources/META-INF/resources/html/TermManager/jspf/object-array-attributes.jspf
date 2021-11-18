@@ -1,148 +1,148 @@
-<aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="object-array-attrinutes">
-		<aui:container>
-			<aui:row>
-				<aui:col md="2">
-					<aui:input name="ObjectArray_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
-				</aui:col>
-				<aui:col md="2">
-					<aui:input name="ObjectArray_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
-				</aui:col>
-			</aui:row>
-			<aui:row>
-				<aui:col md= "6">
-					<aui:select name="ObjectArray_refDataTypes" label="reference-datatypes" helpMessage="object-reference-datatypes-help" required="true"></aui:select>
-				</aui:col>
-			</aui:row>
-			<aui:fieldset label="manage-ref-datatypes">
+	<aui:fieldset-group markupView="lexicon">
+		<aui:fieldset label="object-array-attrinutes">
+			<aui:container>
 				<aui:row>
-					<aui:col md="6">
-						<aui:input name="ObjectArray_dataTypeName" label="data-type-name"></aui:input>
+					<aui:col md="2">
+						<aui:input name="ObjectArray_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
 					</aui:col>
 					<aui:col md="2">
-						<aui:input name="ObjectArray_dataTypeVersion" label="data-type-version"></aui:input>
+						<aui:input name="ObjectArray_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
 					</aui:col>
 				</aui:row>
-				<aui:button-row>
-					<aui:button name="ObjectArray_addRefDataType" value="add-ref-datatype"></aui:button>
-					<aui:button name="ObjectArray_updateRefDataType" value="update-ref-datatype"></aui:button>
-					<aui:button name="ObjectArray_deleteRefDataType" value="delete-ref-datatype"></aui:button>
-				</aui:button-row>
-			</aui:fieldset>
-		</aui:container>
-	</aui:fieldset>
-</aui:fieldset-group>
-
-<script>
-(function (){
-	var refDataTypes = [];
-	var selectedDataType;
-	var dirty;
+				<aui:row>
+					<aui:col md= "6">
+						<aui:select name="ObjectArray_refDataTypes" label="reference-datatypes" helpMessage="object-reference-datatypes-help" required="true"></aui:select>
+					</aui:col>
+				</aui:row>
+				<aui:fieldset label="manage-ref-datatypes">
+					<aui:row>
+						<aui:col md="6">
+							<aui:input name="ObjectArray_dataTypeName" label="data-type-name"></aui:input>
+						</aui:col>
+						<aui:col md="2">
+							<aui:input name="ObjectArray_dataTypeVersion" label="data-type-version"></aui:input>
+						</aui:col>
+					</aui:row>
+					<aui:button-row>
+						<aui:button name="ObjectArray_addRefDataType" value="add-ref-datatype"></aui:button>
+						<aui:button name="ObjectArray_updateRefDataType" value="update-ref-datatype"></aui:button>
+						<aui:button name="ObjectArray_deleteRefDataType" value="delete-ref-datatype"></aui:button>
+					</aui:button-row>
+				</aui:fieldset>
+			</aui:container>
+		</aui:fieldset>
+	</aui:fieldset-group>
 	
-	var getDataTypeOptionValue = function( dataType ){
-		return dataType.name+'_'+dataType.version;	
-	}
-	
-	var getDataTypeOptionText = function( dataType ){
-		return dataType.name+' '+dataType.version;	
-	}
-
-	var getDataType = function(){
-		var dataType = {};
-		dataType.name = $('#<portlet:namespace/>ObjectArray_dataTypeName').val();
-		dataType.version = $('#<portlet:namespace/>ObjectArray_dataTypeVersion').val();
+	<script>
+	(function (){
+		var refDataTypes = [];
+		var selectedDataType;
+		var dirty;
 		
-		console.log('getDataType: ', dataType );
-		return dataType;	
-	}
-	
-	var setDataType = function( dataType){
-		$('#<portlet:namespace/>ObjectArray_dataTypeName').val( dataType.name );
-		$('#<portlet:namespace/>ObjectArray_dataTypeVersion').val( dataType.version );
-	}
-	
-	var updateOption = function( $option, value, text ){
-		$option.attr('value',value);
-		$option.text( text );
-	}
-	
-	$('#<portlet:namespace/>ObjectArray_addRefDataType').click( function(){
-		var dataType = getDataType();
-		
-		refDataTypes.push( dataType );
-		//console.log( <portlet:namespace/>listItems );
-		
-		var optionValue = getDataTypeOptionValue(dataType);
-		$('#<portlet:namespace/>ObjectArray_refDataTypes').append(
-				'<option value="' + optionValue + '">' +
-				dataType.name+' '+dataType.version + '</option>');
-		$('#<portlet:namespace/>ObjectArray_refDataTypes').val( optionValue);
-		selectedDataType = dataType;
-	});
-	
-	$('#<portlet:namespace/>ObjectArray_refDataTypes').change( function(){
-
-		var selectedValue = $('#<portlet:namespace/>ObjectArray_refDataTypes').val();
-		
-		if( !selectedValue ){
-			return;
+		var getDataTypeOptionValue = function( dataType ){
+			return dataType.name+'_'+dataType.version;	
 		}
-		else{
-			refDataTypes.forEach( function(dataType){
-				
-				if( getDataTypeOptionValue(dataType) === selectedValue ){
-					selectedDataType = dataType;
-					setDataType( dataType );
-				}
-			});
+		
+		var getDataTypeOptionText = function( dataType ){
+			return dataType.name+' '+dataType.version;	
 		}
-	});
 	
-	$('#<portlet:namespace/>ObjectArray_updateRefDataType').click( function(){
-		var changedDataType = getDataType();
-		console.log('changedDataType ... ', changedDataType);
+		var getDataType = function(){
+			var dataType = {};
+			dataType.name = $('#<portlet:namespace/>ObjectArray_dataTypeName').val();
+			dataType.version = $('#<portlet:namespace/>ObjectArray_dataTypeVersion').val();
+			
+			console.log('getDataType: ', dataType );
+			return dataType;	
+		}
 		
-		var $selectedOption = $('#<portlet:namespace/>ObjectArray_refDataTypes option:selected');
+		var setDataType = function( dataType){
+			$('#<portlet:namespace/>ObjectArray_dataTypeName').val( dataType.name );
+			$('#<portlet:namespace/>ObjectArray_dataTypeVersion').val( dataType.version );
+		}
 		
-		updateOption( 
-				$selectedOption, 
-				getDataTypeOptionValue(changedDataType),
-				getDataTypeOptionText(changedDataType));
+		var updateOption = function( $option, value, text ){
+			$option.attr('value',value);
+			$option.text( text );
+		}
 		
-		refDataTypes.forEach( function(dataType){
-			console.log('Option Value: '+getDataTypeOptionValue(dataType));
-			console.log('Changed Option Value: '+getDataTypeOptionValue(changedDataType));
-			if( getDataTypeOptionValue(dataType) ===
-				 		getDataTypeOptionValue(selectedDataType) ){
-				dataType.name = changedDataType.name;
-				dataType.version = changedDataType.version;
-				selectedDataType = dataType;
+		$('#<portlet:namespace/>ObjectArray_addRefDataType').click( function(){
+			var dataType = getDataType();
+			
+			refDataTypes.push( dataType );
+			//console.log( <portlet:namespace/>listItems );
+			
+			var optionValue = getDataTypeOptionValue(dataType);
+			$('#<portlet:namespace/>ObjectArray_refDataTypes').append(
+					'<option value="' + optionValue + '">' +
+					dataType.name+' '+dataType.version + '</option>');
+			$('#<portlet:namespace/>ObjectArray_refDataTypes').val( optionValue);
+			selectedDataType = dataType;
+		});
+		
+		$('#<portlet:namespace/>ObjectArray_refDataTypes').change( function(){
+	
+			var selectedValue = $('#<portlet:namespace/>ObjectArray_refDataTypes').val();
+			
+			if( !selectedValue ){
+				return;
+			}
+			else{
+				refDataTypes.forEach( function(dataType){
+					
+					if( getDataTypeOptionValue(dataType) === selectedValue ){
+						selectedDataType = dataType;
+						setDataType( dataType );
+					}
+				});
 			}
 		});
 		
-		console.log( 'Updated refDataTypes.... ', refDataTypes );
-	});
-	
-	$('#<portlet:namespace/>ObjectArray_deleteRefDataType').click( function(){
-		$('#<portlet:namespace/>ObjectArray_refDataTypes option').remove('option:selected');
+		$('#<portlet:namespace/>ObjectArray_updateRefDataType').click( function(){
+			var changedDataType = getDataType();
+			console.log('changedDataType ... ', changedDataType);
+			
+			var $selectedOption = $('#<portlet:namespace/>ObjectArray_refDataTypes option:selected');
+			
+			updateOption( 
+					$selectedOption, 
+					getDataTypeOptionValue(changedDataType),
+					getDataTypeOptionText(changedDataType));
+			
+			refDataTypes.forEach( function(dataType){
+				console.log('Option Value: '+getDataTypeOptionValue(dataType));
+				console.log('Changed Option Value: '+getDataTypeOptionValue(changedDataType));
+				if( getDataTypeOptionValue(dataType) ===
+					 		getDataTypeOptionValue(selectedDataType) ){
+					dataType.name = changedDataType.name;
+					dataType.version = changedDataType.version;
+					selectedDataType = dataType;
+				}
+			});
+			
+			console.log( 'Updated refDataTypes.... ', refDataTypes );
+		});
 		
-		var selectedValue = $('#<portlet:namespace/>ObjectArray_refDataTypes').val();
-		
-			if( !selectedValue ){
-				refDataTypes = [];
-				setDataType({name:'', version:''});
-			}
-			else{
-				for( var i=0; i< refDataTypes.length; i++){
-					if( refDataTypes[i].value === 
-							getDataTypeOptionValue(selectedValue) ){
-						SSS.Util.removeArrayElement( refDataTypes, i );
-						break;
+		$('#<portlet:namespace/>ObjectArray_deleteRefDataType').click( function(){
+			$('#<portlet:namespace/>ObjectArray_refDataTypes option').remove('option:selected');
+			
+			var selectedValue = $('#<portlet:namespace/>ObjectArray_refDataTypes').val();
+			
+				if( !selectedValue ){
+					refDataTypes = [];
+					setDataType({name:'', version:''});
+				}
+				else{
+					for( var i=0; i< refDataTypes.length; i++){
+						if( refDataTypes[i].value === 
+								getDataTypeOptionValue(selectedValue) ){
+							SSS.Util.removeArrayElement( refDataTypes, i );
+							break;
+						}
 					}
 				}
-			}
-		
-		$('#<portlet:namespace/>ObjectArray_refDataTypes').trigger('change');
-	});
-}());
-</script>
+			
+			$('#<portlet:namespace/>ObjectArray_refDataTypes').trigger('change');
+		});
+	}());
+	</script>

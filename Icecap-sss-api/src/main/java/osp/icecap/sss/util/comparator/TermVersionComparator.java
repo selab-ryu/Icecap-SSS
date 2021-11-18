@@ -22,8 +22,8 @@ public class TermVersionComparator extends OrderByComparator<Term> {
 
 	@Override
 	public int compare(Term entry1, Term entry2) {
-		String version1 = entry1.getVersion();
-		String version2 = entry2.getVersion();
+		String version1 = entry1.getTermVersion();
+		String version2 = entry2.getTermVersion();
 
 		int value = version1.compareTo(version2);
 

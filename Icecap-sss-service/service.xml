@@ -27,9 +27,9 @@
 		<column name="lastPublishDate" type="Date" />
 
 		<!-- Descriptive  fields -->
-		<column name="name" type="String"></column>
-		<column name="version" type="String"></column>
-		<column name="type" type="String"></column>
+		<column name="termName" type="String"></column>
+		<column name="termVersion" type="String"></column>
+		<column name="termType" type="String"></column>
 		<column name="displayName" localized="true" type="String"></column>
 		<column name="definition" localized="true" type="String"></column>
 		<column name="tooltip" localized="true" type="String"></column>
@@ -70,7 +70,7 @@
 		</finder>
 		
 		<finder name="Name" return-type="Collection">
-			<finder-column name="name" />
+			<finder-column name="termName" />
 		</finder>
 		
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
@@ -82,6 +82,7 @@
 	</entity>
 	
 	<exceptions>
-        <exception>InvalidTerm</exception>
+        <exception>DuplicatedTermName</exception>
+        <exception>InvalidTermName</exception>
 	</exceptions>
 </service-builder>

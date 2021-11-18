@@ -3,20 +3,20 @@
 		<aui:container>
 			<aui:row>
 				<aui:col md="2">
-					<aui:input name="String_minLength" label="min-length" type="number" value="1" helpMessage="string-min-length-help"></aui:input>
+					<aui:input name="minLength" label="min-length" type="number" value="1" helpMessage="string-min-length-help"></aui:input>
 				</aui:col>
 				<aui:col md="2">
-					<aui:input name="String_maxLength" label="max-length" type="number" helpMessage="string-max-length-help"></aui:input>
+					<aui:input name="maxLength" label="max-length" type="number" helpMessage="string-max-length-help"></aui:input>
 				</aui:col>
 			</aui:row>
 			<aui:row>
 				<aui:col>
-					<aui:input name="String_newLine" label="allow-multi-line" type="checkbox" helpMessage="string-allow-multi-line-help"></aui:input>
+					<aui:input name="newLine" label="allow-multi-line" type="checkbox" helpMessage="string-allow-multi-line-help"></aui:input>
 				</aui:col>
 			</aui:row>
 			<aui:row>
 				<aui:col>
-					<aui:input name="String_validationRule" label="validation-rule" type="text" helpMessage="string-validation-rule-help"></aui:input>
+					<aui:input name="validationRule" label="validation-rule" type="text" helpMessage="string-validation-rule-help"></aui:input>
 				</aui:col>
 			</aui:row>
 		</aui:container>

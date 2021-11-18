@@ -72,7 +72,7 @@ public interface TermLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Term addTerm(
-			String name, String version, String type,
+			String termName, String termVersion, String termType,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
 			String synonyms, String attributes, ServiceContext sc)
@@ -378,7 +378,7 @@ public interface TermLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Term updateTerm(
-			long termId, String name, String version, String type,
+			long termId, String termName, String termVersion, String termType,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
 			String synonyms, String attributes, ServiceContext sc)

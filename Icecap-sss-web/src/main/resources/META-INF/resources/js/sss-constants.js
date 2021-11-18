@@ -209,11 +209,14 @@
         	var listItem = {};
         	listItem.displayName = {};
         	availableLanguageIds.forEach( function(id){
-        		var localizedId = inputId+'_'+id;
-        		listItem.displayName[id] = $('#'+localizedId).val();
+        		var localizedId = '#'+inputId+'_'+id;
+        		console.log( 'document way: ', document.getElementById(inputId+'_'+id));
+        		console.log('input: ', $(localizedId));
+        		console.log('localizedId: '+localizedId + ', '+$(localizedId).val() );
+        		listItem.displayName[id] = $(localizedId).val();
         	});
         	
-        	//console.log('Localized List Item: ', listItem);
+        	console.log('Localized List Item: ', listItem);
         	return listItem;
         },
         setLocalizedInputValue(inputId, $parent, availableLanguageIds, displayName ){

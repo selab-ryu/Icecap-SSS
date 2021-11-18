@@ -1,32 +1,33 @@
 <aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="data-link-attrinutes">
+	<aui:fieldset label="data-link-array-attrinutes">
 		<aui:container>
 			<aui:row>
 				<aui:col md="2">
-					<aui:input name="DataLinkArray_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
+					<aui:input name="minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
 				</aui:col>
 				<aui:col md="2">
-					<aui:input name="DataLinkArray_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
+					<aui:input name="maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
 				</aui:col>
 			</aui:row>
 			<aui:row>
 				<aui:col md= "6">
-					<aui:select name="DataLinkArray_refDatabases" label="reference-databses" helpMessage="data-link-reference-databases-help" required="true"></aui:select>
+					<aui:select name="refDatabaseList" label="reference-databses" helpMessage="data-link-reference-databases-help" required="true"></aui:select>
+					<aui:input type="hidden" name="refDatabases"></aui:input>
 				</aui:col>
 			</aui:row>
 			<aui:fieldset label="manage-ref-databases">
 				<aui:row>
 					<aui:col md="6">
-						<aui:input name="DataLinkArray_databaseName" label="database-name"></aui:input>
+						<aui:input name="databaseName" label="database-name"></aui:input>
 					</aui:col>
 					<aui:col md="2">
-						<aui:input name="DataLinkArray_databaseVersion" label="database-version"></aui:input>
+						<aui:input name="databaseVersion" label="database-version"></aui:input>
 					</aui:col>
 				</aui:row>
 				<aui:button-row>
-					<aui:button name="DataLinkArray_addRefDatabase" value="add-ref-database"></aui:button>
-					<aui:button name="DataLinkArray_updateRefDatabase" value="update-ref-database"></aui:button>
-					<aui:button name="DataLinkArray_deleteRefDatabase" value="delete-ref-database"></aui:button>
+					<aui:button name="addRefDatabase" value="add-ref-database"></aui:button>
+					<aui:button name="updateRefDatabase" value="update-ref-database"></aui:button>
+					<aui:button name="deleteRefDatabase" value="delete-ref-database"></aui:button>
 				</aui:button-row>
 			</aui:fieldset>
 		</aui:container>
@@ -37,7 +38,7 @@
 
 <script>
 (function (){
-	var refDatabases = [];
+	var refDatabaseList = [];
 	var selectedDatabase;
 	var dirty;
 	
@@ -51,15 +52,15 @@
 
 	var getDatabase = function(){
 		var database = {};
-		database.name = $('#<portlet:namespace/>DataLinkArray_databaseName').val();
-		database.version = $('#<portlet:namespace/>DataLinkArray_databaseVersion').val();
+		database.name = $('#<portlet:namespace/>databaseName').val();
+		database.version = $('#<portlet:namespace/>databaseVersion').val();
 		
 		return database;	
 	}
 	
 	var setDatabase = function( database){
-		$('#<portlet:namespace/>DataLinkArray_databaseName').val( database.name );
-		$('#<portlet:namespace/>DataLinkArray_databaseVersion').val( database.version );
+		$('#<portlet:namespace/>databaseName').val( database.name );
+		$('#<portlet:namespace/>databaseVersion').val( database.version );
 	}
 	
 	var updateOption = function( $option, value, text ){
@@ -67,29 +68,30 @@
 		$option.text( text );
 	}
 	
-	$('#<portlet:namespace/>DataLinkArray_addRefDatabase').click( function(){
+	$('#<portlet:namespace/>addRefDatabase').click( function(){
 		var database = getDatabase();
 		
-		refDatabases.push( database );
+		refDatabaseList.push( database );
 		//console.log( <portlet:namespace/>listItems );
 		
 		var optionValue = getDatabaseOptionValue(database);
-		$('#<portlet:namespace/>DataLinkArray_refDatabases').append(
+		$('#<portlet:namespace/>refDatabaseList').append(
 				'<option value="' + optionValue + '">' +
 				database.name+' '+database.version + '</option>');
-		$('#<portlet:namespace/>DataLinkArray_refDatabases').val( optionValue);
+		$('#<portlet:namespace/>refDatabaseList').val( optionValue);
 		selectedDatabase = database;
+		$('#<portlet:namespace/>refDatabases').val(JSON.stringify(refDatabaseList));
 	});
 	
-	$('#<portlet:namespace/>DataLinkArray_refDatabases').change( function(){
+	$('#<portlet:namespace/>refDatabaseList').change( function(){
 
-		var selectedValue = $('#<portlet:namespace/>DataLinkArray_refDatabases').val();
+		var selectedValue = $('#<portlet:namespace/>refDatabaseList').val();
 		
 		if( !selectedValue ){
 			return;
 		}
 		else{
-			refDatabases.forEach( function(database){
+			refDatabaseList.forEach( function(database){
 				
 				if( getDatabaseOptionValue(database) === selectedValue ){
 					selectedDatabase = database;
@@ -99,18 +101,18 @@
 		}
 	});
 	
-	$('#<portlet:namespace/>DataLinkArray_updateRefDatabase').click( function(){
+	$('#<portlet:namespace/>updateRefDatabase').click( function(){
 		var changedDatabase = getDatabase();
 		console.log('changedDatabase ... ', changedDatabase);
 		
-		var $selectedOption = $('#<portlet:namespace/>DataLinkArray_refDatabases option:selected');
+		var $selectedOption = $('#<portlet:namespace/>refDatabaseList option:selected');
 		
 		updateOption( 
 				$selectedOption, 
 				getDatabaseOptionValue(changedDatabase),
 				getDatabaseOptionText(changedDatabase));
 		
-		refDatabases.forEach( function(database){
+		refDatabaseList.forEach( function(database){
 			console.log('Option Value: '+getDatabaseOptionValue(database));
 			console.log('Changed Option Value: '+getDatabaseOptionValue(changedDatabase));
 			if( getDatabaseOptionValue(database) ===
@@ -121,29 +123,31 @@
 			}
 		});
 		
-		console.log( 'Updated refDatabases.... ', refDatabases );
+		$('#<portlet:namespace/>refDatabases').val(JSON.stringify(refDatabaseList));
+		console.log( 'Updated refDatabaseList.... ', refDatabaseList );
 	});
 	
-	$('#<portlet:namespace/>DataLinkArray_deleteRefDatabase').click( function(){
-		$('#<portlet:namespace/>DataLinkArray_refDatabases option').remove('option:selected');
+	$('#<portlet:namespace/>deleteRefDatabase').click( function(){
+		$('#<portlet:namespace/>refDatabaseList option').remove('option:selected');
 		
-		var selectedValue = $('#<portlet:namespace/>DataLinkArray_refDatabases').val();
+		var selectedValue = $('#<portlet:namespace/>refDatabaseList').val();
 		
-			if( !selectedValue ){
-				refDatabases = [];
-				setDatabase({name:'', version:''});
-			}
-			else{
-				for( var i=0; i< refDatabases.length; i++){
-					if( refDatabases[i].value === 
-							getDatabaseOptionValue(selectedValue) ){
-						SSS.Util.removeArrayElement( refDatabases, i );
-						break;
-					}
+		if( !selectedValue ){
+			refDatabaseList = [];
+			setDatabase({name:'', version:''});
+		}
+		else{
+			for( var i=0; i< refDatabaseList.length; i++){
+				if( refDatabaseList[i].value === 
+						getDatabaseOptionValue(selectedValue) ){
+					SSS.Util.removeArrayElement( refDatabaseList, i );
+					break;
 				}
 			}
+		}
 		
-		$('#<portlet:namespace/>DataLinkArray_refDatabases').trigger('change');
+		$('#<portlet:namespace/>refDatabases').val(JSON.stringify(refDatabaseList));
+		$('#<portlet:namespace/>refDatabaseList').trigger('change');
 	});
 	
 }());

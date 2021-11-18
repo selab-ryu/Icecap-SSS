@@ -43,6 +43,10 @@ public class EditTermRenderCommand implements MVCRenderCommand {
 				e.printStackTrace();
 			}
 		}
+		else {
+			String termType = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.TERM_TYPE);
+			System.out.println("In Edit Render: termType - " + termType );
+		}
 		
 		return IcecapSSSJsps.EDIT_TERM_JSP;
 	}

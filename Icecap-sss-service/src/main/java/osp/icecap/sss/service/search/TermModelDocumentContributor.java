@@ -15,14 +15,13 @@ import osp.icecap.sss.model.Term;
         service = ModelDocumentContributor.class
 )
 public class TermModelDocumentContributor implements ModelDocumentContributor<Term> {
-
 	@Override
 	public void contribute(Document document, Term term) {
-		document.addDate(Field.MODIFIED_DATE, term.getModifiedDate());
-		document.addKeyword(IcecapSSSTermAttributes.NAME, term.getName());
-		document.addLocalizedKeyword(IcecapSSSTermAttributes.DEFINITION, term.getDefinitionMap(), true);
-		document.addLocalizedKeyword(IcecapSSSTermAttributes.DISPLAY_NAME, term.getDisplayNameMap(), true);
-		document.addLocalizedKeyword(IcecapSSSTermAttributes.TOOLTIP, term.getTooltipMap(), true);
-		document.addKeyword(IcecapSSSTermAttributes.SYNONYMS, term.getSynonyms());
+			document.addDate(Field.MODIFIED_DATE, term.getModifiedDate());
+			document.addKeyword(IcecapSSSTermAttributes.TERM_NAME, term.getTermName());
+			document.addLocalizedKeyword(IcecapSSSTermAttributes.DEFINITION, term.getDefinitionMap(), true);
+			document.addLocalizedKeyword(IcecapSSSTermAttributes.DISPLAY_NAME, term.getDisplayNameMap(), true);
+			document.addLocalizedKeyword(IcecapSSSTermAttributes.TOOLTIP, term.getTooltipMap(), true);
+			document.addKeyword(IcecapSSSTermAttributes.SYNONYMS, term.getSynonyms());
 	}
 }

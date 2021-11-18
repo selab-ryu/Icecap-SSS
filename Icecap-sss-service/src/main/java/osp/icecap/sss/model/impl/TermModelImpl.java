@@ -89,8 +89,8 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
 		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
-		{"lastPublishDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
-		{"version", Types.VARCHAR}, {"type_", Types.VARCHAR},
+		{"lastPublishDate", Types.TIMESTAMP}, {"termName", Types.VARCHAR},
+		{"termVersion", Types.VARCHAR}, {"termType", Types.VARCHAR},
 		{"displayName", Types.VARCHAR}, {"definition", Types.VARCHAR},
 		{"tooltip", Types.VARCHAR}, {"synonyms", Types.VARCHAR},
 		{"attributesJSON", Types.VARCHAR}
@@ -113,9 +113,9 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("termName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("termVersion", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("termType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("definition", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
@@ -124,7 +124,7 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SSS_Term (uuid_ VARCHAR(75) null,termId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,name VARCHAR(75) null,version VARCHAR(75) null,type_ VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,attributesJSON TEXT null)";
+		"create table SSS_Term (uuid_ VARCHAR(75) null,termId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,termName VARCHAR(75) null,termVersion VARCHAR(75) null,termType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,attributesJSON TEXT null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SSS_Term";
 
@@ -143,9 +143,9 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long STATUS_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long TERMNAME_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
@@ -187,9 +187,9 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		model.setStatusByUserName(soapModel.getStatusByUserName());
 		model.setStatusDate(soapModel.getStatusDate());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
-		model.setName(soapModel.getName());
-		model.setVersion(soapModel.getVersion());
-		model.setType(soapModel.getType());
+		model.setTermName(soapModel.getTermName());
+		model.setTermVersion(soapModel.getTermVersion());
+		model.setTermType(soapModel.getTermType());
 		model.setDisplayName(soapModel.getDisplayName());
 		model.setDefinition(soapModel.getDefinition());
 		model.setTooltip(soapModel.getTooltip());
@@ -383,15 +383,15 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			(BiConsumer<Term, Date>)Term::setLastPublishDate);
-		attributeGetterFunctions.put("name", Term::getName);
+		attributeGetterFunctions.put("termName", Term::getTermName);
 		attributeSetterBiConsumers.put(
-			"name", (BiConsumer<Term, String>)Term::setName);
-		attributeGetterFunctions.put("version", Term::getVersion);
+			"termName", (BiConsumer<Term, String>)Term::setTermName);
+		attributeGetterFunctions.put("termVersion", Term::getTermVersion);
 		attributeSetterBiConsumers.put(
-			"version", (BiConsumer<Term, String>)Term::setVersion);
-		attributeGetterFunctions.put("type", Term::getType);
+			"termVersion", (BiConsumer<Term, String>)Term::setTermVersion);
+		attributeGetterFunctions.put("termType", Term::getTermType);
 		attributeSetterBiConsumers.put(
-			"type", (BiConsumer<Term, String>)Term::setType);
+			"termType", (BiConsumer<Term, String>)Term::setTermType);
 		attributeGetterFunctions.put("displayName", Term::getDisplayName);
 		attributeSetterBiConsumers.put(
 			"displayName", (BiConsumer<Term, String>)Term::setDisplayName);
@@ -673,60 +673,60 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 	@JSON
 	@Override
-	public String getName() {
-		if (_name == null) {
+	public String getTermName() {
+		if (_termName == null) {
 			return "";
 		}
 		else {
-			return _name;
+			return _termName;
 		}
 	}
 
 	@Override
-	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+	public void setTermName(String termName) {
+		_columnBitmask |= TERMNAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_originalTermName == null) {
+			_originalTermName = _termName;
 		}
 
-		_name = name;
+		_termName = termName;
 	}
 
-	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+	public String getOriginalTermName() {
+		return GetterUtil.getString(_originalTermName);
 	}
 
 	@JSON
 	@Override
-	public String getVersion() {
-		if (_version == null) {
+	public String getTermVersion() {
+		if (_termVersion == null) {
 			return "";
 		}
 		else {
-			return _version;
+			return _termVersion;
 		}
 	}
 
 	@Override
-	public void setVersion(String version) {
-		_version = version;
+	public void setTermVersion(String termVersion) {
+		_termVersion = termVersion;
 	}
 
 	@JSON
 	@Override
-	public String getType() {
-		if (_type == null) {
+	public String getTermType() {
+		if (_termType == null) {
 			return "";
 		}
 		else {
-			return _type;
+			return _termType;
 		}
 	}
 
 	@Override
-	public void setType(String type) {
-		_type = type;
+	public void setTermType(String termType) {
+		_termType = termType;
 	}
 
 	@JSON
@@ -1329,9 +1329,9 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 		termImpl.setStatusByUserName(getStatusByUserName());
 		termImpl.setStatusDate(getStatusDate());
 		termImpl.setLastPublishDate(getLastPublishDate());
-		termImpl.setName(getName());
-		termImpl.setVersion(getVersion());
-		termImpl.setType(getType());
+		termImpl.setTermName(getTermName());
+		termImpl.setTermVersion(getTermVersion());
+		termImpl.setTermType(getTermType());
 		termImpl.setDisplayName(getDisplayName());
 		termImpl.setDefinition(getDefinition());
 		termImpl.setTooltip(getTooltip());
@@ -1419,7 +1419,7 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 
 		termModelImpl._setOriginalStatus = false;
 
-		termModelImpl._originalName = termModelImpl._name;
+		termModelImpl._originalTermName = termModelImpl._termName;
 
 		termModelImpl._columnBitmask = 0;
 	}
@@ -1500,28 +1500,28 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 			termCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
-		termCacheModel.name = getName();
+		termCacheModel.termName = getTermName();
 
-		String name = termCacheModel.name;
+		String termName = termCacheModel.termName;
 
-		if ((name != null) && (name.length() == 0)) {
-			termCacheModel.name = null;
+		if ((termName != null) && (termName.length() == 0)) {
+			termCacheModel.termName = null;
 		}
 
-		termCacheModel.version = getVersion();
+		termCacheModel.termVersion = getTermVersion();
 
-		String version = termCacheModel.version;
+		String termVersion = termCacheModel.termVersion;
 
-		if ((version != null) && (version.length() == 0)) {
-			termCacheModel.version = null;
+		if ((termVersion != null) && (termVersion.length() == 0)) {
+			termCacheModel.termVersion = null;
 		}
 
-		termCacheModel.type = getType();
+		termCacheModel.termType = getTermType();
 
-		String type = termCacheModel.type;
+		String termType = termCacheModel.termType;
 
-		if ((type != null) && (type.length() == 0)) {
-			termCacheModel.type = null;
+		if ((termType != null) && (termType.length() == 0)) {
+			termCacheModel.termType = null;
 		}
 
 		termCacheModel.displayName = getDisplayName();
@@ -1661,10 +1661,10 @@ public class TermModelImpl extends BaseModelImpl<Term> implements TermModel {
 	private String _statusByUserName;
 	private Date _statusDate;
 	private Date _lastPublishDate;
-	private String _name;
-	private String _originalName;
-	private String _version;
-	private String _type;
+	private String _termName;
+	private String _originalTermName;
+	private String _termVersion;
+	private String _termType;
 	private String _displayName;
 	private String _displayNameCurrentLanguageId;
 	private String _definition;

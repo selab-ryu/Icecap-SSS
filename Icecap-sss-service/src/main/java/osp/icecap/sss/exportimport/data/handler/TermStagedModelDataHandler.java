@@ -73,9 +73,9 @@ public class TermStagedModelDataHandler extends BaseStagedModelDataHandler<Term>
 				serviceContext.setUuid(term.getUuid());
 
 				importedTerm = _termLocalService.addTerm(
-						term.getName(), 
-						term.getVersion(),
-						term.getType(),
+						term.getTermName(), 
+						term.getTermVersion(),
+						term.getTermType(),
 						term.getDisplayNameMap(),
 						term.getDefinitionMap(),
 						term.getTooltipMap(),
@@ -86,9 +86,9 @@ public class TermStagedModelDataHandler extends BaseStagedModelDataHandler<Term>
 			else {
 				importedTerm = _termLocalService.updateTerm(
 						existingTerm.getTermId(), 
-						term.getName(), 
-						term.getVersion(),
-						term.getType(),
+						term.getTermName(), 
+						term.getTermVersion(),
+						term.getTermType(),
 						term.getDisplayNameMap(),
 						term.getDefinitionMap(),
 						term.getTooltipMap(),
@@ -100,9 +100,9 @@ public class TermStagedModelDataHandler extends BaseStagedModelDataHandler<Term>
 		}
 		else {
 			importedTerm = _termLocalService.addTerm(
-					term.getName(), 
-					term.getVersion(),
-					term.getType(),
+					term.getTermName(), 
+					term.getTermVersion(),
+					term.getTermType(),
 					term.getDisplayNameMap(),
 					term.getDefinitionMap(),
 					term.getTooltipMap(),

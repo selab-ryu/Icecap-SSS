@@ -38,7 +38,7 @@ public class TermLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>osp.icecap.sss.service.impl.TermLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static osp.icecap.sss.model.Term addTerm(
-			String name, String version, String type,
+			String termName, String termVersion, String termType,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
 			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -47,8 +47,8 @@ public class TermLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addTerm(
-			name, version, type, displayNameMap, definitionMap, tooltipMap,
-			synonyms, attributes, sc);
+			termName, termVersion, termType, displayNameMap, definitionMap,
+			tooltipMap, synonyms, attributes, sc);
 	}
 
 	/**
@@ -493,7 +493,7 @@ public class TermLocalServiceUtil {
 	}
 
 	public static osp.icecap.sss.model.Term updateTerm(
-			long termId, String name, String version, String type,
+			long termId, String termName, String termVersion, String termType,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
 			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -502,8 +502,8 @@ public class TermLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateTerm(
-			termId, name, version, type, displayNameMap, definitionMap,
-			tooltipMap, synonyms, attributes, sc);
+			termId, termName, termVersion, termType, displayNameMap,
+			definitionMap, tooltipMap, synonyms, attributes, sc);
 	}
 
 	/**

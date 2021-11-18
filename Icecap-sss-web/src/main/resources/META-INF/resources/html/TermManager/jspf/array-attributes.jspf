@@ -1,37 +1,37 @@
-<aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="array-attrinutes">
-		<aui:container>
-			<aui:row>
-				<aui:col md="2">
-					<aui:input name="Array_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
-				</aui:col>
-				<aui:col md="2">
-					<aui:input name="Array_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
-				</aui:col>
-			</aui:row>
-				<aui:fieldset label="element-type" helpMessage="array-element-types-help">
-			<aui:row>
-					<aui:col md= "2">
-						<aui:input type="radio" name="Array_elementType" label="string" ></aui:input>
+	<aui:fieldset-group markupView="lexicon">
+		<aui:fieldset label="array-attrinutes">
+			<aui:container>
+				<aui:row>
+					<aui:col md="2">
+						<aui:input name="Array_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
 					</aui:col>
-					<aui:col md= "2">
-						<aui:input type="radio" name="Array_elementType" label="numeric" ></aui:input>
+					<aui:col md="2">
+						<aui:input name="Array_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
 					</aui:col>
-			</aui:row>
-				</aui:fieldset>
-			<aui:row>
-				<aui:col md="3">
-					<aui:input name="Array_elementUnit" label="element-unit" helpMessage="array-element-unit-help"></aui:input>
-				</aui:col>
-				<aui:col md="2">
-					<aui:input name="Array_elementUnitPreview" label="preview" disabled="true"></aui:input>
-				</aui:col>
-			</aui:row>
-			<aui:row>
-				<aui:col>
-					<aui:input type="checkbox" name="Array_allowUncertainty" label="allow-uncertainty" helpMessage="array-allow-uncertainty-help"></aui:input>
-				</aui:col>
-			</aui:row>
-		</aui:container>
-	</aui:fieldset>
-</aui:fieldset-group>
+				</aui:row>
+					<aui:fieldset label="element-type" helpMessage="array-element-types-help">
+				<aui:row>
+						<aui:col md= "2">
+							<aui:input type="radio" name="Array_elementType" label="string" ></aui:input>
+						</aui:col>
+						<aui:col md= "2">
+							<aui:input type="radio" name="Array_elementType" label="numeric" ></aui:input>
+						</aui:col>
+				</aui:row>
+					</aui:fieldset>
+				<aui:row>
+					<aui:col md="3">
+						<aui:input name="Array_elementUnit" label="element-unit" helpMessage="array-element-unit-help"></aui:input>
+					</aui:col>
+					<aui:col md="2">
+						<aui:input name="Array_elementUnitPreview" label="preview" disabled="true"></aui:input>
+					</aui:col>
+				</aui:row>
+				<aui:row>
+					<aui:col>
+						<aui:input type="checkbox" name="Array_allowUncertainty" label="allow-uncertainty" helpMessage="array-allow-uncertainty-help"></aui:input>
+					</aui:col>
+				</aui:row>
+			</aui:container>
+		</aui:fieldset>
+	</aui:fieldset-group>

@@ -15,7 +15,8 @@ import osp.icecap.sss.search.TermBatchReindexer;
 
 @Component(
 		immediate = true, 
-		service = TermBatchReindexer.class)
+		service = TermBatchReindexer.class
+)
 public class TermBatchReindexerImpl implements TermBatchReindexer {
 
 	@Override
@@ -40,10 +41,10 @@ public class TermBatchReindexerImpl implements TermBatchReindexer {
 	@Reference(
 			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
 	)
-    protected IndexerDocumentBuilder indexerDocumentBuilder;
+	protected IndexerDocumentBuilder indexerDocumentBuilder;
 
-    @Reference(
-    		target = "(indexer.class.name=osp.icecap.sss.model.Term)"
-    )
-    protected IndexerWriter<Term> indexerWriter;
+	@Reference(
+			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
+	)
+	protected IndexerWriter<Term> indexerWriter;
 }

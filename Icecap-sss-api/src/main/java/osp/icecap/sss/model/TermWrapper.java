@@ -55,9 +55,9 @@ public class TermWrapper
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
 		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("name", getName());
-		attributes.put("version", getVersion());
-		attributes.put("type", getType());
+		attributes.put("termName", getTermName());
+		attributes.put("termVersion", getTermVersion());
+		attributes.put("termType", getTermType());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("definition", getDefinition());
 		attributes.put("tooltip", getTooltip());
@@ -147,22 +147,22 @@ public class TermWrapper
 			setLastPublishDate(lastPublishDate);
 		}
 
-		String name = (String)attributes.get("name");
+		String termName = (String)attributes.get("termName");
 
-		if (name != null) {
-			setName(name);
+		if (termName != null) {
+			setTermName(termName);
 		}
 
-		String version = (String)attributes.get("version");
+		String termVersion = (String)attributes.get("termVersion");
 
-		if (version != null) {
-			setVersion(version);
+		if (termVersion != null) {
+			setTermVersion(termVersion);
 		}
 
-		String type = (String)attributes.get("type");
+		String termType = (String)attributes.get("termType");
 
-		if (type != null) {
-			setType(type);
+		if (termType != null) {
+			setTermType(termType);
 		}
 
 		String displayName = (String)attributes.get("displayName");
@@ -431,16 +431,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Returns the name of this term.
-	 *
-	 * @return the name of this term
-	 */
-	@Override
-	public String getName() {
-		return model.getName();
-	}
-
-	/**
 	 * Returns the primary key of this term.
 	 *
 	 * @return the primary key of this term
@@ -521,6 +511,36 @@ public class TermWrapper
 	}
 
 	/**
+	 * Returns the term name of this term.
+	 *
+	 * @return the term name of this term
+	 */
+	@Override
+	public String getTermName() {
+		return model.getTermName();
+	}
+
+	/**
+	 * Returns the term type of this term.
+	 *
+	 * @return the term type of this term
+	 */
+	@Override
+	public String getTermType() {
+		return model.getTermType();
+	}
+
+	/**
+	 * Returns the term version of this term.
+	 *
+	 * @return the term version of this term
+	 */
+	@Override
+	public String getTermVersion() {
+		return model.getTermVersion();
+	}
+
+	/**
 	 * Returns the tooltip of this term.
 	 *
 	 * @return the tooltip of this term
@@ -597,16 +617,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Returns the type of this term.
-	 *
-	 * @return the type of this term
-	 */
-	@Override
-	public String getType() {
-		return model.getType();
-	}
-
-	/**
 	 * Returns the user ID of this term.
 	 *
 	 * @return the user ID of this term
@@ -644,16 +654,6 @@ public class TermWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
-	}
-
-	/**
-	 * Returns the version of this term.
-	 *
-	 * @return the version of this term
-	 */
-	@Override
-	public String getVersion() {
-		return model.getVersion();
 	}
 
 	/**
@@ -949,16 +949,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Sets the name of this term.
-	 *
-	 * @param name the name of this term
-	 */
-	@Override
-	public void setName(String name) {
-		model.setName(name);
-	}
-
-	/**
 	 * Sets the primary key of this term.
 	 *
 	 * @param primaryKey the primary key of this term
@@ -1039,6 +1029,36 @@ public class TermWrapper
 	}
 
 	/**
+	 * Sets the term name of this term.
+	 *
+	 * @param termName the term name of this term
+	 */
+	@Override
+	public void setTermName(String termName) {
+		model.setTermName(termName);
+	}
+
+	/**
+	 * Sets the term type of this term.
+	 *
+	 * @param termType the term type of this term
+	 */
+	@Override
+	public void setTermType(String termType) {
+		model.setTermType(termType);
+	}
+
+	/**
+	 * Sets the term version of this term.
+	 *
+	 * @param termVersion the term version of this term
+	 */
+	@Override
+	public void setTermVersion(String termVersion) {
+		model.setTermVersion(termVersion);
+	}
+
+	/**
 	 * Sets the tooltip of this term.
 	 *
 	 * @param tooltip the tooltip of this term
@@ -1104,16 +1124,6 @@ public class TermWrapper
 	}
 
 	/**
-	 * Sets the type of this term.
-	 *
-	 * @param type the type of this term
-	 */
-	@Override
-	public void setType(String type) {
-		model.setType(type);
-	}
-
-	/**
 	 * Sets the user ID of this term.
 	 *
 	 * @param userId the user ID of this term
@@ -1151,16 +1161,6 @@ public class TermWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
-	}
-
-	/**
-	 * Sets the version of this term.
-	 *
-	 * @param version the version of this term
-	 */
-	@Override
-	public void setVersion(String version) {
-		model.setVersion(version);
 	}
 
 	@Override

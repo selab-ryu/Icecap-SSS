@@ -15,9 +15,9 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 		<field name="lastPublishDate" type="Date" />
-		<field name="name" type="String" />
-		<field name="version" type="String" />
-		<field name="type" type="String" />
+		<field name="termName" type="String" />
+		<field name="termVersion" type="String" />
+		<field name="termType" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="definition" type="String" />
 		<field localized="true" name="tooltip" type="String" />

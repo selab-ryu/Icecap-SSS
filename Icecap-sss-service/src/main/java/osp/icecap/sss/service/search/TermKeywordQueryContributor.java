@@ -23,7 +23,7 @@ public class TermKeywordQueryContributor implements KeywordQueryContributor {
 			KeywordQueryContributorHelper keywordQueryContributorHelper) {
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
-		queryHelper.addSearchTerm(booleanQuery, searchContext, IcecapSSSTermAttributes.NAME, false);
+		queryHelper.addSearchTerm(booleanQuery, searchContext, IcecapSSSTermAttributes.TERM_NAME, false);
 		queryHelper.addSearchLocalizedTerm(
 				booleanQuery, searchContext, IcecapSSSTermAttributes.DISPLAY_NAME, false);
 		queryHelper.addSearchLocalizedTerm(

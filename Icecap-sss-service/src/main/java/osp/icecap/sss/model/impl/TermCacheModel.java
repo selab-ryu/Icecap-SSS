@@ -89,12 +89,12 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		sb.append(statusDate);
 		sb.append(", lastPublishDate=");
 		sb.append(lastPublishDate);
-		sb.append(", name=");
-		sb.append(name);
-		sb.append(", version=");
-		sb.append(version);
-		sb.append(", type=");
-		sb.append(type);
+		sb.append(", termName=");
+		sb.append(termName);
+		sb.append(", termVersion=");
+		sb.append(termVersion);
+		sb.append(", termType=");
+		sb.append(termType);
 		sb.append(", displayName=");
 		sb.append(displayName);
 		sb.append(", definition=");
@@ -171,25 +171,25 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 			termImpl.setLastPublishDate(new Date(lastPublishDate));
 		}
 
-		if (name == null) {
-			termImpl.setName("");
+		if (termName == null) {
+			termImpl.setTermName("");
 		}
 		else {
-			termImpl.setName(name);
+			termImpl.setTermName(termName);
 		}
 
-		if (version == null) {
-			termImpl.setVersion("");
+		if (termVersion == null) {
+			termImpl.setTermVersion("");
 		}
 		else {
-			termImpl.setVersion(version);
+			termImpl.setTermVersion(termVersion);
 		}
 
-		if (type == null) {
-			termImpl.setType("");
+		if (termType == null) {
+			termImpl.setTermType("");
 		}
 		else {
-			termImpl.setType(type);
+			termImpl.setTermType(termType);
 		}
 
 		if (displayName == null) {
@@ -253,9 +253,9 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
-		name = objectInput.readUTF();
-		version = objectInput.readUTF();
-		type = objectInput.readUTF();
+		termName = objectInput.readUTF();
+		termVersion = objectInput.readUTF();
+		termType = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		definition = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
@@ -304,25 +304,25 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 		objectOutput.writeLong(statusDate);
 		objectOutput.writeLong(lastPublishDate);
 
-		if (name == null) {
+		if (termName == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(name);
+			objectOutput.writeUTF(termName);
 		}
 
-		if (version == null) {
+		if (termVersion == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(version);
+			objectOutput.writeUTF(termVersion);
 		}
 
-		if (type == null) {
+		if (termType == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(type);
+			objectOutput.writeUTF(termType);
 		}
 
 		if (displayName == null) {
@@ -374,9 +374,9 @@ public class TermCacheModel implements CacheModel<Term>, Externalizable {
 	public String statusByUserName;
 	public long statusDate;
 	public long lastPublishDate;
-	public String name;
-	public String version;
-	public String type;
+	public String termName;
+	public String termVersion;
+	public String termType;
 	public String displayName;
 	public String definition;
 	public String tooltip;

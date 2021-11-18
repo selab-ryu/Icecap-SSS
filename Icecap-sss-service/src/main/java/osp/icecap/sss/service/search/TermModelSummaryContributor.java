@@ -1,8 +1,6 @@
 package osp.icecap.sss.service.search;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
 
@@ -22,15 +20,15 @@ public class TermModelSummaryContributor implements ModelSummaryContributor {
 	@Override
 	public Summary getSummary(Document document, Locale locale, String snippet) {
 		Summary summary = createSummary(document, locale);
-		summary.setMaxContentLength(128);
+		summary.setMaxContentLength(256);
 
 		return summary;
 	}
 
 	private Summary createSummary(Document document, Locale locale) {
-		String title = document.get(IcecapSSSTermAttributes.DISPLAY_NAME, IcecapSSSTermAttributes.VERSION);
+		String title = document.get(IcecapSSSTermAttributes.DISPLAY_NAME, IcecapSSSTermAttributes.TERM_VERSION);
 		String content = document.get(
-				IcecapSSSTermAttributes.NAME +
+				IcecapSSSTermAttributes.TERM_NAME +
 				IcecapSSSTermAttributes.DEFINITION
 		);
 

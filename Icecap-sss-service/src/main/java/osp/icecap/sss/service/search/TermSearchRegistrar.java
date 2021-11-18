@@ -27,9 +27,9 @@ public class TermSearchRegistrar {
 										Field.ASSET_TAG_NAMES, Field.COMPANY_ID,
 										Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
 										Field.GROUP_ID, Field.MODIFIED_DATE, Field.UID,
-										IcecapSSSTermAttributes.NAME, IcecapSSSTermAttributes.DEFINITION,
+										IcecapSSSTermAttributes.TERM_NAME, IcecapSSSTermAttributes.DEFINITION,
 										IcecapSSSTermAttributes.TOOLTIP, IcecapSSSTermAttributes.SYNONYMS,
-										IcecapSSSTermAttributes.DISPLAY_NAME, IcecapSSSTermAttributes.TYPE);
+										IcecapSSSTermAttributes.DISPLAY_NAME, IcecapSSSTermAttributes.TERM_TYPE);
 
 								modelSearchDefinition.setModelIndexWriteContributor(
 										modelIndexWriterContributor);

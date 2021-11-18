@@ -1749,59 +1749,60 @@ public class TermUtil {
 	}
 
 	/**
-	 * Returns all the terms where name = &#63;.
+	 * Returns all the terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the matching terms
 	 */
-	public static List<Term> findByName(String name) {
-		return getPersistence().findByName(name);
+	public static List<Term> findByName(String termName) {
+		return getPersistence().findByName(termName);
 	}
 
 	/**
-	 * Returns a range of all the terms where name = &#63;.
+	 * Returns a range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @return the range of matching terms
 	 */
-	public static List<Term> findByName(String name, int start, int end) {
-		return getPersistence().findByName(name, start, end);
+	public static List<Term> findByName(String termName, int start, int end) {
+		return getPersistence().findByName(termName, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching terms
 	 */
 	public static List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		OrderByComparator<Term> orderByComparator) {
 
-		return getPersistence().findByName(name, start, end, orderByComparator);
+		return getPersistence().findByName(
+			termName, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1809,103 +1810,104 @@ public class TermUtil {
 	 * @return the ordered range of matching terms
 	 */
 	public static List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		OrderByComparator<Term> orderByComparator, boolean useFinderCache) {
 
 		return getPersistence().findByName(
-			name, start, end, orderByComparator, useFinderCache);
+			termName, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	public static Term findByName_First(
-			String name, OrderByComparator<Term> orderByComparator)
+			String termName, OrderByComparator<Term> orderByComparator)
 		throws osp.icecap.sss.exception.NoSuchTermException {
 
-		return getPersistence().findByName_First(name, orderByComparator);
+		return getPersistence().findByName_First(termName, orderByComparator);
 	}
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term, or <code>null</code> if a matching term could not be found
 	 */
 	public static Term fetchByName_First(
-		String name, OrderByComparator<Term> orderByComparator) {
+		String termName, OrderByComparator<Term> orderByComparator) {
 
-		return getPersistence().fetchByName_First(name, orderByComparator);
+		return getPersistence().fetchByName_First(termName, orderByComparator);
 	}
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	public static Term findByName_Last(
-			String name, OrderByComparator<Term> orderByComparator)
+			String termName, OrderByComparator<Term> orderByComparator)
 		throws osp.icecap.sss.exception.NoSuchTermException {
 
-		return getPersistence().findByName_Last(name, orderByComparator);
+		return getPersistence().findByName_Last(termName, orderByComparator);
 	}
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term, or <code>null</code> if a matching term could not be found
 	 */
 	public static Term fetchByName_Last(
-		String name, OrderByComparator<Term> orderByComparator) {
+		String termName, OrderByComparator<Term> orderByComparator) {
 
-		return getPersistence().fetchByName_Last(name, orderByComparator);
+		return getPersistence().fetchByName_Last(termName, orderByComparator);
 	}
 
 	/**
-	 * Returns the terms before and after the current term in the ordered set where name = &#63;.
+	 * Returns the terms before and after the current term in the ordered set where termName = &#63;.
 	 *
 	 * @param termId the primary key of the current term
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next term
 	 * @throws NoSuchTermException if a term with the primary key could not be found
 	 */
 	public static Term[] findByName_PrevAndNext(
-			long termId, String name, OrderByComparator<Term> orderByComparator)
+			long termId, String termName,
+			OrderByComparator<Term> orderByComparator)
 		throws osp.icecap.sss.exception.NoSuchTermException {
 
 		return getPersistence().findByName_PrevAndNext(
-			termId, name, orderByComparator);
+			termId, termName, orderByComparator);
 	}
 
 	/**
-	 * Removes all the terms where name = &#63; from the database.
+	 * Removes all the terms where termName = &#63; from the database.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 */
-	public static void removeByName(String name) {
-		getPersistence().removeByName(name);
+	public static void removeByName(String termName) {
+		getPersistence().removeByName(termName);
 	}
 
 	/**
-	 * Returns the number of terms where name = &#63;.
+	 * Returns the number of terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the number of matching terms
 	 */
-	public static int countByName(String name) {
-		return getPersistence().countByName(name);
+	public static int countByName(String termName) {
+		return getPersistence().countByName(termName);
 	}
 
 	/**

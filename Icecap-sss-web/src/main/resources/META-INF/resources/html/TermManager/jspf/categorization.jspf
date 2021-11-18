@@ -1,5 +1,0 @@
-<aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="categorization" helpMessage="term-categories-help">
-		<liferay-asset:asset-categories-selector className="<%= Term.class.getName() %>" />
-	</aui:fieldset>
-</aui:fieldset-group>

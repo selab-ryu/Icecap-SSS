@@ -8,6 +8,7 @@ Export-Package: \
 	osp.icecap.sss.service.persistence,\
 	osp.icecap.sss.constants,\
 	osp.icecap.sss.util.comparator,\
-	osp.icecap.sss.search
+	osp.icecap.sss.search,\
+	osp.icecap.sss.util
 -check: EXPORTS
 -includeresource: META-INF/service.xml=../Icecap-sss-service/service.xml

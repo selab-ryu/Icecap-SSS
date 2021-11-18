@@ -1,62 +1,63 @@
-<aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="list-attrinutes">
-		<aui:container>
-			<aui:row>
-				<aui:col md= "6">
-					<aui:select name="List_listItems" label="list-items" helpMessage="term-list-items-help"></aui:select>
-				</aui:col>
-				<aui:col md="6">
-					<aui:fieldset label="display-style" helpMessage="display-style-help">
-						<aui:row>
-						<aui:col md="6">
-							<aui:input type="radio" name="List_displayStyle" value="selectbox" label="selectbox" checked="true"></aui:input>
-						</aui:col>
-						<aui:col md="6">
-							<aui:input type="radio" name="List_displayStyle" value="radio" label="radio-button" ></aui:input>
-						</aui:col>
-						</aui:row>
-					</aui:fieldset>
-				</aui:col>
-			</aui:row>
-			<aui:row>
-				<aui:col>
-					<aui:fieldset label="manage-list-items">
-						<aui:container>
+	<aui:fieldset-group markupView="lexicon">
+		<aui:fieldset label="list-attrinutes">
+			<aui:container>
+				<aui:row>
+					<aui:col md= "6">
+						<aui:select name="List_listItems" label="list-items" helpMessage="term-list-items-help"></aui:select>
+					</aui:col>
+					<aui:col md="6">
+						<aui:fieldset label="display-style" helpMessage="display-style-help">
 							<aui:row>
-								<aui:col md="5" id="List_defineOption">
-									 <aui:field-wrapper name="List_listItemWrapper" label="item-display-name" helpMessage="term-list-item-display-name-help">
-										<liferay-ui:input-localized name="List_listItem" xml=""></liferay-ui:input-localized>
-									</aui:field-wrapper>
+								<aui:col md="6">
+									<aui:input type="radio" name="List_displayStyle" value="selectbox" label="selectbox" checked="true"></aui:input>
 								</aui:col>
-								<aui:col md="5">
-									<aui:input name="List_listItemValue" label="list-item-value" helpMessage="list-item-value-help"></aui:input>
+								<aui:col md="6">
+									<aui:input type="radio" name="List_displayStyle" value="radio" label="radio-button" ></aui:input>
 								</aui:col>
 							</aui:row>
-							<aui:button-row>
-								<aui:button name="List_addItem" value="add-item"></aui:button>
-								<aui:button name="List_updateItem" value="update-item"></aui:button>
-								<aui:button name="List_deleteItem" value="delete-item"></aui:button>
-							</aui:button-row>
-						</aui:container>
-					</aui:fieldset>
-				</aui:col>
-			</aui:row>
-		</aui:container>
-	</aui:fieldset>
-</aui:fieldset-group>
+						</aui:fieldset>
+					</aui:col>
+				</aui:row>
+				<aui:row>
+					<aui:col>
+						<aui:fieldset label="manage-list-items">
+							<aui:container>
+								<aui:row>
+									<aui:col md="5" id="List_defineOption">
+										 <aui:field-wrapper name="ListlistItem" label="item-display-name" helpMessage="term-list-item-display-name-help">
+											<liferay-ui:input-localized name="ListlistItem" xml=""></liferay-ui:input-localized>
+										</aui:field-wrapper>
+									</aui:col>
+									<aui:col md="5">
+										<aui:input name="List_listItemValue" label="list-item-value" helpMessage="list-item-value-help"></aui:input>
+									</aui:col>
+								</aui:row>
+								<aui:row>
+									<aui-col>
+									<aui:button name="List_addItem" value="add-item"></aui:button>
+									<aui:button name="List_updateItem" value="update-item"></aui:button>
+									<aui:button name="List_deleteItem" value="delete-item"></aui:button>
+									</aui-col>
+								</aui:row>
+							</aui:container>
+						</aui:fieldset>
+					</aui:col>
+				</aui:row>
+			</aui:container>
+		</aui:fieldset>
+	</aui:fieldset-group>
 
 <script>
 (function (){
-	
 	var listItems = [];
 	var selectedItem;
 	var dirty;
 	
 	$('#<portlet:namespace/>List_addItem').click( function(){
-		var listItem = SSS.Util.getLocalizedInputValue( '<portlet:namespace/>List_listItem', <%=availableLanguageIds%> );
+		var listItem = SSS.Util.getLocalizedInputValue( '<portlet:namespace/>ListlistItem', <%=availableLanguageIds%> );
 		listItem.value = $('#<portlet:namespace/>List_listItemValue').val();
 		listItems.push( listItem );
-		//console.log( <portlet:namespace/>listItems );
+		console.log( listItems );
 		
 		$('#<portlet:namespace/>List_listItems').append(
 				'<option value="' + listItem.value + '">' +
@@ -70,13 +71,13 @@
 		var selectedValue = $('#<portlet:namespace/>List_listItems').val();
 		
 		if( !selectedValue ){
-			SSS.Util.clearLocalizedInputValue('<portlet:namespace/>List_listItem', $('#<portlet:namespace/>List_defineOption'), <%=availableLanguageIds%>);
+			SSS.Util.clearLocalizedInputValue('<portlet:namespace/>ListlistItem', $('#<portlet:namespace/>List_defineOption'), <%=availableLanguageIds%>);
 			$('#<portlet:namespace/>List_listItemValue').val('');
 		}
 		else{
 			listItems.forEach( function(item){
 				if( item.value === selectedValue ){
-					SSS.Util.setLocalizedInputValue('<portlet:namespace/>List_listItem', $('#<portlet:namespace/>List_defineOption'), <%=availableLanguageIds%>, item.displayName);
+					SSS.Util.setLocalizedInputValue('<portlet:namespace/>ListlistItem', $('#<portlet:namespace/>List_defineOption'), <%=availableLanguageIds%>, item.displayName);
 					$('#<portlet:namespace/>List_listItemValue').val( selectedValue);
 					selectedItem = item;
 				}
@@ -85,7 +86,7 @@
 	});
 	
 	$('#<portlet:namespace/>List_updateItem').click( function(){
-		var listItem = SSS.Util.getLocalizedInputValue( '<portlet:namespace/>List_listItem', <%=availableLanguageIds%> );
+		var listItem = SSS.Util.getLocalizedInputValue( '<portlet:namespace/>ListlistItem', <%=availableLanguageIds%> );
 		listItem.value = $('#<portlet:namespace/>List_listItemValue').val();
 		
 		var $selectedOption = $('#<portlet:namespace/>List_listItems option:selected');
@@ -126,6 +127,5 @@
 		
 		$('#<portlet:namespace/>List_listItems').trigger('change');
 	});
-	
 }());
 </script>

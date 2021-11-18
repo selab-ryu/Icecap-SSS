@@ -6,4 +6,5 @@ Liferay-Service: true
 -dsannotations-options: inherit
 Export-Package: \
 	osp.icecap.sss.internal.security.permission.resource,\
+	osp.icecap.sss.service.search,\
 	osp.icecap.sss.constants

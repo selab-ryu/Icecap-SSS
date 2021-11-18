@@ -5112,41 +5112,41 @@ public class TermPersistenceImpl
 	private FinderPath _finderPathCountByName;
 
 	/**
-	 * Returns all the terms where name = &#63;.
+	 * Returns all the terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the matching terms
 	 */
 	@Override
-	public List<Term> findByName(String name) {
-		return findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<Term> findByName(String termName) {
+		return findByName(termName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the terms where name = &#63;.
+	 * Returns a range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @return the range of matching terms
 	 */
 	@Override
-	public List<Term> findByName(String name, int start, int end) {
-		return findByName(name, start, end, null);
+	public List<Term> findByName(String termName, int start, int end) {
+		return findByName(termName, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -5154,20 +5154,20 @@ public class TermPersistenceImpl
 	 */
 	@Override
 	public List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		OrderByComparator<Term> orderByComparator) {
 
-		return findByName(name, start, end, orderByComparator, true);
+		return findByName(termName, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -5176,10 +5176,10 @@ public class TermPersistenceImpl
 	 */
 	@Override
 	public List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		OrderByComparator<Term> orderByComparator, boolean useFinderCache) {
 
-		name = Objects.toString(name, "");
+		termName = Objects.toString(termName, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5189,12 +5189,12 @@ public class TermPersistenceImpl
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {name};
+				finderArgs = new Object[] {termName};
 			}
 		}
 		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByName;
-			finderArgs = new Object[] {name, start, end, orderByComparator};
+			finderArgs = new Object[] {termName, start, end, orderByComparator};
 		}
 
 		List<Term> list = null;
@@ -5205,7 +5205,7 @@ public class TermPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Term term : list) {
-					if (!name.equals(term.getName())) {
+					if (!termName.equals(term.getTermName())) {
 						list = null;
 
 						break;
@@ -5227,15 +5227,15 @@ public class TermPersistenceImpl
 
 			sb.append(_SQL_SELECT_TERM_WHERE);
 
-			boolean bindName = false;
+			boolean bindTermName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (termName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_NAME_TERMNAME_3);
 			}
 			else {
-				bindName = true;
+				bindTermName = true;
 
-				sb.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_TERMNAME_2);
 			}
 
 			if (orderByComparator != null) {
@@ -5257,8 +5257,8 @@ public class TermPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindName) {
-					queryPos.add(name);
+				if (bindTermName) {
+					queryPos.add(termName);
 				}
 
 				list = (List<Term>)QueryUtil.list(
@@ -5286,19 +5286,19 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	@Override
 	public Term findByName_First(
-			String name, OrderByComparator<Term> orderByComparator)
+			String termName, OrderByComparator<Term> orderByComparator)
 		throws NoSuchTermException {
 
-		Term term = fetchByName_First(name, orderByComparator);
+		Term term = fetchByName_First(termName, orderByComparator);
 
 		if (term != null) {
 			return term;
@@ -5308,8 +5308,8 @@ public class TermPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("name=");
-		sb.append(name);
+		sb.append("termName=");
+		sb.append(termName);
 
 		sb.append("}");
 
@@ -5317,17 +5317,17 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term, or <code>null</code> if a matching term could not be found
 	 */
 	@Override
 	public Term fetchByName_First(
-		String name, OrderByComparator<Term> orderByComparator) {
+		String termName, OrderByComparator<Term> orderByComparator) {
 
-		List<Term> list = findByName(name, 0, 1, orderByComparator);
+		List<Term> list = findByName(termName, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -5337,19 +5337,19 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	@Override
 	public Term findByName_Last(
-			String name, OrderByComparator<Term> orderByComparator)
+			String termName, OrderByComparator<Term> orderByComparator)
 		throws NoSuchTermException {
 
-		Term term = fetchByName_Last(name, orderByComparator);
+		Term term = fetchByName_Last(termName, orderByComparator);
 
 		if (term != null) {
 			return term;
@@ -5359,8 +5359,8 @@ public class TermPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("name=");
-		sb.append(name);
+		sb.append("termName=");
+		sb.append(termName);
 
 		sb.append("}");
 
@@ -5368,23 +5368,24 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term, or <code>null</code> if a matching term could not be found
 	 */
 	@Override
 	public Term fetchByName_Last(
-		String name, OrderByComparator<Term> orderByComparator) {
+		String termName, OrderByComparator<Term> orderByComparator) {
 
-		int count = countByName(name);
+		int count = countByName(termName);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Term> list = findByName(name, count - 1, count, orderByComparator);
+		List<Term> list = findByName(
+			termName, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -5394,20 +5395,21 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Returns the terms before and after the current term in the ordered set where name = &#63;.
+	 * Returns the terms before and after the current term in the ordered set where termName = &#63;.
 	 *
 	 * @param termId the primary key of the current term
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next term
 	 * @throws NoSuchTermException if a term with the primary key could not be found
 	 */
 	@Override
 	public Term[] findByName_PrevAndNext(
-			long termId, String name, OrderByComparator<Term> orderByComparator)
+			long termId, String termName,
+			OrderByComparator<Term> orderByComparator)
 		throws NoSuchTermException {
 
-		name = Objects.toString(name, "");
+		termName = Objects.toString(termName, "");
 
 		Term term = findByPrimaryKey(termId);
 
@@ -5419,12 +5421,12 @@ public class TermPersistenceImpl
 			Term[] array = new TermImpl[3];
 
 			array[0] = getByName_PrevAndNext(
-				session, term, name, orderByComparator, true);
+				session, term, termName, orderByComparator, true);
 
 			array[1] = term;
 
 			array[2] = getByName_PrevAndNext(
-				session, term, name, orderByComparator, false);
+				session, term, termName, orderByComparator, false);
 
 			return array;
 		}
@@ -5437,7 +5439,7 @@ public class TermPersistenceImpl
 	}
 
 	protected Term getByName_PrevAndNext(
-		Session session, Term term, String name,
+		Session session, Term term, String termName,
 		OrderByComparator<Term> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -5453,15 +5455,15 @@ public class TermPersistenceImpl
 
 		sb.append(_SQL_SELECT_TERM_WHERE);
 
-		boolean bindName = false;
+		boolean bindTermName = false;
 
-		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_NAME_3);
+		if (termName.isEmpty()) {
+			sb.append(_FINDER_COLUMN_NAME_TERMNAME_3);
 		}
 		else {
-			bindName = true;
+			bindTermName = true;
 
-			sb.append(_FINDER_COLUMN_NAME_NAME_2);
+			sb.append(_FINDER_COLUMN_NAME_TERMNAME_2);
 		}
 
 		if (orderByComparator != null) {
@@ -5533,8 +5535,8 @@ public class TermPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindName) {
-			queryPos.add(name);
+		if (bindTermName) {
+			queryPos.add(termName);
 		}
 
 		if (orderByComparator != null) {
@@ -5556,32 +5558,33 @@ public class TermPersistenceImpl
 	}
 
 	/**
-	 * Removes all the terms where name = &#63; from the database.
+	 * Removes all the terms where termName = &#63; from the database.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 */
 	@Override
-	public void removeByName(String name) {
+	public void removeByName(String termName) {
 		for (Term term :
-				findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				findByName(
+					termName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(term);
 		}
 	}
 
 	/**
-	 * Returns the number of terms where name = &#63;.
+	 * Returns the number of terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the number of matching terms
 	 */
 	@Override
-	public int countByName(String name) {
-		name = Objects.toString(name, "");
+	public int countByName(String termName) {
+		termName = Objects.toString(termName, "");
 
 		FinderPath finderPath = _finderPathCountByName;
 
-		Object[] finderArgs = new Object[] {name};
+		Object[] finderArgs = new Object[] {termName};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -5590,15 +5593,15 @@ public class TermPersistenceImpl
 
 			sb.append(_SQL_COUNT_TERM_WHERE);
 
-			boolean bindName = false;
+			boolean bindTermName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (termName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_NAME_TERMNAME_3);
 			}
 			else {
-				bindName = true;
+				bindTermName = true;
 
-				sb.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_TERMNAME_2);
 			}
 
 			String sql = sb.toString();
@@ -5612,8 +5615,8 @@ public class TermPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindName) {
-					queryPos.add(name);
+				if (bindTermName) {
+					queryPos.add(termName);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -5633,10 +5636,11 @@ public class TermPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_NAME_2 = "term.name = ?";
+	private static final String _FINDER_COLUMN_NAME_TERMNAME_2 =
+		"term.termName = ?";
 
-	private static final String _FINDER_COLUMN_NAME_NAME_3 =
-		"(term.name IS NULL OR term.name = '')";
+	private static final String _FINDER_COLUMN_NAME_TERMNAME_3 =
+		"(term.termName IS NULL OR term.termName = '')";
 
 	public TermPersistenceImpl() {
 		setModelClass(Term.class);
@@ -5647,7 +5651,6 @@ public class TermPersistenceImpl
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
-		dbColumnNames.put("type", "type_");
 
 		setDBColumnNames(dbColumnNames);
 	}
@@ -6028,7 +6031,7 @@ public class TermPersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
-			args = new Object[] {termModelImpl.getName()};
+			args = new Object[] {termModelImpl.getTermName()};
 
 			finderCache.removeResult(_finderPathCountByName, args);
 			finderCache.removeResult(
@@ -6229,13 +6232,15 @@ public class TermPersistenceImpl
 				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
 					 0) {
 
-				Object[] args = new Object[] {termModelImpl.getOriginalName()};
+				Object[] args = new Object[] {
+					termModelImpl.getOriginalTermName()
+				};
 
 				finderCache.removeResult(_finderPathCountByName, args);
 				finderCache.removeResult(
 					_finderPathWithoutPaginationFindByName, args);
 
-				args = new Object[] {termModelImpl.getName()};
+				args = new Object[] {termModelImpl.getTermName()};
 
 				finderCache.removeResult(_finderPathCountByName, args);
 				finderCache.removeResult(
@@ -6757,7 +6762,7 @@ public class TermPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, TermImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
 			new String[] {String.class.getName()},
-			TermModelImpl.NAME_COLUMN_BITMASK |
+			TermModelImpl.TERMNAME_COLUMN_BITMASK |
 			TermModelImpl.CREATEDATE_COLUMN_BITMASK);
 
 		_finderPathCountByName = new FinderPath(
@@ -6837,7 +6842,7 @@ public class TermPersistenceImpl
 		TermPersistenceImpl.class);
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"uuid", "type"});
+		new String[] {"uuid"});
 
 	static {
 		try {

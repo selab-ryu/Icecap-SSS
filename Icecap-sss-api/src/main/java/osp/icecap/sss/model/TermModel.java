@@ -306,49 +306,49 @@ public interface TermModel
 	public void setLastPublishDate(Date lastPublishDate);
 
 	/**
-	 * Returns the name of this term.
+	 * Returns the term name of this term.
 	 *
-	 * @return the name of this term
+	 * @return the term name of this term
 	 */
 	@AutoEscape
-	public String getName();
+	public String getTermName();
 
 	/**
-	 * Sets the name of this term.
+	 * Sets the term name of this term.
 	 *
-	 * @param name the name of this term
+	 * @param termName the term name of this term
 	 */
-	public void setName(String name);
+	public void setTermName(String termName);
 
 	/**
-	 * Returns the version of this term.
+	 * Returns the term version of this term.
 	 *
-	 * @return the version of this term
-	 */
-	@AutoEscape
-	public String getVersion();
-
-	/**
-	 * Sets the version of this term.
-	 *
-	 * @param version the version of this term
-	 */
-	public void setVersion(String version);
-
-	/**
-	 * Returns the type of this term.
-	 *
-	 * @return the type of this term
+	 * @return the term version of this term
 	 */
 	@AutoEscape
-	public String getType();
+	public String getTermVersion();
 
 	/**
-	 * Sets the type of this term.
+	 * Sets the term version of this term.
 	 *
-	 * @param type the type of this term
+	 * @param termVersion the term version of this term
 	 */
-	public void setType(String type);
+	public void setTermVersion(String termVersion);
+
+	/**
+	 * Returns the term type of this term.
+	 *
+	 * @return the term type of this term
+	 */
+	@AutoEscape
+	public String getTermType();
+
+	/**
+	 * Sets the term type of this term.
+	 *
+	 * @param termType the term type of this term
+	 */
+	public void setTermType(String termType);
 
 	/**
 	 * Returns the display name of this term.

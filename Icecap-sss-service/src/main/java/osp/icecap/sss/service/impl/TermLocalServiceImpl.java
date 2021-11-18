@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -49,6 +50,7 @@ import org.osgi.service.component.annotations.Component;
 
 import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
+import osp.icecap.sss.exception.DuplicatedTermNameException;
 import osp.icecap.sss.exception.InvalidTermException;
 import osp.icecap.sss.exception.NoSuchTermException;
 import osp.icecap.sss.model.Term;
@@ -78,9 +80,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public Term addTerm(
-			String name,
-			String version,
-			String type,
+			String termName,
+			String termVersion,
+			String termType,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
 			Map<Locale, String> tooltipMap,
@@ -88,16 +90,16 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			String attributes, // attributes for each type
 			ServiceContext sc) throws PortalException {
 		
-		if( !verifyTerm( name, version ) ) {
-			throw new InvalidTermException(name+" "+version+" Invalid"); 
+		if( !verifyTermName(termName) ) {
+			throw new InvalidTermException(termName+" "+termVersion+" Invalid"); 
 		}
 		
 		long termId = super.counterLocalService.increment();
 		Term term = super.termLocalService.createTerm(termId);
 		
-		term.setName(name);
-		term.setVersion(version);
-		term.setType(type);
+		term.setTermName(termName);
+		term.setTermVersion(termVersion);
+		term.setTermType(termType);
 		term.setDisplayNameMap(displayNameMap);
 		term.setDefinitionMap(definitionMap);
 		term.setTooltipMap(tooltipMap);
@@ -121,6 +123,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setStatusDate(sc.getModifiedDate(null));
 		
 		super.termPersistence.update(term);
+		System.out.println("Add Finished....");
 		
 		super.resourceLocalService.addResources(
 				term.getCompanyId(), 
@@ -131,6 +134,8 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				false, 
 				true, 
 				true);
+		System.out.println("Resource Finished....");
+		/*
 		
 		super.assetEntryLocalService.updateEntry(
 			term.getUserId(), 
@@ -150,18 +155,17 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			term.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			term.getName(),
+			term.getTermName(),
 			null, 
 			null, 
 			null, 
 			null,
 			0, 0, null);
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.reindex(term);
 		
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
 				term.getGroupId(), term.getUserId(), Term.class.getName(), 
 				term.getPrimaryKey(), term, sc);
+		*/
 		
 		return term;
 	}
@@ -169,9 +173,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	public Term updateTerm(
 			long termId, 
-			String name, 
-			String version,
-			String type, 
+			String termName, 
+			String termVersion,
+			String termType, 
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
 			Map<Locale, String> tooltipMap,
@@ -180,9 +184,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			ServiceContext sc) throws PortalException {
 		Term term = super.termPersistence.findByPrimaryKey(termId);
 		
-		term.setName(name);
-		term.setVersion(version);
-		term.setType(type);
+		term.setTermName(termName);
+		term.setTermVersion(termVersion);
+		term.setTermType(termType);
 		term.setDisplayNameMap(displayNameMap);
 		term.setDefinitionMap(definitionMap);
 		term.setTooltipMap(tooltipMap);
@@ -221,14 +225,12 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				term.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				term.getName(),
+				term.getTermName(),
 				null, 
 				null, 
 				null, 
 				null,
 				0, 0, null);
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.reindex(term);
 		
 		return term;
 	}
@@ -269,9 +271,6 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				Term.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL, 
 				term.getPrimaryKey());
-		
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.delete(term);
 		
 		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 			    term.getCompanyId(), term.getGroupId(),
@@ -357,7 +356,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	public String getName( long termId, Locale locale ) throws NoSuchTermException {
 		Term term = super.termPersistence.findByPrimaryKey(termId);
 		
-		return "";
+		return term.getDisplayName(locale);
 	}
 	
 	public OrderByComparator<Term> getOrderByNameComparator(
@@ -410,8 +409,16 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	 * @param termName
 	 * @param termVersion
 	 * @return true if the term is verified.
+	 * @throws DuplicatedTermNameException 
 	 */
-	private boolean verifyTerm( String termName, String termVersion ) {
-		return true;
+	private boolean verifyTermName( String termName ) throws DuplicatedTermNameException {
+		// Check uniqueness of the termName
+		if( super.termPersistence.countByName(termName) > 0 ) {
+			throw new DuplicatedTermNameException( termName + "exists already." );
+		}
+		
+		// Check if the naming convention of the term name is followed
+		String pattern = "[a-zA-Z]([a-zA-Z0-9_]*)";
+		return termName.matches(pattern);
 	}
 }

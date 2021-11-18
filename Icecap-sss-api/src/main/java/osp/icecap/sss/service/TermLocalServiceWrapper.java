@@ -32,7 +32,7 @@ public class TermLocalServiceWrapper
 
 	@Override
 	public osp.icecap.sss.model.Term addTerm(
-			String name, String version, String type,
+			String termName, String termVersion, String termType,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
 			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -41,8 +41,8 @@ public class TermLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _termLocalService.addTerm(
-			name, version, type, displayNameMap, definitionMap, tooltipMap,
-			synonyms, attributes, sc);
+			termName, termVersion, termType, displayNameMap, definitionMap,
+			tooltipMap, synonyms, attributes, sc);
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class TermLocalServiceWrapper
 
 	@Override
 	public osp.icecap.sss.model.Term updateTerm(
-			long termId, String name, String version, String type,
+			long termId, String termName, String termVersion, String termType,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
 			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -543,8 +543,8 @@ public class TermLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _termLocalService.updateTerm(
-			termId, name, version, type, displayNameMap, definitionMap,
-			tooltipMap, synonyms, attributes, sc);
+			termId, termName, termVersion, termType, displayNameMap,
+			definitionMap, tooltipMap, synonyms, attributes, sc);
 	}
 
 	/**

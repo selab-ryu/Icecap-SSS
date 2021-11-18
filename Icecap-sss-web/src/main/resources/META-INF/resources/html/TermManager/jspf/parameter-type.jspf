@@ -1,40 +1,8 @@
 <%@page import="osp.icecap.sss.constants.IcecapSSSTermTypes"%>
-<aui:fieldset-group markupView="lexicon">
-	<aui:fieldset label="term-type" helpMessage="term-type-select-help">
-	<aui:select name="termType" label="">
-		<%
-		final String[] parameterTypes = IcecapSSSTermTypes.getTypes();
-		for( String parameterType : parameterTypes ){
-			if( term != null && parameterType.equals( term.getType() )){
-		%>
-			<aui:option label="<%=parameterType %>" value="<%=parameterType %>" selected="<%= true %>"/>
-		<%
-			}
-			else {
-		%>
-				<aui:option label="<%=parameterType %>" value="<%=parameterType %>"/>
-		<%
-			}
-		}
-		%>
-	</aui:select>
-	</aui:fieldset>
-</aui:fieldset-group>
+
 
 <script>
 (function (){
-	$('#<portlet:namespace/>termType').change(function(){
-		var termType = $('#<portlet:namespace/>termType').val();
-		
-		$('.row .show').removeClass( 'show' ).addClass('hide');
-		
-		termType = termType.charAt(0).toLowerCase() + termType.slice(1);
-		console.log('Term Type: '+termType);
-		
-		var activeId = '<portlet:namespace/>' + termType + 'Attributes';
-		console.log('Active ID: '+activeId);
-		$('#'+activeId).removeClass('hide').addClass('show');
-	});
 	
 }());
 </script>

@@ -22,8 +22,8 @@ public class TermNameComparator extends OrderByComparator<Term> {
 
 	@Override
 	public int compare(Term entry1, Term entry2) {
-		String title1 = entry1.getName();
-		String title2 = entry2.getName();
+		String title1 = entry1.getTermName();
+		String title2 = entry2.getTermName();
 
 		int value = title1.compareTo(title2);
 

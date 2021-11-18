@@ -10,4 +10,6 @@ public class MVCCommandNames {
 	public static final String ACTION_TERM_UPDATE = "/html/TermManager/update-term";
 	public static final String ACTION_TERM_DELETE = "/html/TermManager/delete-term";
 	public static final String ACTION_TERM_PUBLISH = "/html/TermManager/publish-term";
+	public static final String ACTION_LOAD_TERM_ATTRIBURES = "/html/TermManager/load-term-attributes";
+
 }

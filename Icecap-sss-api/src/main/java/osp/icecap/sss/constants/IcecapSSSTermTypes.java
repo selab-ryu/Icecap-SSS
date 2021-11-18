@@ -26,4 +26,12 @@ public class IcecapSSSTermTypes {
 		};
 		return types;
 	}
+	
+	public static final boolean hasDedicatedAttributes( String termType ) {
+		if( termType.equals(EMAIL) || termType.equals(DATE) ) {
+			return false;
+		}
+		
+		return true;
+	}
 }

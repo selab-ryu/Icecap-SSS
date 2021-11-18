@@ -44,9 +44,9 @@ public class TermSoap implements Serializable {
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
-		soapModel.setName(model.getName());
-		soapModel.setVersion(model.getVersion());
-		soapModel.setType(model.getType());
+		soapModel.setTermName(model.getTermName());
+		soapModel.setTermVersion(model.getTermVersion());
+		soapModel.setTermType(model.getTermType());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDefinition(model.getDefinition());
 		soapModel.setTooltip(model.getTooltip());
@@ -208,28 +208,28 @@ public class TermSoap implements Serializable {
 		_lastPublishDate = lastPublishDate;
 	}
 
-	public String getName() {
-		return _name;
+	public String getTermName() {
+		return _termName;
 	}
 
-	public void setName(String name) {
-		_name = name;
+	public void setTermName(String termName) {
+		_termName = termName;
 	}
 
-	public String getVersion() {
-		return _version;
+	public String getTermVersion() {
+		return _termVersion;
 	}
 
-	public void setVersion(String version) {
-		_version = version;
+	public void setTermVersion(String termVersion) {
+		_termVersion = termVersion;
 	}
 
-	public String getType() {
-		return _type;
+	public String getTermType() {
+		return _termType;
 	}
 
-	public void setType(String type) {
-		_type = type;
+	public void setTermType(String termType) {
+		_termType = termType;
 	}
 
 	public String getDisplayName() {
@@ -285,9 +285,9 @@ public class TermSoap implements Serializable {
 	private String _statusByUserName;
 	private Date _statusDate;
 	private Date _lastPublishDate;
-	private String _name;
-	private String _version;
-	private String _type;
+	private String _termName;
+	private String _termVersion;
+	private String _termType;
 	private String _displayName;
 	private String _definition;
 	private String _tooltip;

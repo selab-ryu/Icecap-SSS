@@ -32,6 +32,7 @@ import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
+import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
@@ -133,7 +134,7 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 										liferayPortletResponse.createRenderURL(),
 										"mvcRenderCommandName", MVCCommandNames.RENDER_TERM_EDIT,
 										"redirect", currentURLObj.toString(),
-										Constants.CMD, Constants.ADD);
+										Constants.CMD, IcecapSSSActionKeys.ADD_TERM);
 								dropdownItem.setLabel(
 										LanguageUtil.get(request, "add-term"));
 							});

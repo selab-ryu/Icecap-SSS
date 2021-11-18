@@ -1442,53 +1442,53 @@ public interface TermPersistence extends BasePersistence<Term> {
 	public int countByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the terms where name = &#63;.
+	 * Returns all the terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the matching terms
 	 */
-	public java.util.List<Term> findByName(String name);
+	public java.util.List<Term> findByName(String termName);
 
 	/**
-	 * Returns a range of all the terms where name = &#63;.
+	 * Returns a range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @return the range of matching terms
 	 */
-	public java.util.List<Term> findByName(String name, int start, int end);
+	public java.util.List<Term> findByName(String termName, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching terms
 	 */
 	public java.util.List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Term>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the terms where name = &#63;.
+	 * Returns an ordered range of all the terms where termName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TermModelImpl</code>.
 	 * </p>
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1496,92 +1496,92 @@ public interface TermPersistence extends BasePersistence<Term> {
 	 * @return the ordered range of matching terms
 	 */
 	public java.util.List<Term> findByName(
-		String name, int start, int end,
+		String termName, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Term>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	public Term findByName_First(
-			String name,
+			String termName,
 			com.liferay.portal.kernel.util.OrderByComparator<Term>
 				orderByComparator)
 		throws NoSuchTermException;
 
 	/**
-	 * Returns the first term in the ordered set where name = &#63;.
+	 * Returns the first term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching term, or <code>null</code> if a matching term could not be found
 	 */
 	public Term fetchByName_First(
-		String name,
+		String termName,
 		com.liferay.portal.kernel.util.OrderByComparator<Term>
 			orderByComparator);
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term
 	 * @throws NoSuchTermException if a matching term could not be found
 	 */
 	public Term findByName_Last(
-			String name,
+			String termName,
 			com.liferay.portal.kernel.util.OrderByComparator<Term>
 				orderByComparator)
 		throws NoSuchTermException;
 
 	/**
-	 * Returns the last term in the ordered set where name = &#63;.
+	 * Returns the last term in the ordered set where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching term, or <code>null</code> if a matching term could not be found
 	 */
 	public Term fetchByName_Last(
-		String name,
+		String termName,
 		com.liferay.portal.kernel.util.OrderByComparator<Term>
 			orderByComparator);
 
 	/**
-	 * Returns the terms before and after the current term in the ordered set where name = &#63;.
+	 * Returns the terms before and after the current term in the ordered set where termName = &#63;.
 	 *
 	 * @param termId the primary key of the current term
-	 * @param name the name
+	 * @param termName the term name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next term
 	 * @throws NoSuchTermException if a term with the primary key could not be found
 	 */
 	public Term[] findByName_PrevAndNext(
-			long termId, String name,
+			long termId, String termName,
 			com.liferay.portal.kernel.util.OrderByComparator<Term>
 				orderByComparator)
 		throws NoSuchTermException;
 
 	/**
-	 * Removes all the terms where name = &#63; from the database.
+	 * Removes all the terms where termName = &#63; from the database.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 */
-	public void removeByName(String name);
+	public void removeByName(String termName);
 
 	/**
-	 * Returns the number of terms where name = &#63;.
+	 * Returns the number of terms where termName = &#63;.
 	 *
-	 * @param name the name
+	 * @param termName the term name
 	 * @return the number of matching terms
 	 */
-	public int countByName(String name);
+	public int countByName(String termName);
 
 	/**
 	 * Caches the term in the entity cache if it is enabled.
