@@ -1,8 +1,12 @@
 package osp.icecap.sss.web.command.render;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.trash.TrashHelper;
+
+import java.util.Enumeration;
+import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -31,11 +35,17 @@ public class TermListViewRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
+		Enumeration<String> keys = renderRequest.getParameterNames();
+		while( keys.hasMoreElements() ) {
+			String key = keys.nextElement();
+			System.out.println( key + " : " + ParamUtil.getString(renderRequest, key));
+		}
+		
 		renderRequest.setAttribute(
 				TermDisplayContext.class.getName(), 
 				new TermDisplayContext(
-						_portal.getLiferayPortletRequest(renderRequest),
-						_portal.getLiferayPortletResponse(renderResponse),
+						renderRequest,
+						renderResponse,
 						_trashHelper));
 		
 		return IcecapSSSJsps.TERM_LIST_JSP;

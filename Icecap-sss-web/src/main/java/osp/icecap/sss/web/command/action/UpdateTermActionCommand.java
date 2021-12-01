@@ -1,6 +1,5 @@
 package osp.icecap.sss.web.command.action;
 
-import com.liferay.dynamic.data.mapping.expression.model.Term;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -28,6 +27,7 @@ import osp.icecap.sss.constants.IcecapSSSTermTypes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
+import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalService;
 
 @Component(

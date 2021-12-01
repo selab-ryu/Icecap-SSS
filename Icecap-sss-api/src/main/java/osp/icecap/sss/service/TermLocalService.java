@@ -369,6 +369,8 @@ public interface TermLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public Term removeTerm(long termId) throws PortalException;
 
+	public void removeTerms(long[] termIds) throws PortalException;
+
 	public Term updateStatus(
 			long userId, long termId, int status, ServiceContext sc)
 		throws PortalException, SystemException;

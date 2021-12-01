@@ -19,17 +19,29 @@ import osp.icecap.sss.model.Term;
 public class TermSearchRegistrar {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		System.out.println("TermSearchRegister activator......");
 			_serviceRegistration = modelSearchRegistrarHelper.register(
 					Term.class, 
 					bundleContext, 
 					modelSearchDefinition -> {
+								System.out.println("TermSearchRegister activator: modelSearchDefinition");
 								modelSearchDefinition.setDefaultSelectedFieldNames(
-										Field.ASSET_TAG_NAMES, Field.COMPANY_ID,
-										Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
-										Field.GROUP_ID, Field.MODIFIED_DATE, Field.UID,
-										IcecapSSSTermAttributes.TERM_NAME, IcecapSSSTermAttributes.DEFINITION,
-										IcecapSSSTermAttributes.TOOLTIP, IcecapSSSTermAttributes.SYNONYMS,
-										IcecapSSSTermAttributes.DISPLAY_NAME, IcecapSSSTermAttributes.TERM_TYPE);
+										Field.COMPANY_ID,
+										Field.GROUP_ID, 
+										Field.ENTRY_CLASS_NAME, 
+										Field.UID,
+										Field.ENTRY_CLASS_PK,
+										Field.MODIFIED_DATE, 
+										Field.ASSET_TAG_NAMES, 
+										Field.ASSET_CATEGORY_TITLES,
+										Field.SCOPE_GROUP_ID,
+										Field.TITLE,
+										IcecapSSSTermAttributes.TERM_NAME, 
+										IcecapSSSTermAttributes.DEFINITION,
+										IcecapSSSTermAttributes.TOOLTIP, 
+										IcecapSSSTermAttributes.SYNONYMS,
+										IcecapSSSTermAttributes.DISPLAY_NAME, 
+										IcecapSSSTermAttributes.TERM_TYPE);
 
 								modelSearchDefinition.setModelIndexWriteContributor(
 										modelIndexWriterContributor);
@@ -43,13 +55,17 @@ public class TermSearchRegistrar {
 		_serviceRegistration.unregister();
 	}
 	
-	@Reference(target = "(indexer.class.name=osp.icecap.sss.model.Term)")
+	@Reference(
+			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
+	)
 	protected ModelIndexerWriterContributor<Term> modelIndexWriterContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;
 
-	@Reference(target = "(indexer.class.name=osp.icecap.sss.model.Term)")
+	@Reference(
+			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
+	)
 	protected ModelSummaryContributor modelSummaryContributor;
 
 	private ServiceRegistration<?> _serviceRegistration;

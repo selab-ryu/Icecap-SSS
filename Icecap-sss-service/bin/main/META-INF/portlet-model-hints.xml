@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="osp.icecap.sss.model.Term">
+		<field name="uuid" type="String" />
+		<field name="termId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="lastPublishDate" type="Date" />
+		<field name="termName" type="String" />
+		<field name="termVersion" type="String" />
+		<field name="termType" type="String" />
+		<field localized="true" name="displayName" type="String" />
+		<field localized="true" name="definition" type="String" />
+		<field localized="true" name="tooltip" type="String" />
+		<field name="synonyms" type="String" />
+		<field name="attributesJSON" type="String">
+			<hint name="max-length">8000</hint>
+		</field>
+	</model>
+</model-hints>

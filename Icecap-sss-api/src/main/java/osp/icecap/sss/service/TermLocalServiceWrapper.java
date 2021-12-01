@@ -523,6 +523,13 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public void removeTerms(long[] termIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_termLocalService.removeTerms(termIds);
+	}
+
+	@Override
 	public osp.icecap.sss.model.Term updateStatus(
 			long userId, long termId, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)

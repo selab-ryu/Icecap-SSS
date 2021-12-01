@@ -21,6 +21,7 @@ public class TermKeywordQueryContributor implements KeywordQueryContributor {
 	@Override
 	public void contribute(String keywords, BooleanQuery booleanQuery,
 			KeywordQueryContributorHelper keywordQueryContributorHelper) {
+		System.out.println("TermKeywordQueryContributor: contribute");
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
 		queryHelper.addSearchTerm(booleanQuery, searchContext, IcecapSSSTermAttributes.TERM_NAME, false);

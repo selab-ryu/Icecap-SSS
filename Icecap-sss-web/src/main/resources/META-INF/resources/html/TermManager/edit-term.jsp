@@ -1,3 +1,4 @@
+<%@page import="com.liferay.portal.kernel.util.Validator"%>
 <%@page import="com.liferay.portal.kernel.util.HtmlUtil"%>
 <%@page import="osp.icecap.sss.constants.MVCCommandNames"%>
 <%@page import="com.liferay.portal.kernel.util.Constants"%>
@@ -24,9 +25,7 @@
 	String cmd = ParamUtil.getString(renderRequest, Constants.CMD, IcecapSSSActionKeys.ADD_TERM);
 	
 	String defaultTermType = IcecapSSSTermTypes.STRING;
-	String termType = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.TERM_TYPE, defaultTermType);
-	
-	
+
 	String submitButtonLabel = "";
 	
 	if( cmd.equals(IcecapSSSActionKeys.ADD_TERM) ){
@@ -34,6 +33,7 @@
 	}
 	else{
 		submitButtonLabel = LanguageUtil.get(locale, "update-term", "Update Term");
+		defaultTermType = term.getTermType();
 	}
 	
 	Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(); 	
@@ -41,9 +41,6 @@
 	for( Locale availableLocale : availableLocales ){
 		availableLanguageIds.add("\""+LanguageUtil.getLanguageId(availableLocale)+"\"");
 	}
-	
-	System.out.println( availableLanguageIds.toString() );
-
 %>
 <style>
 .hide {
@@ -78,7 +75,7 @@
 								<%
 								final String[] parameterTypes = IcecapSSSTermTypes.getTypes();
 								for( String parameterType : parameterTypes ){
-									if( term != null && parameterType.equals( term.getTermType() )){
+									if( parameterType.equals( defaultTermType )){
 								%>
 									<aui:option label="<%=parameterType %>" value="<%=parameterType %>" selected="<%= true %>"/>
 								<%
@@ -116,46 +113,46 @@
 	<aui:row>
 		<aui:col id="dedicatedAttributes">
 			<c:choose>
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.STRING) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.STRING) %>">
 					<%@include file="jspf/string-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.NUMERIC) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.NUMERIC) %>">
 					<%@include file="jspf/numeric-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.LIST) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.LIST) %>">
 					<%@include file="jspf/list-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.LIST_ARRAY) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.LIST_ARRAY) %>">
 					<%@include file="jspf/list-array-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.BOOLEAN) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.BOOLEAN) %>">
 					<%@include file="jspf/boolean-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.ARRAY) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.ARRAY) %>">
 					<%@include file="jspf/array-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.MATRIX) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.MATRIX) %>">
 					<%@include file="jspf/matrix-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.OBJECT) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.OBJECT) %>">
 					<%@include file="jspf/object-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.OBJECT_ARRAY) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.OBJECT_ARRAY) %>">
 					<%@include file="jspf/object-array-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.DATA_LINK) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.DATA_LINK) %>">
 					<%@include file="jspf/data-link-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.DATA_LINK_ARRAY) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.DATA_LINK_ARRAY) %>">
 					<%@include file="jspf/data-link-array-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.FILE) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.FILE) %>">
 					<%@include file="jspf/file-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.FILE_ARRAY) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.FILE_ARRAY) %>">
 					<%@include file="jspf/file-array-attributes.jspf" %>
 				</c:when> 
-				<c:when test="<%= termType.equals(IcecapSSSTermTypes.PHONE) %>">
+				<c:when test="<%= defaultTermType.equals(IcecapSSSTermTypes.PHONE) %>">
 					<%@include file="jspf/phone-attributes.jspf" %>
 				</c:when>
 				<c:otherwise>

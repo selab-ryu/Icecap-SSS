@@ -117,7 +117,8 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setCreateDate(now);
 		term.setModifiedDate(now);
 		
-		term.setStatus(WorkflowConstants.STATUS_DRAFT);
+//		term.setStatus(WorkflowConstants.STATUS_DRAFT);
+		term.setStatus(WorkflowConstants.STATUS_APPROVED);
 		term.setStatusByUserId(sc.getUserId());
 		term.setStatusByUserName(user.getFullName());
 		term.setStatusDate(sc.getModifiedDate(null));
@@ -160,6 +161,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			null, 
 			null,
 			0, 0, null);
+		System.out.println("Finished Registering as a Asset...");
 		/*
 		
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
@@ -272,11 +274,18 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				ResourceConstants.SCOPE_INDIVIDUAL, 
 				term.getPrimaryKey());
 		
+		/*
 		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 			    term.getCompanyId(), term.getGroupId(),
 			    Term.class.getName(), term.getTermId());
-		
+		*/
 		return term;
+	}
+	
+	public void removeTerms( long[] termIds ) throws PortalException {
+		for( long termId : termIds ) {
+			this.removeTerm(termId);
+		}
 	}
 	
 	public List<Term> getAllTerms(){
@@ -310,13 +319,22 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	}
 
 	public List<Term> getTermsByStatus( int status ){
-		return super.termPersistence.findByStatus(status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findAll();
+		else
+			return super.termPersistence.findByStatus(status);
 	}
 	public List<Term>  getTermsByStatus( int status, int start, int end ){
-		return super.termPersistence.findByStatus(status, start, end);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findAll(start, end);
+		else
+			return super.termPersistence.findByStatus(status, start, end);
 	}
 	public int countTermsByStatus(int status) {
-		return super.termPersistence.countByStatus(status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.countAll();
+		else
+			return super.termPersistence.countByStatus(status);
 	}
 
 	public List<Term> getTermsByName( String termName ){
@@ -324,23 +342,41 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	}
 	
 	public List<Term> getTermsByG_S( long groupId, int status ){
-		return super.termPersistence.findByG_S(groupId, status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByGroupId(groupId);
+		else
+			return super.termPersistence.findByG_S(groupId, status);
 	}
 	public List<Term> getTermsByG_S( long groupId, int status, int start, int end ){
-		return super.termPersistence.findByG_S(groupId, status, start, end);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByGroupId(groupId, start, end);
+		else
+			return super.termPersistence.findByG_S(groupId, status, start, end);
 	}
 	public int countTermsByG_S( long groupId, int status ){
-		return super.termPersistence.countByG_S(groupId, status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.countByGroupId(groupId);
+		else
+			return super.termPersistence.countByG_S(groupId, status);
 	}
 	
 	public List<Term> getTermsByG_U_S( long groupId, long userId, int status ){
-		return super.termPersistence.findByG_U_S(groupId, userId, status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByG_U(groupId, userId);
+		else
+			return super.termPersistence.findByG_U_S(groupId, userId, status);
 	}
 	public List<Term> getTermsByG_U_S( long groupId, long userId, int status, int start, int end ){
-		return super.termPersistence.findByG_U_S(groupId, userId, status, start, end);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByG_U(groupId, userId, start, end);
+		else
+			return super.termPersistence.findByG_U_S(groupId, userId, status, start, end);
 	}
 	public int countTermsByG_U_S( long groupId, long userId, int status ){
-		return super.termPersistence.countByG_U_S(groupId, userId, status);
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.countByG_U(groupId, userId);
+		else
+			return super.termPersistence.countByG_U_S(groupId, userId, status);
 	}
 	
 	public List<Term> getApprovedTerms( long groupId ){
@@ -390,7 +426,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			Term.class.getName(), searchContainer);
 
 		assetEntryQuery.setExcludeZeroViewCount(false);
-		assetEntryQuery.setOrderByCol1("publishDate");
+		assetEntryQuery.setOrderByCol1("termName");
 		assetEntryQuery.setVisible(Boolean.TRUE);
 
 		int total = AssetEntryServiceUtil.getEntriesCount(assetEntryQuery);
@@ -401,7 +437,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		List<AssetEntry> assetEntries = AssetEntryServiceUtil.getEntries(
 			assetEntryQuery);
 
-		return new SearchContainerResults<>(assetEntries, total);
+		return new SearchContainerResults<AssetEntry>(assetEntries, total);
 	}
 	
 	/**
@@ -414,7 +450,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	private boolean verifyTermName( String termName ) throws DuplicatedTermNameException {
 		// Check uniqueness of the termName
 		if( super.termPersistence.countByName(termName) > 0 ) {
-			throw new DuplicatedTermNameException( termName + "exists already." );
+			throw new DuplicatedTermNameException( termName + " exists already." );
 		}
 		
 		// Check if the naming convention of the term name is followed

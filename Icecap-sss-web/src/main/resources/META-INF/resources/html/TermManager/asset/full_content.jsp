@@ -20,7 +20,7 @@
 
 	term = TermLocalServiceUtil.getTerm(termId);
 	
-	List<Term> history = TermLocalServiceUtil.getTermsByName(term.getName());
+	List<Term> history = TermLocalServiceUtil.getTermsByName(term.getTermName());
 
 	term = term.toEscapedModel();
 
@@ -38,31 +38,24 @@
 	PortalUtil.setPageKeywords(ListUtil.toString(assetTags, "name"), request);
 %>
 
-<liferay-portlet:renderURL varImpl="viewTermURL">
-	<portlet:param name="mvcPath" value="<%= MVCCommandNames.RENDER_TERM_VIEW %>" />
-	<portlet:param name="termId" value="<%=String.valueOf(termId)%>" />
-</liferay-portlet:renderURL>
-
-<liferay-portlet:renderURL varImpl="viewURL">
-	<portlet:param name="mvcPath" value="<%= MVCCommandNames.RENDER_TERM_LIST %>" />
+<liferay-portlet:renderURL varImpl="viewTermListURL">
+	<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_TERM_LIST %>" />
 </liferay-portlet:renderURL>
 
 <liferay-ui:header
-		backURL="<%=viewURL.toString()%>"
-		title="<%=term.getDisplayTitle(locale)%>" 
+		backURL="<%=viewTermListURL.toString()%>"
+		title="view-term-list" 
 />
 
 <dl>
 	<dt>Term</dt>
 	<dd><%=term.getDisplayTitle(locale)%></dd>
 	<dt>Parameter Name</dt>
-	<dd><%=term.getName()%></dd>
+	<dd><%=term.getTermName()%></dd>
 	<dt>Type</dt>
-	<dd><%=term.getType()%></dd>
+	<dd><%=term.getTermType()%></dd>
 	<dt>Definition</dt>
 	<dd><%=term.getDefinition(locale, true) %></dd>
-	<dt>Definition</dt>
-	<dd><%=term.getDefinition(locale) %></dd>
 </dl>
 
 <liferay-ui:ratings 

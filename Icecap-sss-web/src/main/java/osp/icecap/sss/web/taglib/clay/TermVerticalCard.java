@@ -39,71 +39,80 @@ public class TermVerticalCard extends BaseVerticalCard {
 			_trashHelper = trashHelper;
 			_termURL = termURL;
 			_permissionChecker = permissionChecker;
-		}
+	}
 
-		@Override
-		public List<DropdownItem> getActionDropdownItems() {
-				TermActionDropdownItemsProvider
-					termActionDropdownItemsProvider =
-						new TermActionDropdownItemsProvider(
-							_term, renderRequest, _renderResponse,
-							_permissionChecker, _trashHelper);
+	@Override
+	public List<DropdownItem> getActionDropdownItems() {
+		System.out.println("TermVerticalCard.getActionDropdownItems() called.....");
+			TermActionDropdownItemsProvider
+				termActionDropdownItemsProvider =
+					new TermActionDropdownItemsProvider(
+									_term, 
+									_renderRequest, 
+									_renderResponse,
+									_permissionChecker, 
+									_trashHelper);
 
-				return termActionDropdownItemsProvider.
-					getActionDropdownItems();
-		}
+			return termActionDropdownItemsProvider.getActionDropdownItems();
+	}
 
-		public String getAspectRatioCssClasses() {
-			return "aspect-ratio-item-center-middle " +
-				"aspect-ratio-item-vertical-fluid";
-		}
+	public String getAspectRatioCssClasses() {
+		System.out.println("TermVerticalCard.getAspectRatioCssClasses() called.....");
+		return "aspect-ratio-item-center-middle " +
+			"aspect-ratio-item-vertical-fluid";
+	}
 
-		@Override
-		public String getDefaultEventHandler() {
-			return IcecapSSSConstants.TERM_ELEMENTS_DEFAULT_EVENT_HANDLER;
-		}
+	@Override
+	public String getDefaultEventHandler() {
+		System.out.println("TermVerticalCard.getDefaultEventHandler() called.....");
+		return IcecapSSSConstants.TERM_ELEMENTS_DEFAULT_EVENT_HANDLER;
+	}
 
-		@Override
-		public String getHref() {
-			try {
-				if (!TermModelResourcePermission.contains(
-						_permissionChecker, _term, ActionKeys.UPDATE)) {
+	@Override
+	public String getHref() {
+		System.out.println("TermVerticalCard.getHref() called.....");
+		try {
+			if (!TermModelResourcePermission.contains(
+					_permissionChecker, _term, ActionKeys.UPDATE)) {
 
-					return null;
-				}
-			} catch (PortalException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return null;
 			}
-
-			return _termURL;
+		} catch (PortalException e) {
+			e.printStackTrace();
 		}
 
-		@Override
-		public String getIcon() {
-			return "term";
-		}
+		return _termURL;
+	}
 
-		@Override
-		public String getImageSrc() {
-			return "imageSrc";
-		}
+	@Override
+	public String getIcon() {
+		System.out.println("TermVerticalCard.getIcon() called.....");
+		return "term";
+	}
 
-		@Override
-		public String getSubtitle() {
-			return _term.getDefinition(_locale);
-		}
+	@Override
+	public String getImageSrc() {
+		System.out.println("TermVerticalCard.getImageSrc() called.....");
+		return "imageSrc";
+	}
 
-		@Override
-		public String getTitle() {
-			return HtmlUtil.escape( _term.getDisplayName(_renderRequest.getLocale()) );
-		}
+	@Override
+	public String getSubtitle() {
+		System.out.println("TermVerticalCard.getSubtitle() called.....");
+		return _term.getDefinition(_locale);
+	}
 
-		private final Term _term;
-		private final String _termURL;
-		private final PermissionChecker _permissionChecker;
-		private final RenderRequest  _renderRequest;
-		private final RenderResponse _renderResponse;
-		private final TrashHelper _trashHelper;
-		private final Locale _locale;
+	@Override
+	public String getTitle() {
+		System.out.println("TermVerticalCard.getTitle() called.....");
+		return HtmlUtil.escape( _term.getDisplayTitle(_locale) );
+	}
+
+	private final Term _term;
+	private final String _termURL;
+	private final PermissionChecker _permissionChecker;
+	private final RenderRequest  _renderRequest;
+	private final RenderResponse _renderResponse;
+	private final TrashHelper _trashHelper;
+	private final Locale _locale;
 }

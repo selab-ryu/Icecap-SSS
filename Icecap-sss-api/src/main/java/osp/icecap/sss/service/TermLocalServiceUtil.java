@@ -482,6 +482,12 @@ public class TermLocalServiceUtil {
 		return getService().removeTerm(termId);
 	}
 
+	public static void removeTerms(long[] termIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		getService().removeTerms(termIds);
+	}
+
 	public static osp.icecap.sss.model.Term updateStatus(
 			long userId, long termId, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)

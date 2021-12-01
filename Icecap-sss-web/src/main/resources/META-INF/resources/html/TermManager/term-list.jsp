@@ -1,3 +1,4 @@
+<%@page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPDropdownItemList"%>
 <%@page import="com.liferay.portal.kernel.util.StringUtil"%>
 <%@page import="osp.icecap.sss.constants.MVCCommandNames"%>
 <%@page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil"%>
@@ -30,15 +31,24 @@ PortletURL portletURL = termSearchContainer.getIteratorURL();
 TrashHelper trashHelper = termDisplayContext.getTrashHelper();
 
 TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
-	new TermManagementToolbarDisplayContext(
-			liferayPortletRequest, liferayPortletResponse, request, termSearchContainer, trashHelper, displayStyle
-			);
+			new TermManagementToolbarDisplayContext(
+								liferayPortletRequest, 
+								liferayPortletResponse, 
+								request, 
+								termDisplayContext
+					);
 %>
 
-
 <clay:management-toolbar
+	id="termManagementToolbar"
 	displayContext="<%=termManagementToolbarDisplayContext%>"
 	searchContainerId="termSearchContainer"
+	selectable = "<%= true %>"
+	showSelectAllButton="<%= true %>"
+	showResultsBar="<%= true %>"
+	itemsTotal="<%= termSearchContainer.getTotal() %>"
+	supportsBulkActions="<%= true %>"
+	actionDropdownItems="<%= termManagementToolbarDisplayContext.getActionDropdownItems() %>"
 />
 
 <div class="container-fluid container-fluid-max-xl main-content-body">
@@ -58,7 +68,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				modelVar="term"
 			>
 				<liferay-portlet:renderURL varImpl="rowURL">
-					<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_TERM_EDIT %>" />
+					<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_TERM_VIEW %>" />
 					<portlet:param name="redirect" value="<%=portletURL.toString()%>" />
 					<portlet:param name="termId" value="<%=String.valueOf(term.getTermId())%>" />
 				</liferay-portlet:renderURL>
@@ -141,17 +151,17 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 							cssClass="table-cell-expand-smallest table-cell-minw-150"
 							name="parameter-name"
 							orderable="<%= false %>"
-							property="name"
+							property="termName"
 						/>
 				
-						<liferay-ui:search-container-column-date
+						<liferay-ui:search-container-column-text
 							cssClass="table-cell-expand-smallest table-cell-ws-nowrap"
 							name="version"
 							orderable="<%= false %>"
-							property="version"
+							property="termVersion"
 						/>
 				
-						<liferay-ui:search-container-column-date
+						<liferay-ui:search-container-column-text
 							cssClass="table-cell-expand-smallest table-cell-ws-nowrap"
 							name="definition"
 							orderable="<%= false %>"
@@ -173,7 +183,9 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 							name="status"
 						/>
 				
-						<liferay-ui:search-container-column-text>
+						<liferay-ui:search-container-column-text
+							name="actions"
+						>
 				
 							<%
 							TermActionDropdownItemsProvider termActionDropdownItemsProvider = 
@@ -181,7 +193,6 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 							%>
 				
 							<clay:dropdown-actions
-								defaultEventHandler="<%= IcecapSSSConstants.TERM_ELEMENTS_DEFAULT_EVENT_HANDLER %>"
 								dropdownItems="<%= termActionDropdownItemsProvider.getActionDropdownItems() %>"
 							/>
 						</liferay-ui:search-container-column-text>
@@ -196,3 +207,9 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 		</liferay-ui:search-container>
 	</aui:form>
 </div>
+
+<script>
+function <portlet:namespace/>defaultActionEventHandler(){
+	alert("default action event handler.");
+}
+</script>

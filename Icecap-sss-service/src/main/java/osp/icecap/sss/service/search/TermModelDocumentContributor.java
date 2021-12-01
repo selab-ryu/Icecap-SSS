@@ -9,14 +9,21 @@ import org.osgi.service.component.annotations.Component;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.model.Term;
 
+/**
+ * The contributor is a actual indexer when each Term data is added or updated.
+ * Super interface ModelDocumentContributor has only one unimplemented API.
+ * 
+**/
 @Component(
-        immediate = true,
-        property = "indexer.class.name=osp.icecap.sss.model.Term",
-        service = ModelDocumentContributor.class
+		immediate = true,
+		property = "indexer.class.name=osp.icecap.sss.model.Term",
+		service = ModelDocumentContributor.class
 )
 public class TermModelDocumentContributor implements ModelDocumentContributor<Term> {
+
 	@Override
 	public void contribute(Document document, Term term) {
+			System.out.println("TermModelDocumentContributor.......");
 			document.addDate(Field.MODIFIED_DATE, term.getModifiedDate());
 			document.addKeyword(IcecapSSSTermAttributes.TERM_NAME, term.getTermName());
 			document.addLocalizedKeyword(IcecapSSSTermAttributes.DEFINITION, term.getDefinitionMap(), true);
@@ -24,4 +31,5 @@ public class TermModelDocumentContributor implements ModelDocumentContributor<Te
 			document.addLocalizedKeyword(IcecapSSSTermAttributes.TOOLTIP, term.getTooltipMap(), true);
 			document.addKeyword(IcecapSSSTermAttributes.SYNONYMS, term.getSynonyms());
 	}
+	
 }
