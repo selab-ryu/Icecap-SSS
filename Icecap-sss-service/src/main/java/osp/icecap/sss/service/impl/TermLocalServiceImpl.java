@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 
@@ -117,8 +118,8 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setCreateDate(now);
 		term.setModifiedDate(now);
 		
-//		term.setStatus(WorkflowConstants.STATUS_DRAFT);
-		term.setStatus(WorkflowConstants.STATUS_APPROVED);
+		term.setStatus(WorkflowConstants.STATUS_DRAFT);
+//		term.setStatus(WorkflowConstants.STATUS_APPROVED);
 		term.setStatusByUserId(sc.getUserId());
 		term.setStatusByUserName(user.getFullName());
 		term.setStatusDate(sc.getModifiedDate(null));
@@ -161,13 +162,14 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			null, 
 			null,
 			0, 0, null);
+		
+		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
+		indexer.reindex(term);
 		System.out.println("Finished Registering as a Asset...");
-		/*
 		
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
 				term.getGroupId(), term.getUserId(), Term.class.getName(), 
 				term.getPrimaryKey(), term, sc);
-		*/
 		
 		return term;
 	}
@@ -182,6 +184,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			Map<Locale, String> definitionMap,
 			Map<Locale, String> tooltipMap,
 			String synonyms,
+			int status,
 			String attributes, // attributes for each type
 			ServiceContext sc) throws PortalException {
 		Term term = super.termPersistence.findByPrimaryKey(termId);
@@ -199,6 +202,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		
 		term.setUserId(sc.getUserId());
 		term.setModifiedDate(new Date() );
+		term.setStatus(status);
 		
 		super.termPersistence.update(term);
 		
@@ -233,7 +237,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				null, 
 				null,
 				0, 0, null);
-		
+		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
+		indexer.reindex(term);
+
 		return term;
 	}
 	
@@ -251,7 +257,18 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setStatusByUserName(user.getFullName());
 		term.setStatusDate(new Date());
 
-		super.termPersistence.update(term);
+		updateTerm( 
+				term.getTermId(), 
+				term.getTermName(), 
+				term.getTermVersion(), 
+				term.getTermType(), 
+				term.getDisplayNameMap(), 
+				term.getDefinitionMap(), 
+				term.getTooltipMap(), 
+				term.getSynonyms(), 
+				term.getStatus(),
+				term.getAttributesJSON(),
+				sc);
 		
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			super.assetEntryLocalService.updateVisible(Term.class.getName(), termId, true);
@@ -273,12 +290,13 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				Term.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL, 
 				term.getPrimaryKey());
+		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
+		indexer.delete(term);
 		
-		/*
 		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 			    term.getCompanyId(), term.getGroupId(),
 			    Term.class.getName(), term.getTermId());
-		*/
+		
 		return term;
 	}
 	

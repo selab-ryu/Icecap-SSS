@@ -24,12 +24,16 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermService;
+import osp.icecap.sss.service.TermServiceUtil;
 import osp.icecap.sss.service.persistence.TermPersistence;
 
 /**
@@ -45,13 +49,18 @@ import osp.icecap.sss.service.persistence.TermPersistence;
  */
 public abstract class TermServiceBaseImpl
 	extends BaseServiceImpl
-	implements TermService, AopService, IdentifiableOSGiService {
+	implements AopService, IdentifiableOSGiService, TermService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TermService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>osp.icecap.sss.service.TermServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TermService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TermServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -62,6 +71,8 @@ public abstract class TermServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		termService = (TermService)aopProxy;
+
+		_setServiceUtilService(termService);
 	}
 
 	/**
@@ -101,8 +112,21 @@ public abstract class TermServiceBaseImpl
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(TermService termService) {
+		try {
+			Field field = TermServiceUtil.class.getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, termService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package osp.icecap.sss.service.search.impl;
+package osp.icecap.sss.search.impl;
 
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;

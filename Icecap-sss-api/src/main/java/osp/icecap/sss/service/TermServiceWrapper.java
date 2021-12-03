@@ -16,8 +16,6 @@ package osp.icecap.sss.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * Provides a wrapper for {@link TermService}.
  *
@@ -25,9 +23,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @see TermService
  * @generated
  */
-@ProviderType
 public class TermServiceWrapper
-	implements TermService, ServiceWrapper<TermService> {
+	implements ServiceWrapper<TermService>, TermService {
 
 	public TermServiceWrapper(TermService termService) {
 		_termService = termService;

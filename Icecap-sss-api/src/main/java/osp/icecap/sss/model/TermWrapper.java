@@ -22,8 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * <p>
  * This class is a wrapper for {@link Term}.
@@ -33,9 +31,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @see Term
  * @generated
  */
-@ProviderType
 public class TermWrapper
-	extends BaseModelWrapper<Term> implements Term, ModelWrapper<Term> {
+	extends BaseModelWrapper<Term> implements ModelWrapper<Term>, Term {
 
 	public TermWrapper(Term term) {
 		super(term);

@@ -93,6 +93,7 @@ public class TermStagedModelDataHandler extends BaseStagedModelDataHandler<Term>
 						term.getDefinitionMap(),
 						term.getTooltipMap(),
 						term.getSynonyms(),
+						term.getStatus(),
 						term.getAttributesJSON(),
 						serviceContext);
 

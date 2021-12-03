@@ -9,6 +9,7 @@ public class IcecapSSSTermAttributes {
 	public static final String TOOLTIP = "tooltip";
 	public static final String SYNONYMS = "synonyms";
 	public static final String VALUE = "value";
+	public static final String STATUS = "status";
 	public static final String MIN_VALUE = "minValue";
 	public static final String MAX_VALUE = "maxValue";
 	public static final String LOWER_BOUNDARY = "lowerBoundary";

@@ -14,10 +14,18 @@
 
 package osp.icecap.sss.service;
 
-import org.osgi.annotation.versioning.ProviderType;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
+
+import osp.icecap.sss.model.Term;
 
 /**
  * Provides the local service utility for Term. This utility wraps
@@ -31,7 +39,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see TermLocalService
  * @generated
  */
-@ProviderType
 public class TermLocalServiceUtil {
 
 	/*
@@ -39,14 +46,14 @@ public class TermLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>osp.icecap.sss.service.impl.TermLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static osp.icecap.sss.model.Term addTerm(
+	public static Term addTerm(
 			String termName, String termVersion, String termType,
-			java.util.Map<java.util.Locale, String> displayNameMap,
-			java.util.Map<java.util.Locale, String> definitionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> definitionMap,
+			Map<java.util.Locale, String> tooltipMap, String synonyms,
 			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addTerm(
 			termName, termVersion, termType, displayNameMap, definitionMap,
@@ -56,12 +63,14 @@ public class TermLocalServiceUtil {
 	/**
 	 * Adds the term to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TermLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param term the term
 	 * @return the term that was added
 	 */
-	public static osp.icecap.sss.model.Term addTerm(
-		osp.icecap.sss.model.Term term) {
-
+	public static Term addTerm(Term term) {
 		return getService().addTerm(term);
 	}
 
@@ -99,17 +108,16 @@ public class TermLocalServiceUtil {
 	 * @param termId the primary key for the new term
 	 * @return the new term
 	 */
-	public static osp.icecap.sss.model.Term createTerm(long termId) {
+	public static Term createTerm(long termId) {
 		return getService().createTerm(termId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -117,31 +125,33 @@ public class TermLocalServiceUtil {
 	/**
 	 * Deletes the term with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TermLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param termId the primary key of the term
 	 * @return the term that was removed
 	 * @throws PortalException if a term with the primary key could not be found
 	 */
-	public static osp.icecap.sss.model.Term deleteTerm(long termId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Term deleteTerm(long termId) throws PortalException {
 		return getService().deleteTerm(termId);
 	}
 
 	/**
 	 * Deletes the term from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TermLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param term the term
 	 * @return the term that was removed
 	 */
-	public static osp.icecap.sss.model.Term deleteTerm(
-		osp.icecap.sss.model.Term term) {
-
+	public static Term deleteTerm(Term term) {
 		return getService().deleteTerm(term);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -151,9 +161,7 @@ public class TermLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -161,7 +169,7 @@ public class TermLocalServiceUtil {
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -169,9 +177,8 @@ public class TermLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -180,7 +187,7 @@ public class TermLocalServiceUtil {
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -189,10 +196,9 @@ public class TermLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -204,9 +210,7 @@ public class TermLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -218,13 +222,13 @@ public class TermLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static osp.icecap.sss.model.Term fetchTerm(long termId) {
+	public static Term fetchTerm(long termId) {
 		return getService().fetchTerm(termId);
 	}
 
@@ -235,9 +239,7 @@ public class TermLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching term, or <code>null</code> if a matching term could not be found
 	 */
-	public static osp.icecap.sss.model.Term fetchTermByUuidAndGroupId(
-		String uuid, long groupId) {
-
+	public static Term fetchTermByUuidAndGroupId(String uuid, long groupId) {
 		return getService().fetchTermByUuidAndGroupId(uuid, groupId);
 	}
 
@@ -247,23 +249,19 @@ public class TermLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getAllTerms() {
+	public static List<Term> getAllTerms() {
 		return getService().getAllTerms();
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getAllTerms(
-		int start, int end) {
-
+	public static List<Term> getAllTerms(int start, int end) {
 		return getService().getAllTerms(start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
-		long groupId) {
-
+	public static List<Term> getApprovedTerms(long groupId) {
 		return getService().getApprovedTerms(groupId);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
+	public static List<Term> getApprovedTerms(
 		long groupId, int start, int end) {
 
 		return getService().getApprovedTerms(groupId, start, end);
@@ -290,9 +288,8 @@ public class TermLocalServiceUtil {
 		return getService().getName(termId, locale);
 	}
 
-	public static com.liferay.portal.kernel.util.OrderByComparator
-		<osp.icecap.sss.model.Term> getOrderByNameComparator(
-			String orderByCol, String orderByType) {
+	public static OrderByComparator<Term> getOrderByNameComparator(
+		String orderByCol, String orderByType) {
 
 		return getService().getOrderByNameComparator(orderByCol, orderByType);
 	}
@@ -306,18 +303,20 @@ public class TermLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	/**
+	 * @throws PortalException
+	 */
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
 	public static com.liferay.portal.kernel.dao.search.SearchContainerResults
 		<com.liferay.asset.kernel.model.AssetEntry> getSearchContainerResults(
-				com.liferay.portal.kernel.dao.search.SearchContainer
-					<osp.icecap.sss.model.Term> searchContainer)
-			throws com.liferay.portal.kernel.exception.PortalException {
+				com.liferay.portal.kernel.dao.search.SearchContainer<Term>
+					searchContainer)
+			throws PortalException {
 
 		return getService().getSearchContainerResults(searchContainer);
 	}
@@ -329,9 +328,7 @@ public class TermLocalServiceUtil {
 	 * @return the term
 	 * @throws PortalException if a term with the primary key could not be found
 	 */
-	public static osp.icecap.sss.model.Term getTerm(long termId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Term getTerm(long termId) throws PortalException {
 		return getService().getTerm(termId);
 	}
 
@@ -343,9 +340,8 @@ public class TermLocalServiceUtil {
 	 * @return the matching term
 	 * @throws PortalException if a matching term could not be found
 	 */
-	public static osp.icecap.sss.model.Term getTermByUuidAndGroupId(
-			String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Term getTermByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
 
 		return getService().getTermByUuidAndGroupId(uuid, groupId);
 	}
@@ -354,83 +350,67 @@ public class TermLocalServiceUtil {
 	 * Returns a range of all the terms.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>osp.icecap.sss.model.impl.TermModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of terms
 	 * @param end the upper bound of the range of terms (not inclusive)
 	 * @return the range of terms
 	 */
-	public static java.util.List<osp.icecap.sss.model.Term> getTerms(
-		int start, int end) {
-
+	public static List<Term> getTerms(int start, int end) {
 		return getService().getTerms(start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByG_S(
-		long groupId, int status) {
-
+	public static List<Term> getTermsByG_S(long groupId, int status) {
 		return getService().getTermsByG_S(groupId, status);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByG_S(
+	public static List<Term> getTermsByG_S(
 		long groupId, int status, int start, int end) {
 
 		return getService().getTermsByG_S(groupId, status, start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByG_U_S(
+	public static List<Term> getTermsByG_U_S(
 		long groupId, long userId, int status) {
 
 		return getService().getTermsByG_U_S(groupId, userId, status);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByG_U_S(
+	public static List<Term> getTermsByG_U_S(
 		long groupId, long userId, int status, int start, int end) {
 
 		return getService().getTermsByG_U_S(
 			groupId, userId, status, start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByGroupId(
-		long groupId) {
-
+	public static List<Term> getTermsByGroupId(long groupId) {
 		return getService().getTermsByGroupId(groupId);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByGroupId(
+	public static List<Term> getTermsByGroupId(
 		long groupId, int start, int end) {
 
 		return getService().getTermsByGroupId(groupId, start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByName(
-		String termName) {
-
+	public static List<Term> getTermsByName(String termName) {
 		return getService().getTermsByName(termName);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByStatus(
-		int status) {
-
+	public static List<Term> getTermsByStatus(int status) {
 		return getService().getTermsByStatus(status);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByStatus(
-		int status, int start, int end) {
-
+	public static List<Term> getTermsByStatus(int status, int start, int end) {
 		return getService().getTermsByStatus(status, start, end);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByUserId(
-		long userId) {
-
+	public static List<Term> getTermsByUserId(long userId) {
 		return getService().getTermsByUserId(userId);
 	}
 
-	public static java.util.List<osp.icecap.sss.model.Term> getTermsByUserId(
-		long userId, int start, int end) {
-
+	public static List<Term> getTermsByUserId(long userId, int start, int end) {
 		return getService().getTermsByUserId(userId, start, end);
 	}
 
@@ -441,8 +421,8 @@ public class TermLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching terms, or an empty list if no matches were found
 	 */
-	public static java.util.List<osp.icecap.sss.model.Term>
-		getTermsByUuidAndCompanyId(String uuid, long companyId) {
+	public static List<Term> getTermsByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().getTermsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -457,11 +437,9 @@ public class TermLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching terms, or an empty list if no matches were found
 	 */
-	public static java.util.List<osp.icecap.sss.model.Term>
-		getTermsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<osp.icecap.sss.model.Term> orderByComparator) {
+	public static List<Term> getTermsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Term> orderByComparator) {
 
 		return getService().getTermsByUuidAndCompanyId(
 			uuid, companyId, start, end, orderByComparator);
@@ -476,70 +454,54 @@ public class TermLocalServiceUtil {
 		return getService().getTermsCount();
 	}
 
-	public static osp.icecap.sss.model.Term removeTerm(long termId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Term removeTerm(long termId) throws PortalException {
 		return getService().removeTerm(termId);
 	}
 
-	public static void removeTerms(long[] termIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void removeTerms(long[] termIds) throws PortalException {
 		getService().removeTerms(termIds);
 	}
 
-	public static osp.icecap.sss.model.Term updateStatus(
+	public static Term updateStatus(
 			long userId, long termId, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			   com.liferay.portal.kernel.exception.SystemException {
+		throws PortalException, SystemException {
 
 		return getService().updateStatus(userId, termId, status, sc);
 	}
 
-	public static osp.icecap.sss.model.Term updateTerm(
+	public static Term updateTerm(
 			long termId, String termName, String termVersion, String termType,
-			java.util.Map<java.util.Locale, String> displayNameMap,
-			java.util.Map<java.util.Locale, String> definitionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
-			String attributes,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> definitionMap,
+			Map<java.util.Locale, String> tooltipMap, String synonyms,
+			int status, String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateTerm(
 			termId, termName, termVersion, termType, displayNameMap,
-			definitionMap, tooltipMap, synonyms, attributes, sc);
+			definitionMap, tooltipMap, synonyms, status, attributes, sc);
 	}
 
 	/**
 	 * Updates the term in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TermLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param term the term
 	 * @return the term that was updated
 	 */
-	public static osp.icecap.sss.model.Term updateTerm(
-		osp.icecap.sss.model.Term term) {
-
+	public static Term updateTerm(Term term) {
 		return getService().updateTerm(term);
 	}
 
 	public static TermLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TermLocalService, TermLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TermLocalService.class);
-
-		ServiceTracker<TermLocalService, TermLocalService> serviceTracker =
-			new ServiceTracker<TermLocalService, TermLocalService>(
-				bundle.getBundleContext(), TermLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TermLocalService _service;
 
 }

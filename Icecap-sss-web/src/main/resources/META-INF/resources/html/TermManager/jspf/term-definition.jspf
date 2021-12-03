@@ -22,7 +22,7 @@
 								</aui:input>
 					</aui:col>
 					<aui:col md="5">
-						<aui:field-wrapper name="displayName" label="term-display-name" helpMessage="term-display-name-help">
+						<aui:field-wrapper name="displayName" required="true" label="term-display-name" helpMessage="term-display-name-help">
 								<liferay-ui:input-localized 
 												name="displayName"
 												xml="<%= Validator.isNotNull(term)?term.getDisplayName():StringPool.BLANK %>" >
@@ -31,15 +31,8 @@
 					</aui:col>
 			</aui:row>
 			<aui:row>
-				<aui:col md="12">
-					<aui:fieldset label="categorization" helpMessage="term-categories-help">
-						<liferay-asset:asset-categories-selector className="<%= Term.class.getName() %>" />
-					</aui:fieldset>
-				</aui:col>
-			</aui:row>
-			<aui:row>
 					<aui:col md="12">
-						<aui:field-wrapper name="definition" label="term-definition" helpMessage="term-definition-help">
+						<aui:field-wrapper name="definition" label="definition" helpMessage="definition-help">
 								<liferay-ui:input-localized 
 												type="textarea"
 												name="definition"

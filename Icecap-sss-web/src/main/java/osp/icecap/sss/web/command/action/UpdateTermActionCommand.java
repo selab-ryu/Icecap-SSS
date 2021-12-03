@@ -58,6 +58,7 @@ public class UpdateTermActionCommand extends BaseMVCActionCommand {
 		Map<Locale, String> definitionMap = LocalizationUtil.getLocalizationMap(actionRequest, IcecapSSSTermAttributes.DEFINITION);
 		String synonyms = ParamUtil.getString(actionRequest, IcecapSSSTermAttributes.SYNONYMS);
 		Map<Locale, String> tooltipMap = LocalizationUtil.getLocalizationMap(actionRequest, IcecapSSSTermAttributes.TOOLTIP);
+		int status = ParamUtil.getInteger(actionRequest, IcecapSSSTermAttributes.STATUS);
 		String dedicatedAttributes = null;
 		
 		if( termType.equals(IcecapSSSTermTypes.STRING) ){
@@ -88,7 +89,7 @@ public class UpdateTermActionCommand extends BaseMVCActionCommand {
 			_termLocalService.addTerm(name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, dedicatedAttributes, sc);
 		}
 		else if( cmd.equals(IcecapSSSActionKeys.UPDATE_TERM) ){
-			_termLocalService.updateTerm(termId, name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, dedicatedAttributes, sc);
+			_termLocalService.updateTerm(termId, name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, status, dedicatedAttributes, sc);
 		}
 		} catch( PortalException e ) {
 			e.printStackTrace();

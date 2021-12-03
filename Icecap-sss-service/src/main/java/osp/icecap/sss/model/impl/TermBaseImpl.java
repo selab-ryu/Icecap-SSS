@@ -14,8 +14,6 @@
 
 package osp.icecap.sss.model.impl;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import osp.icecap.sss.service.TermLocalServiceUtil;
  * @see Term
  * @generated
  */
-@ProviderType
 public abstract class TermBaseImpl extends TermModelImpl implements Term {
 
 	/*

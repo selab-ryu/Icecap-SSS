@@ -52,9 +52,6 @@
 }
 </style>
 
-<liferay-asset:asset-categories-error />
-<liferay-asset:asset-tags-error />
-
 <liferay-portlet:actionURL name="<%= MVCCommandNames.ACTION_TERM_UPDATE %>" var="updateTermURL">
 	<portlet:param name="<%=Constants.CMD %>" value="<%= cmd %>"/>
 </liferay-portlet:actionURL>
@@ -95,7 +92,8 @@
 					</aui:fieldset-group>
 				</aui:form>
 			</aui:col>
-			<aui:col md="7"></aui:col>
+			<aui:col md="7">
+			</aui:col>
 			<aui:col md="2" >
 				<clay:link href="<%=redirect %>" icon="list" label="view-term-list" />
 			</aui:col>
@@ -160,14 +158,26 @@
 			</c:choose>
 		</aui:col>
 	</aui:row>
+	<aui:row>
+		<aui:col>
+			<aui:fieldset-group markupView="lexicon">
+				<aui:fieldset collapsed="<%= false %>" collapsible="<%= true %>" label="categorization" helpMessage="term-categories-help">
+					<liferay-asset:asset-categories-selector className="<%=Term.class.getName()%>" classPK="<%= 0 %>"/>
+				</aui:fieldset>
+				<liferay-asset:asset-categories-error />
+				<liferay-asset:asset-tags-error />
+			</aui:fieldset-group>
+		</aui:col>
+	</aui:row>
 	<aui:button-row>
 		<aui:button name="submit" type="submit" value="<%= submitButtonLabel %>"></aui:button>
 		<aui:button name="clear" type="reset" value="clear"></aui:button>
 		<aui:button name="cancel" type="cancel" value="cancel" href="<%= redirect %>"></aui:button>
 	</aui:button-row>
 </aui:container>
+
 </aui:form>
-	
+
 <script>
 $(document).ready(function(){
 	var hasDedicatedAttributes = function( termType ){

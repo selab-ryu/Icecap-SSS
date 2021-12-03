@@ -47,8 +47,8 @@ import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
-public class TermActionDropdownItemsProvider {
-	public TermActionDropdownItemsProvider(
+public class TermActionDropdownItemsProvider30 {
+	public TermActionDropdownItemsProvider30(
 			Term term, 
 			RenderRequest renderRequest,
 			RenderResponse renderResponse, 
@@ -151,10 +151,10 @@ public class TermActionDropdownItemsProvider {
 
 		ActionURL deleteURL = _renderResponse.createActionURL();
 
-		deleteURL.setParameter(IcecapSSSWebKeys.MVC_ACTION_COMMAND_NAME, MVCCommandNames.ACTION_TERM_DELETE);
-		deleteURL.setParameter(Constants.CMD, Constants.DELETE);
-		deleteURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
-		deleteURL.setParameter(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
+		deleteURL.getActionParameters().setValue(IcecapSSSWebKeys.MVC_ACTION_COMMAND_NAME, MVCCommandNames.ACTION_TERM_DELETE);
+		deleteURL.getActionParameters().setValue(Constants.CMD, Constants.DELETE);
+		deleteURL.getActionParameters().setValue(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
+		deleteURL.getActionParameters().setValue(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
 
 		return dropdownItem -> {
 			dropdownItem.putData("action", "delete");
@@ -185,11 +185,11 @@ public class TermActionDropdownItemsProvider {
 
 		ActionURL moveToTrashURL = _renderResponse.createActionURL();
 
-		moveToTrashURL.setParameter(
+		moveToTrashURL.getActionParameters().setValue(
 					ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_UPDATE);
-		moveToTrashURL.setParameter(Constants.CMD, Constants.MOVE_TO_TRASH);
-		moveToTrashURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
-		moveToTrashURL.setParameter(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
+		moveToTrashURL.getActionParameters().setValue(Constants.CMD, Constants.MOVE_TO_TRASH);
+		moveToTrashURL.getActionParameters().setValue(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
+		moveToTrashURL.getActionParameters().setValue(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
 
 		return dropdownItem -> {
 			dropdownItem.putData("action", "delete");
@@ -285,31 +285,31 @@ public class TermActionDropdownItemsProvider {
 			portletURL.setWindowState(WindowState.MAXIMIZED);
 		}
 
-		portletURL.setParameter("mvcPath", "/edit_permissions.jsp");
+		portletURL.getRenderParameters().setValue("mvcPath", "/edit_permissions.jsp");
 
 		if (Validator.isNotNull(redirect)) {
-			portletURL.setParameter(IcecapSSSWebKeys.REDIRECT, redirect);
+			portletURL.getRenderParameters().setValue(IcecapSSSWebKeys.REDIRECT, redirect);
 
 			if (!themeDisplay.isStateMaximized()) {
-				portletURL.setParameter("returnToFullPageURL", redirect);
+				portletURL.getRenderParameters().setValue("returnToFullPageURL", redirect);
 			}
 		}
 
-		portletURL.setParameter("portletConfiguration", Boolean.TRUE.toString());
+		portletURL.getRenderParameters().setValue("portletConfiguration", Boolean.TRUE.toString());
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		portletURL.setParameter("portletResource", portletDisplay.getId());
+		portletURL.getRenderParameters().setValue("portletResource", portletDisplay.getId());
 
-		portletURL.setParameter("modelResource", modelResource);
-		portletURL.setParameter(
+		portletURL.getRenderParameters().setValue("modelResource", modelResource);
+		portletURL.getRenderParameters().setValue(
 			"modelResourceDescription", modelResourceDescription);
-		portletURL.setParameter(
+		portletURL.getRenderParameters().setValue(
 			"resourceGroupId", String.valueOf(resourceGroupId));
-		portletURL.setParameter("resourcePrimKey", resourcePrimKey);
+		portletURL.getRenderParameters().setValue("resourcePrimKey", resourcePrimKey);
 
 		if (roleTypes != null) {
-			portletURL.setParameter("roleTypes", StringUtil.merge(roleTypes));
+			portletURL.getRenderParameters().setValue("roleTypes", StringUtil.merge(roleTypes));
 		}
 
 		return portletURL.toString();
@@ -320,10 +320,10 @@ public class TermActionDropdownItemsProvider {
 
 		ActionURL publishEntryURL = _renderResponse.createActionURL();
 
-		publishEntryURL.setParameter(
+		publishEntryURL.getActionParameters().setValue(
 				ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_PUBLISH);
-		publishEntryURL.setParameter(IcecapSSSWebKeys.BACK_URL, _getRedirectURL());
-		publishEntryURL.setParameter(
+		publishEntryURL.getActionParameters().setValue(IcecapSSSWebKeys.BACK_URL, _getRedirectURL());
+		publishEntryURL.getActionParameters().setValue(
 				IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
 
 		return dropdownItem -> {
@@ -337,7 +337,7 @@ public class TermActionDropdownItemsProvider {
 	private String _getRedirectURL() {
 		PortletURL redirectURL = _renderResponse.createRenderURL();
 
-		redirectURL.setParameter(
+		redirectURL.getRenderParameters().setValue(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_TERM_LIST);
 
 		return redirectURL.toString();

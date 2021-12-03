@@ -14,10 +14,9 @@
 
 package osp.icecap.sss.service;
 
-import org.osgi.annotation.versioning.ProviderType;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import osp.icecap.sss.model.Term;
 
 /**
  * Provides the remote service utility for Term. This utility wraps
@@ -31,7 +30,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see TermService
  * @generated
  */
-@ProviderType
 public class TermServiceUtil {
 
 	/*
@@ -39,12 +37,12 @@ public class TermServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>osp.icecap.sss.service.impl.TermServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static osp.icecap.sss.model.Term addTerm(
+	public static Term addTerm(
 			String name, String version, String type, String strDisplayName,
 			String strDefinition, String strTooltip, String synonyms,
 			String attributes,
 			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addTerm(
 			name, version, type, strDisplayName, strDefinition, strTooltip,
@@ -60,28 +58,14 @@ public class TermServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static osp.icecap.sss.model.Term getTerm(long termId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Term getTerm(long termId) throws PortalException {
 		return getService().getTerm(termId);
 	}
 
 	public static TermService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TermService, TermService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TermService.class);
-
-		ServiceTracker<TermService, TermService> serviceTracker =
-			new ServiceTracker<TermService, TermService>(
-				bundle.getBundleContext(), TermService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TermService _service;
 
 }

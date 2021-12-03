@@ -25,8 +25,6 @@ import java.io.ObjectOutput;
 
 import java.util.Date;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 import osp.icecap.sss.model.Term;
 
 /**
@@ -35,20 +33,19 @@ import osp.icecap.sss.model.Term;
  * @author Jerry H. Seo, Won Cheol Ryu
  * @generated
  */
-@ProviderType
 public class TermCacheModel implements CacheModel<Term>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TermCacheModel)) {
+		if (!(object instanceof TermCacheModel)) {
 			return false;
 		}
 
-		TermCacheModel termCacheModel = (TermCacheModel)obj;
+		TermCacheModel termCacheModel = (TermCacheModel)object;
 
 		if (termId == termCacheModel.termId) {
 			return true;

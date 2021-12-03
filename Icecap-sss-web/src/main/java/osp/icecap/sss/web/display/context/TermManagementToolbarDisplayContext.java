@@ -162,7 +162,7 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 
 		PortletURL deleteTermsURL = liferayPortletResponse.createActionURL();
 
-		deleteTermsURL.getRenderParameters().setValue(ActionRequest.ACTION_NAME, MVCCommandNames.RENDER_TERM_EDIT);
+		deleteTermsURL.setParameter(ActionRequest.ACTION_NAME, MVCCommandNames.RENDER_TERM_EDIT);
 		
 		System.out.println("ActionRequest.ACTION_NAME: "+ActionRequest.ACTION_NAME);
 
