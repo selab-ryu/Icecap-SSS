@@ -1,0 +1,40 @@
+	<aui:fieldset-group markupView="lexicon">
+		<aui:fieldset label="nemeric-attrinutes">
+			<aui:container>
+				<aui:fieldset label="value-range" helpMessage="numeric-range-help">
+					<aui:row>
+						<aui:col md="3">
+							<aui:input name="minValue" label="min-value" type="number" ></aui:input>
+						</aui:col>
+						<aui:col md="3">
+							<aui:input name="maxValue" label="max-value" type="number"></aui:input>
+						</aui:col>
+					</aui:row>
+					<aui:row>
+						<aui:col md="3">
+							<aui:input name="lowerBoundary" label="include-lower-boundary" type="checkbox"></aui:input>
+						</aui:col>
+						<aui:col md="3">
+							<aui:input name="upperBoundary" label="include-upper-boundary" type="checkbox"></aui:input>
+						</aui:col>
+					</aui:row>
+				</aui:fieldset>
+				<aui:row>
+					<aui:col md="3">
+						<aui:input name="unit" label="unit" helpMessage="numeric-unit-help"></aui:input>
+					</aui:col>
+					<aui:col md="3">
+						<aui:input name="unitPreview" label="unit-preview" disabled="true"></aui:input>
+					</aui:col>
+				</aui:row>
+				<aui:row>
+					<aui:col md="3">
+						<aui:input name="uncertainty" label="allow-uncertainty" type="checkbox" helpMessage="numeric-allow-uncertainty-help"></aui:input>
+					</aui:col>
+					<aui:col md="3">
+						<aui:input name="sweepable" label="sweepable" type="checkbox" helpMessage="numeric-sweepable-help"></aui:input>
+					</aui:col>
+				</aui:row>
+			</aui:container>
+		</aui:fieldset>
+	</aui:fieldset-group>

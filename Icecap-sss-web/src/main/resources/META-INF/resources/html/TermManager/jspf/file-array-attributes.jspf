@@ -3,7 +3,7 @@
 			<aui:container>
 				<aui:row>
 					<aui:col>
-						<aui:select name="FileArray_urlType" label="url-type" required="true">
+						<aui:select name="urlType" label="url-type" required="true">
 							<aui:option label="file-path" value="path" selected="true"></aui:option>
 							<aui:option label="url" value="url"></aui:option>
 							<aui:option label="uri" value="uri"></aui:option>
@@ -13,30 +13,30 @@
 				</aui:row>
 				<aui:row>
 					<aui:col md="2">
-						<aui:input name="FileArray_minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
+						<aui:input name="minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
 					</aui:col>
 					<aui:col md="2">
-						<aui:input name="FileArray_maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
+						<aui:input name="maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
 					</aui:col>
 				</aui:row>
 				<aui:row>
 					<aui:col md= "6">
-						<aui:select name="FileArray_refDataTypes" label="reference-datatypes" helpMessage="file-array-reference-datatypes-help" required="true"></aui:select>
+						<aui:select name="refDataTypes" label="reference-datatypes" helpMessage="file-array-reference-datatypes-help" required="true"></aui:select>
 					</aui:col>
 				</aui:row>
 				<aui:fieldset label="manage-ref-datatypes">
 					<aui:row>
 						<aui:col md="6">
-							<aui:input name="FileArray_dataTypeName" label="data-type-name"></aui:input>
+							<aui:input name="dataTypeName" label="data-type-name"></aui:input>
 						</aui:col>
 						<aui:col md="2">
-							<aui:input name="FileArray_dataTypeVersion" label="data-type-version"></aui:input>
+							<aui:input name="dataTypeVersion" label="data-type-version"></aui:input>
 						</aui:col>
 					</aui:row>
 					<aui:button-row>
-						<aui:button name="FileArray_addRefDataType" value="add-ref-datatype"></aui:button>
-						<aui:button name="FileArray_updateRefDataType" value="update-ref-datatype"></aui:button>
-						<aui:button name="FileArray_deleteRefDataType" value="delete-ref-datatype"></aui:button>
+						<aui:button name="addRefDataType" value="add-ref-datatype"></aui:button>
+						<aui:button name="updateRefDataType" value="update-ref-datatype"></aui:button>
+						<aui:button name="deleteRefDataType" value="delete-ref-datatype"></aui:button>
 					</aui:button-row>
 				</aui:fieldset>
 			</aui:container>
@@ -59,16 +59,16 @@
 	
 		var getDataType = function(){
 			var dataType = {};
-			dataType.name = $('#<portlet:namespace/>FileArray_dataTypeName').val();
-			dataType.version = $('#<portlet:namespace/>FileArray_dataTypeVersion').val();
+			dataType.name = $('#<portlet:namespace/>dataTypeName').val();
+			dataType.version = $('#<portlet:namespace/>dataTypeVersion').val();
 			
 			console.log('getDataType: ', dataType );
 			return dataType;	
 		}
 		
 		var setDataType = function( dataType){
-			$('#<portlet:namespace/>FileArray_dataTypeName').val( dataType.name );
-			$('#<portlet:namespace/>FileArray_dataTypeVersion').val( dataType.version );
+			$('#<portlet:namespace/>dataTypeName').val( dataType.name );
+			$('#<portlet:namespace/>dataTypeVersion').val( dataType.version );
 		}
 		
 		var updateOption = function( $option, value, text ){
@@ -76,23 +76,23 @@
 			$option.text( text );
 		}
 		
-		$('#<portlet:namespace/>FileArray_addRefDataType').click( function(){
+		$('#<portlet:namespace/>addRefDataType').click( function(){
 			var dataType = getDataType();
 			
 			refDataTypes.push( dataType );
 			//console.log( <portlet:namespace/>listItems );
 			
 			var optionValue = getDataTypeOptionValue(dataType);
-			$('#<portlet:namespace/>FileArray_refDataTypes').append(
+			$('#<portlet:namespace/>refDataTypes').append(
 					'<option value="' + optionValue + '">' +
 					dataType.name+' '+dataType.version + '</option>');
-			$('#<portlet:namespace/>FileArray_refDataTypes').val( optionValue);
+			$('#<portlet:namespace/>refDataTypes').val( optionValue);
 			selectedDataType = dataType;
 		});
 		
-		$('#<portlet:namespace/>FileArray_refDataTypes').change( function(){
+		$('#<portlet:namespace/>refDataTypes').change( function(){
 	
-			var selectedValue = $('#<portlet:namespace/>FileArray_refDataTypes').val();
+			var selectedValue = $('#<portlet:namespace/>refDataTypes').val();
 			
 			if( !selectedValue ){
 				return;
@@ -108,11 +108,11 @@
 			}
 		});
 		
-		$('#<portlet:namespace/>FileArray_updateRefDataType').click( function(){
+		$('#<portlet:namespace/>updateRefDataType').click( function(){
 			var changedDataType = getDataType();
 			console.log('changedDataType ... ', changedDataType);
 			
-			var $selectedOption = $('#<portlet:namespace/>FileArray_refDataTypes option:selected');
+			var $selectedOption = $('#<portlet:namespace/>refDataTypes option:selected');
 			
 			updateOption( 
 					$selectedOption, 
@@ -133,10 +133,10 @@
 			console.log( 'Updated refDataTypes.... ', refDataTypes );
 		});
 		
-		$('#<portlet:namespace/>FileArray_deleteRefDataType').click( function(){
-			$('#<portlet:namespace/>FileArray_refDataTypes option').remove('option:selected');
+		$('#<portlet:namespace/>deleteRefDataType').click( function(){
+			$('#<portlet:namespace/>refDataTypes option').remove('option:selected');
 			
-			var selectedValue = $('#<portlet:namespace/>FileArray_refDataTypes').val();
+			var selectedValue = $('#<portlet:namespace/>refDataTypes').val();
 			
 				if( !selectedValue ){
 					refDataTypes = [];
@@ -152,7 +152,7 @@
 					}
 				}
 			
-			$('#<portlet:namespace/>FileArray_refDataTypes').trigger('change');
+			$('#<portlet:namespace/>refDataTypes').trigger('change');
 		});
 	}());
 	</script>

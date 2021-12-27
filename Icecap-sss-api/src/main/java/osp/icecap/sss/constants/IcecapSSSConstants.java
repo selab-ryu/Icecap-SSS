@@ -25,12 +25,12 @@ public class IcecapSSSConstants {
 	public static final String NAVIGATION_GROUP = "group";
 	public static final String NAVIGATION_GROUP_MINE = "groupMine";
 	
-	public static final String DISPLAY_VIEW_LIST = "list";
-	public static final String DISPLAY_VIEW_ICON = "icon";
-	public static final String DISPLAY_VIEW_DESCRIPTIVE = "descriptive";
-
-	public static final String[] DISPLAY_VIEWS() {
-		return new String[] { DISPLAY_VIEW_LIST, DISPLAY_VIEW_DESCRIPTIVE, DISPLAY_VIEW_ICON };
+	public static final String VIEW_TYPE_LIST = "list";
+	public static final String VIEW_TYPE_CARD = "card";
+	public static final String VIEW_TYPE_TABLE = "table";
+	
+	public static final String[] VIEW_TYPES() {
+		return new String[] { VIEW_TYPE_LIST, VIEW_TYPE_TABLE, VIEW_TYPE_CARD };
 	}
 	
 	public static final String[] NAVIGATION_KEYS() {

@@ -45,7 +45,7 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
+import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 
 public class TermActionDropdownItemsProvider30 {
 	public TermActionDropdownItemsProvider30(
@@ -346,7 +346,7 @@ public class TermActionDropdownItemsProvider30 {
 	private boolean _hasDeletePermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 						_permissionChecker, _term, ActionKeys.DELETE);
 			System.out.println("Delete Permission: "+hasPermission);
 		} catch (PortalException e) {
@@ -374,7 +374,7 @@ public class TermActionDropdownItemsProvider30 {
 	private boolean _hasPermissionsPermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 				_permissionChecker, _term, ActionKeys.PERMISSIONS);
 			System.out.println("Permissions Permission: "+hasPermission);
 		} catch (PortalException e) {
@@ -387,7 +387,7 @@ public class TermActionDropdownItemsProvider30 {
 	private boolean _hasUpdatePermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 				_permissionChecker, _term, ActionKeys.UPDATE);
 			System.out.println("Update Permission: "+hasPermission);
 		} catch (PortalException e) {

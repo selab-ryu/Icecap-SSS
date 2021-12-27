@@ -124,6 +124,8 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setStatusByUserName(user.getFullName());
 		term.setStatusDate(sc.getModifiedDate(null));
 		
+		term.setExpandoBridgeAttributes(sc);
+		
 		super.termPersistence.update(term);
 		System.out.println("Add Finished....");
 		
@@ -162,9 +164,11 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			null, 
 			null,
 			0, 0, null);
-		
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.reindex(term);
+		Indexer<Term> indexer = IndexerRegistryUtil.getIndexer(Term.class);
+		if( Validator.isNotNull(indexer)) {
+			//indexer.reindex(term);
+			System.out.println("Indexed: "+ term.getTermName());
+		}
 		System.out.println("Finished Registering as a Asset...");
 		
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
@@ -204,6 +208,8 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setModifiedDate(new Date() );
 		term.setStatus(status);
 		
+		term.setExpandoBridgeAttributes(sc);
+		
 		super.termPersistence.update(term);
 		
 		super.resourceLocalService.updateResources(
@@ -237,9 +243,6 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				null, 
 				null,
 				0, 0, null);
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.reindex(term);
-
 		return term;
 	}
 	
@@ -290,8 +293,6 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 				Term.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL, 
 				term.getPrimaryKey());
-		Indexer<Term> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Term.class);
-		indexer.delete(term);
 		
 		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 			    term.getCompanyId(), term.getGroupId(),

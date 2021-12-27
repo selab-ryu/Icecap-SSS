@@ -6,7 +6,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.trash.TrashHelper;
 
 import java.util.Enumeration;
-import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -16,17 +15,16 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import osp.icecap.sss.constants.IcecapSSSJsps;
-import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
-import osp.icecap.sss.web.display.context.TermDisplayContext;
+import osp.icecap.sss.web.display.context.term.admin.TermAdminDisplayContext;
 
 @Component(
 	    immediate = true,
 	    property = {
-	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_MANAGER,
+	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
 	        "mvc.command.name="+MVCCommandNames.RENDER_ROOT,
-	        "mvc.command.name="+MVCCommandNames.RENDER_TERM_LIST
+	        "mvc.command.name="+MVCCommandNames.RENDER_ADMIN_TERM_LIST
 	    },
 	    service = MVCRenderCommand.class
 	)
@@ -42,13 +40,13 @@ public class TermListViewRenderCommand implements MVCRenderCommand {
 		}
 		
 		renderRequest.setAttribute(
-				TermDisplayContext.class.getName(), 
-				new TermDisplayContext(
+				TermAdminDisplayContext.class.getName(), 
+				new TermAdminDisplayContext(
 						renderRequest,
 						renderResponse,
 						_trashHelper));
 		
-		return IcecapSSSJsps.TERM_LIST_JSP;
+		return IcecapSSSJsps.ADMIN_TERM_LIST_JSP;
 	}
 
 	@Reference(unbind = "-")

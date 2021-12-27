@@ -59,8 +59,8 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
+import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.service.TermLocalServiceUtil;
-import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
 
 public class TermDisplayContext {
 	
@@ -94,19 +94,19 @@ public class TermDisplayContext {
 
 	public SearchContainer<Term> getSearchContainer(){
 
-		PortletURL portletURL = _renderResponse.createRenderURL();
+		PortletURL portletURL = this.getPortletURL();
 
 		portletURL.setParameter(IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_TERM_LIST);
 
-		String termsNavigation = ParamUtil.getString(	_httpServletRequest, IcecapSSSWebKeys.TERMS_NAVIGATION);
+		String termsNavigation = ParamUtil.getString(	_httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
 		System.out.println("TermDisplayContext:getSearchContainer:termsNavigation - "+termsNavigation);
 
-		portletURL.setParameter(IcecapSSSWebKeys.TERMS_NAVIGATION, termsNavigation);
+		portletURL.setParameter(IcecapSSSWebKeys.NAVIGATION, termsNavigation);
 
 		SearchContainer<Term> termsSearchContainer =
 					new SearchContainer<Term>(
 										_renderRequest,
-										this.getPortletURL(),
+										portletURL,
 										null,
 										"no-terms-were-found");
 
@@ -142,31 +142,31 @@ public class TermDisplayContext {
 		PermissionChecker permissionChecker =
 			themeDisplay.getPermissionChecker();
 
-		if (TermModelResourcePermission.contains(
+		if (TermModelPermissionHelper.contains(
 				permissionChecker, term, IcecapSSSActionKeys.DELETE_TERM)) {
 
 			availableActionDropdownItems.add(IcecapSSSActionKeys.DELETE_TERM);
 		}
 		
-		if (TermModelResourcePermission.contains(
+		if (TermModelPermissionHelper.contains(
 				permissionChecker, term, IcecapSSSActionKeys.UPDATE_TERM)) {
 
 			availableActionDropdownItems.add(IcecapSSSActionKeys.UPDATE_TERM);
 		}
 		
-		if (TermModelResourcePermission.contains(
+		if (TermModelPermissionHelper.contains(
 				permissionChecker, term, IcecapSSSActionKeys.ADD_TERM)) {
 
 			availableActionDropdownItems.add(IcecapSSSActionKeys.ADD_TERM);
 		}
 
-		if (TermModelResourcePermission.contains(
+		if (TermModelPermissionHelper.contains(
 				permissionChecker, term, IcecapSSSActionKeys.REVIEW_TERM)) {
 
 			availableActionDropdownItems.add(IcecapSSSActionKeys.REVIEW_TERM);
 		}
 
-		if (TermModelResourcePermission.contains(
+		if (TermModelPermissionHelper.contains(
 				permissionChecker, term, IcecapSSSActionKeys.APPROVE_TERM)) {
 
 			availableActionDropdownItems.add(IcecapSSSActionKeys.APPROVE_TERM);
@@ -199,37 +199,6 @@ public class TermDisplayContext {
 		return _eventName;
 	}
 
-	public long[] getSelectedGroupIds() {
-		long[] selectedGroupIds = StringUtil.split(
-			ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.SELECTED_GROUP_IDS), 0L);
-
-		if (selectedGroupIds.length > 0) {
-			return selectedGroupIds;
-		}
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)_httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		long selectedGroupId = ParamUtil.getLong(
-			_httpServletRequest, IcecapSSSWebKeys.SELECTED_GROUP_ID);
-
-		if( selectedGroupId != 0) {
-			try {
-				return PortalUtil.getSharedContentSiteGroupIds(
-					themeDisplay.getCompanyId(), selectedGroupId,
-					themeDisplay.getUserId());
-			}
-			catch (PortalException pe) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(pe, pe);
-				}
-			}
-		}
-
-		return new long[0];
-	}
-	
 	public boolean isShowAddButton() {
 		if (_showAddButton != null) {
 			return _showAddButton;
@@ -255,20 +224,6 @@ public class TermDisplayContext {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
 		portletURL.setParameter(IcecapSSSWebKeys.GROUP_ID, String.valueOf(getGroupId()));
-
-		long selectedGroupId = ParamUtil.getLong(_httpServletRequest, IcecapSSSWebKeys.SELECTED_GROUP_ID);
-
-		if (selectedGroupId > 0) {
-			portletURL.setParameter(
-					IcecapSSSWebKeys.SELECTED_GROUP_ID, String.valueOf(selectedGroupId));
-		}
-
-		long[] selectedGroupIds = getSelectedGroupIds();
-
-		if (selectedGroupIds.length > 0) {
-			portletURL.setParameter(
-				IcecapSSSWebKeys.SELECTED_GROUP_IDS, StringUtil.merge(selectedGroupIds));
-		}
 
 		if (_getListable() != null) {
 			portletURL.setParameter(IcecapSSSWebKeys.LISTABLE, String.valueOf(_getListable()));
@@ -369,7 +324,7 @@ public class TermDisplayContext {
 			}
 			// Keywords are not presented
 			else if (Validator.isNull(keywords)) {
-				String termsNavigation = ParamUtil.getString( _httpServletRequest, IcecapSSSWebKeys.TERMS_NAVIGATION);
+				String termsNavigation = ParamUtil.getString( _httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
 
 				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
 					searchContainer.setTotal(
@@ -430,7 +385,7 @@ public class TermDisplayContext {
 				searchContext.setStart(searchContainer.getStart());
 
 				String termsNavigation = ParamUtil.getString(
-					_httpServletRequest, IcecapSSSWebKeys.TERMS_NAVIGATION);
+					_httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
 				System.out.println("TermDisplayContext: _populateResults: termsNavigation - "+termsNavigation);
 
 				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {

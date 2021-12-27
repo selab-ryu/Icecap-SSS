@@ -34,27 +34,18 @@ public class TermModelIndexerWriterContributor implements ModelIndexerWriterCont
 
 	@Override
 	public BatchIndexingActionable getBatchIndexingActionable() {
-		return dynamicQueryBatchIndexingActionableFactory.getBatchIndexingActionable(
-				termLocalService.getIndexableActionableDynamicQuery());
+		return _dynamicQueryBatchIndexingActionableFactory.getBatchIndexingActionable(
+				_termLocalService.getIndexableActionableDynamicQuery());
 	}
 
 	@Override
 	public long getCompanyId(Term term) {
 		return term.getCompanyId();
 	}
-
-	@Override
-	public void modelIndexed(Term term) {
-		termBatchReindexer.reindex(
-			    term.getTermId(), term.getCompanyId());
-	}
  
 	@Reference
-    protected DynamicQueryBatchIndexingActionableFactory	dynamicQueryBatchIndexingActionableFactory;
+    protected DynamicQueryBatchIndexingActionableFactory	_dynamicQueryBatchIndexingActionableFactory;
 
     @Reference
-    protected TermBatchReindexer termBatchReindexer;
-
-    @Reference
-    protected TermLocalService termLocalService;
+    protected TermLocalService _termLocalService;
 }

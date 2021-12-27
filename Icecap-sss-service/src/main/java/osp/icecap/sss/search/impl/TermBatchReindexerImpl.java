@@ -21,7 +21,7 @@ public class TermBatchReindexerImpl implements TermBatchReindexer {
 
 	@Override
 	public void reindex(long termId, long companyId) {
-		BatchIndexingActionable batchIndexingActionable = indexerWriter.getBatchIndexingActionable();
+		BatchIndexingActionable batchIndexingActionable = _indexerWriter.getBatchIndexingActionable();
 
 		batchIndexingActionable.setAddCriteriaMethod(dynamicQuery -> {
 			Property termIdProperty = PropertyFactoryUtil.forName("termId");
@@ -31,7 +31,7 @@ public class TermBatchReindexerImpl implements TermBatchReindexer {
 		batchIndexingActionable.setCompanyId(companyId);
 
 		batchIndexingActionable.setPerformActionMethod((Term term) -> {
-			Document document = indexerDocumentBuilder.getDocument(term);
+			Document document = _indexerDocumentBuilder.getDocument(term);
 			batchIndexingActionable.addDocuments(document);
 		});
 
@@ -41,10 +41,10 @@ public class TermBatchReindexerImpl implements TermBatchReindexer {
 	@Reference(
 			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
 	)
-	protected IndexerDocumentBuilder indexerDocumentBuilder;
+	protected IndexerDocumentBuilder _indexerDocumentBuilder;
 
 	@Reference(
 			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
 	)
-	protected IndexerWriter<Term> indexerWriter;
+	protected IndexerWriter<Term> _indexerWriter;
 }

@@ -11,8 +11,11 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -29,12 +32,17 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationApplicationType;
 import com.liferay.trash.TrashHelper;
 
+import java.lang.reflect.Array;
+import java.nio.file.CopyOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionURL;
+import javax.portlet.MimeResponse.Copy;
 import javax.portlet.MutableRenderParameters;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -45,7 +53,7 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
+import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 
 public class TermActionDropdownItemsProvider {
 	public TermActionDropdownItemsProvider(
@@ -56,7 +64,10 @@ public class TermActionDropdownItemsProvider {
 			TrashHelper trashHelper) {
 
 		_term = term;
+		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(renderRequest);
+		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(renderResponse);
 		_locale = renderRequest.getLocale();
 		_permissionChecker = permissionChecker;
 		_trashHelper = trashHelper;
@@ -72,23 +83,14 @@ public class TermActionDropdownItemsProvider {
 					add(_getEditEntryActionUnsafeConsumer());
 				}
 
-				if (_hasPermissionsPermission()) {
-					add(_getPermissionsActionUnsafeConsumer());
-				}
-
 				if (_hasDeletePermission()) {
-					if (_isTrashEnabled()) {
-						add(_getMoveEntryToTrashActionUnsafeConsumer());
-					}
-					else {
-						add(_getDeleteEntryActionUnsafeConsumer());
-					}
-				}
-
-				if (_isShowPublishMenuItem() &&
-					_hasExportImportPortletInfoPermission()) {
-
-					add(_getPublishToLiveEntryActionUnsafeConsumer());
+//					if (_isTrashEnabled()) {
+//						add(_getMoveEntryToTrashActionUnsafeConsumer());
+//					}
+//					else {
+//						add(_getDeleteEntryActionUnsafeConsumer());
+//					}
+					add(_getDeleteEntryActionUnsafeConsumer());
 				}
 			}
 		};
@@ -149,16 +151,20 @@ public class TermActionDropdownItemsProvider {
 	private UnsafeConsumer<DropdownItem, Exception>
 		_getDeleteEntryActionUnsafeConsumer() {
 
-		ActionURL deleteURL = _renderResponse.createActionURL();
-
-		deleteURL.setParameter(IcecapSSSWebKeys.MVC_ACTION_COMMAND_NAME, MVCCommandNames.ACTION_TERM_DELETE);
+		PortletURL deleteURL =  _liferayPortletResponse.createActionURL();
+		
+		long[] termIds = { _term.getTermId()};
+//		deleteURL.setParameter(IcecapSSSWebKeys.MVC_ACTION_COMMAND_NAME, MVCCommandNames.ACTION_TERM_DELETE);
+		deleteURL.setParameter(ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_DELETE);
 		deleteURL.setParameter(Constants.CMD, Constants.DELETE);
 		deleteURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
-		deleteURL.setParameter(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
+		deleteURL.setParameter(IcecapSSSWebKeys.TERM_IDS, Arrays.toString(termIds) );
+		
+		System.out.println("deleteURL: "+deleteURL.toString());
 
 		return dropdownItem -> {
-			dropdownItem.putData("action", "delete");
-			dropdownItem.putData("deleteURL", deleteURL.toString());
+			dropdownItem.setHref(deleteURL);
+			dropdownItem.setIcon("delete");
 			dropdownItem.setLabel(
 				LanguageUtil.get(_httpServletRequest, "delete"));
 		};
@@ -186,14 +192,13 @@ public class TermActionDropdownItemsProvider {
 		ActionURL moveToTrashURL = _renderResponse.createActionURL();
 
 		moveToTrashURL.setParameter(
-					ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_UPDATE);
+					ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_TERM_DELETE);
 		moveToTrashURL.setParameter(Constants.CMD, Constants.MOVE_TO_TRASH);
 		moveToTrashURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
 		moveToTrashURL.setParameter(IcecapSSSWebKeys.TERM_ID, String.valueOf(_term.getTermId()));
 
 		return dropdownItem -> {
-			dropdownItem.putData("action", "delete");
-			dropdownItem.putData("deleteURL", moveToTrashURL.toString());
+			dropdownItem.setHref(moveToTrashURL);
 			dropdownItem.setLabel(
 				LanguageUtil.get(_httpServletRequest, "move-to-recycle-bin"));
 		};
@@ -346,7 +351,7 @@ public class TermActionDropdownItemsProvider {
 	private boolean _hasDeletePermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 						_permissionChecker, _term, ActionKeys.DELETE);
 			System.out.println("Delete Permission: "+hasPermission);
 		} catch (PortalException e) {
@@ -374,7 +379,7 @@ public class TermActionDropdownItemsProvider {
 	private boolean _hasPermissionsPermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 				_permissionChecker, _term, ActionKeys.PERMISSIONS);
 			System.out.println("Permissions Permission: "+hasPermission);
 		} catch (PortalException e) {
@@ -387,7 +392,7 @@ public class TermActionDropdownItemsProvider {
 	private boolean _hasUpdatePermission() {
 		boolean hasPermission = false;
 		try {
-			hasPermission = TermModelResourcePermission.contains(
+			hasPermission = TermModelPermissionHelper.contains(
 				_permissionChecker, _term, ActionKeys.UPDATE);
 			System.out.println("Update Permission: "+hasPermission);
 		} catch (PortalException e) {
@@ -422,7 +427,10 @@ public class TermActionDropdownItemsProvider {
 	private final Term _term;
 	private final HttpServletRequest _httpServletRequest;
 	private final PermissionChecker _permissionChecker;
+	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private final LiferayPortletRequest _liferayPortletRequest;
+	private final LiferayPortletResponse _liferayPortletResponse;
 	private final TrashHelper _trashHelper;
 	private final Locale _locale;
 }

@@ -1,4 +1,5 @@
 <%@page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPDropdownItemList"%>
+<%@page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList"%>
 <%@page import="com.liferay.portal.kernel.util.StringUtil"%>
 <%@page import="osp.icecap.sss.constants.MVCCommandNames"%>
 <%@page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil"%>
@@ -7,7 +8,7 @@
 <%@page import="osp.icecap.sss.constants.IcecapSSSConstants"%>
 <%@page import="osp.icecap.sss.web.util.TermActionDropdownItemsProvider"%>
 <%@page import="com.liferay.portal.kernel.security.permission.ActionKeys"%>
-<%@page import="osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission"%>
+<%@page import="osp.icecap.sss.security.permission.resource.TermModelPermissionHelper"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.liferay.portal.kernel.util.Constants"%>
@@ -22,7 +23,7 @@
 
 
 <%
-TermDisplayContext termDisplayContext = 
+	TermDisplayContext termDisplayContext = 
 (TermDisplayContext)renderRequest.getAttribute(TermDisplayContext.class.getName());
 
 String displayStyle = termDisplayContext.getDisplayStyle();
@@ -31,24 +32,19 @@ PortletURL portletURL = termSearchContainer.getIteratorURL();
 TrashHelper trashHelper = termDisplayContext.getTrashHelper();
 
 TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
-			new TermManagementToolbarDisplayContext(
-								liferayPortletRequest, 
-								liferayPortletResponse, 
-								request, 
-								termDisplayContext
-					);
+	new TermManagementToolbarDisplayContext(
+				liferayPortletRequest, 
+				liferayPortletResponse, 
+				request, 
+				termDisplayContext
+	);
 %>
 
 <clay:management-toolbar
-	id="termManagementToolbar"
 	displayContext="<%=termManagementToolbarDisplayContext%>"
-	searchContainerId="termSearchContainer"
-	selectable = "<%= true %>"
-	showSelectAllButton="<%= true %>"
-	showResultsBar="<%= true %>"
-	itemsTotal="<%= termSearchContainer.getTotal() %>"
-	supportsBulkActions="<%= true %>"
-	actionDropdownItems="<%= termManagementToolbarDisplayContext.getActionDropdownItems() %>"
+	selectable = "<%=true%>"
+	showSelectAllButton="<%=true%>"
+	showResultsBar="<%=true%>"
 />
 
 <div class="container-fluid container-fluid-max-xl main-content-body">
@@ -67,16 +63,25 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				keyProperty="termId"
 				modelVar="term"
 			>
+				
 				<liferay-portlet:renderURL varImpl="rowURL">
-					<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_TERM_VIEW %>" />
+					<portlet:param name="mvcRenderCommandName" value="<%=MVCCommandNames.RENDER_TERM_VIEW%>" />
 					<portlet:param name="redirect" value="<%=portletURL.toString()%>" />
 					<portlet:param name="termId" value="<%=String.valueOf(term.getTermId())%>" />
 				</liferay-portlet:renderURL>
 
 				<%
 					Map<String, Object> rowData = new HashMap<>();
-					rowData.put("actions", StringUtil.merge(termDisplayContext.getAvailableActions(term)));
-					row.setData(rowData);
+									rowData.put("actions", StringUtil.merge(termDisplayContext.getAvailableActions(term)));
+									row.setData(rowData);
+
+									TermActionDropdownItemsProvider termActionDropdownItemsProvider = 
+											new TermActionDropdownItemsProvider(
+													term, 
+													renderRequest, 
+													renderResponse, 
+													permissionChecker, 
+													trashHelper);
 				%>
 
 				<c:choose>
@@ -92,7 +97,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				
 							<h2 class="h5">
 								<c:choose>
-									<c:when test="<%=TermModelResourcePermission.contains(permissionChecker, term, ActionKeys.UPDATE)%>">
+									<c:when test="<%=TermModelPermissionHelper.contains(permissionChecker, term, ActionKeys.UPDATE)%>">
 										<aui:a href="<%=rowURL.toString()%>">
 											<%=term.getDisplayName(locale)%>
 										</aui:a>
@@ -110,18 +115,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 				
 						<liferay-ui:search-container-column-text>
 				
-							<%
-												TermActionDropdownItemsProvider termActionDropdownItemsProvider = 
-																			new TermActionDropdownItemsProvider(
-																					term, 
-																					renderRequest, 
-																					renderResponse, 
-																					permissionChecker, 
-																					trashHelper);
-											%>
-				
 							<clay:dropdown-actions
-								defaultEventHandler="<%=IcecapSSSConstants.TERM_ELEMENTS_DEFAULT_EVENT_HANDLER%>"
 								dropdownItems="<%=termActionDropdownItemsProvider.getActionDropdownItems()%>"
 							/>
 						</liferay-ui:search-container-column-text>
@@ -141,7 +135,7 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 					<c:otherwise>
 						<liferay-ui:search-container-column-text
 							cssClass="table-cell-expand table-cell-minw-200 table-title"
-							href="<%=TermModelResourcePermission.contains(permissionChecker, term, ActionKeys.UPDATE) ? rowURL : null%>"
+							href="<%=TermModelPermissionHelper.contains(permissionChecker, term, ActionKeys.UPDATE) ? rowURL : null%>"
 							name="display-name"
 							orderable="<%= false %>"
 							value="<%= term.getDisplayName(locale) %>"
@@ -186,12 +180,6 @@ TermManagementToolbarDisplayContext termManagementToolbarDisplayContext =
 						<liferay-ui:search-container-column-text
 							name="actions"
 						>
-				
-							<%
-							TermActionDropdownItemsProvider termActionDropdownItemsProvider = 
-									new TermActionDropdownItemsProvider(term, renderRequest, renderResponse, permissionChecker, trashHelper);
-							%>
-				
 							<clay:dropdown-actions
 								dropdownItems="<%= termActionDropdownItemsProvider.getActionDropdownItems() %>"
 							/>

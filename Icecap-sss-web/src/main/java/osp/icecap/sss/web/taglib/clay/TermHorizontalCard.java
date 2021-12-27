@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.trash.TrashHelper;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
+import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.web.util.TermActionDropdownItemsProvider;
+import osp.icecap.sss.web.util.TermAdminActionDropdownItemsProvider;
 
 public class TermHorizontalCard extends BaseHorizontalCard {
 	
@@ -64,23 +66,23 @@ public class TermHorizontalCard extends BaseHorizontalCard {
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
 		System.out.println("TermHorizontalCard.getActionDropdownItems() called.....");
-		TermActionDropdownItemsProvider
-			termActionDropdownItemsProvider =
-				new TermActionDropdownItemsProvider(
+		TermAdminActionDropdownItemsProvider
+			termAdminActionDropdownItemsProvider =
+				new TermAdminActionDropdownItemsProvider(
 								_term, 
 								_renderRequest, 
 								_renderResponse,
 								_permissionChecker, 
 								_trashHelper);
 
-		return termActionDropdownItemsProvider.getActionDropdownItems();
+		return termAdminActionDropdownItemsProvider.getActionDropdownItems();
 	}
 
 	@Override
 	public String getHref() {
 		System.out.println("TermHorizontalCard.getHref() called.....");
 		try {
-			if (!TermModelResourcePermission.contains(
+			if (!TermModelPermissionHelper.contains(
 					_permissionChecker, _term, ActionKeys.UPDATE)) {
 
 				return null;

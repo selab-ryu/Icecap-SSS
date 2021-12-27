@@ -1,0 +1,62 @@
+<%@page import="com.liferay.petra.string.StringPool"%>
+<aui:fieldset-group markupView="lexicon">
+	<aui:fieldset label="term-definition">
+		<aui:row>
+					<aui:col md="5">
+								<aui:input 
+												name="termName" 
+												label="parameter-name"  
+												required="true" 
+												placeholder="ex) parameterName"
+												helpMessage="parameter-name-help"
+												value = "<%= Validator.isNotNull(term)?term.getTermName():StringPool.BLANK %>">
+								</aui:input>
+					</aui:col>
+					<aui:col md="2">
+								<aui:input 
+												name="termVersion" 
+												label="term-version" 
+												required="true"
+												value="<%= Validator.isNotNull(term)?term.getTermVersion():StringPool.BLANK %>"
+												helpMessage="parameter-version-help">
+								</aui:input>
+					</aui:col>
+					<aui:col md="5">
+						<aui:field-wrapper name="displayName" required="true" label="term-display-name" helpMessage="term-display-name-help">
+								<liferay-ui:input-localized 
+												name="displayName"
+												xml="<%= Validator.isNotNull(term)?term.getDisplayName():StringPool.BLANK %>" >
+								</liferay-ui:input-localized>
+						</aui:field-wrapper>
+					</aui:col>
+			</aui:row>
+			<aui:row>
+					<aui:col md="12">
+						<aui:field-wrapper name="definition" label="definition" helpMessage="definition-help">
+								<liferay-ui:input-localized 
+												type="textarea"
+												name="definition"
+												xml="" >
+								</liferay-ui:input-localized>
+						</aui:field-wrapper>
+					</aui:col>
+			</aui:row>
+			<aui:row>
+					<aui:col md="12">
+						<aui:input name="synonyms" label="synonyms" placeholder="ex)synTerm1, synterm2" helpMessage="term-synonyms-help"></aui:input>
+						<aui:field-wrapper name="tooltip" label="tooltip" helpMessage="term-tooltip-help">
+								<liferay-ui:input-localized 
+												name="tooltip"
+												placeholder="Enter simple example to be displayed as a placeholder of the input control." 
+												xml="" >
+								</liferay-ui:input-localized>
+						</aui:field-wrapper>
+						<aui:input name="value" label="default-value" helpMessage="term-default-value-help"></aui:input>
+					</aui:col>
+			</aui:row>
+			<aui:row id="stringAttributes">
+				<aui:col md="12" id="typeDedicatedAttributes">
+				</aui:col>
+			</aui:row>	
+	</aui:fieldset>
+</aui:fieldset-group>

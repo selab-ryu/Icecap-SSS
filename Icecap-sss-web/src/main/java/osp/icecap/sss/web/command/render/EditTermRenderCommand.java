@@ -21,8 +21,8 @@ import osp.icecap.sss.service.TermLocalService;
 @Component(
 	    immediate = true,
 	    property = {
-	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_MANAGER,
-	        "mvc.command.name="+MVCCommandNames.RENDER_TERM_EDIT
+	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
+	        "mvc.command.name="+MVCCommandNames.RENDER_ADMIN_TERM_EDIT
 	    },
 	    service = MVCRenderCommand.class
 	)
@@ -48,7 +48,7 @@ public class EditTermRenderCommand implements MVCRenderCommand {
 			System.out.println("In Edit Render: termType - " + termType );
 		}
 		
-		return IcecapSSSJsps.EDIT_TERM_JSP;
+		return IcecapSSSJsps.ADMIN_EDIT_TERM_JSP;
 	}
 	
 	@Reference

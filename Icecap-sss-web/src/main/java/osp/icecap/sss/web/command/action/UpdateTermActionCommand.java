@@ -21,7 +21,6 @@ import javax.portlet.ActionResponse;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSTermTypes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
@@ -32,8 +31,8 @@ import osp.icecap.sss.service.TermLocalService;
 
 @Component(
 		property = {
-				"javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_MANAGER,
-				"mvc.command.name=" + MVCCommandNames.ACTION_TERM_UPDATE
+				"javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
+				"mvc.command.name=" + MVCCommandNames.ACTION_ADMIN_TERM_UPDATE
 		},
 		service = MVCActionCommand.class
 )
@@ -85,12 +84,12 @@ public class UpdateTermActionCommand extends BaseMVCActionCommand {
 		System.out.println("=== END Term Attributes ===");
 		
 		try {
-		if( cmd.equals(IcecapSSSActionKeys.ADD_TERM) ) {
-			_termLocalService.addTerm(name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, dedicatedAttributes, sc);
-		}
-		else if( cmd.equals(IcecapSSSActionKeys.UPDATE_TERM) ){
-			_termLocalService.updateTerm(termId, name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, status, dedicatedAttributes, sc);
-		}
+			if( cmd.equals(Constants.ADD) ) {
+				_termLocalService.addTerm(name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, dedicatedAttributes, sc);
+			}
+			else if( cmd.equals(Constants.UPDATE) ){
+				_termLocalService.updateTerm(termId, name, version, termType, displayNameMap, definitionMap, tooltipMap, synonyms, status, dedicatedAttributes, sc);
+			}
 		} catch( PortalException e ) {
 			e.printStackTrace();
 			throw e;

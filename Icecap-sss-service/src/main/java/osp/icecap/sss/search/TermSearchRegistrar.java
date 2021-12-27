@@ -1,6 +1,7 @@
 package osp.icecap.sss.search;
 
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -19,8 +20,12 @@ import osp.icecap.sss.model.Term;
 public class TermSearchRegistrar {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		System.out.println("TermSearchRegister activator......");
-			_serviceRegistration = modelSearchRegistrarHelper.register(
+		System.out.println("===== Begin TermSearchRegistrar activator() =====");
+		System.out.println("_serviceRegistration: "+ Validator.isNotNull(_serviceRegistration));
+		System.out.println("_modelSearchRegistrarHelper: "+ Validator.isNotNull(_modelSearchRegistrarHelper));
+		System.out.println("_modelIndexWriterContributor: "+ Validator.isNotNull(_modelIndexWriterContributor));
+		System.out.println("_modelSummaryContributor: "+ Validator.isNotNull(_modelSummaryContributor));
+			_serviceRegistration = _modelSearchRegistrarHelper.register(
 					Term.class, 
 					bundleContext, 
 					modelSearchDefinition -> {
@@ -34,20 +39,25 @@ public class TermSearchRegistrar {
 										Field.MODIFIED_DATE, 
 										Field.ASSET_TAG_NAMES, 
 										Field.ASSET_CATEGORY_TITLES,
-										Field.SCOPE_GROUP_ID,
-										Field.TITLE,
-										IcecapSSSTermAttributes.TERM_NAME, 
-										IcecapSSSTermAttributes.DEFINITION,
-										IcecapSSSTermAttributes.TOOLTIP, 
-										IcecapSSSTermAttributes.SYNONYMS,
-										IcecapSSSTermAttributes.DISPLAY_NAME, 
-										IcecapSSSTermAttributes.TERM_TYPE);
+										Field.SCOPE_GROUP_ID);//,
+//										Field.TITLE,
+//										IcecapSSSTermAttributes.TERM_NAME, 
+//										IcecapSSSTermAttributes.DEFINITION,
+//										IcecapSSSTermAttributes.TOOLTIP, 
+//										IcecapSSSTermAttributes.SYNONYMS,
+//										IcecapSSSTermAttributes.DISPLAY_NAME, 
+//										IcecapSSSTermAttributes.TERM_TYPE);
+								modelSearchDefinition.setDefaultSelectedLocalizedFieldNames(
+										Field.TITLE, Field.CONTENT);
 
 								modelSearchDefinition.setModelIndexWriteContributor(
-										modelIndexWriterContributor);
+										_modelIndexWriterContributor);
 								modelSearchDefinition.setModelSummaryContributor(
-										modelSummaryContributor);
+										_modelSummaryContributor);
+								modelSearchDefinition.setSelectAllLocales(true);
 					});
+
+			System.out.println("===== End of TermSearchRegistrar activator() =====");
 	}
 
 	@Deactivate
@@ -58,15 +68,15 @@ public class TermSearchRegistrar {
 	@Reference(
 			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
 	)
-	protected ModelIndexerWriterContributor<Term> modelIndexWriterContributor;
+	protected ModelIndexerWriterContributor<Term> _modelIndexWriterContributor;
 
 	@Reference
-	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;
+	protected ModelSearchRegistrarHelper _modelSearchRegistrarHelper;
 
 	@Reference(
 			target = "(indexer.class.name=osp.icecap.sss.model.Term)"
 	)
-	protected ModelSummaryContributor modelSummaryContributor;
+	protected ModelSummaryContributor _modelSummaryContributor;
 
 	private ServiceRegistration<?> _serviceRegistration;
 }

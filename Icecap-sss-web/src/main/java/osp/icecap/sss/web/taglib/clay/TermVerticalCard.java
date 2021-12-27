@@ -6,7 +6,9 @@ import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.persistence.PortletUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.trash.TrashHelper;
 
 import java.util.List;
@@ -17,8 +19,9 @@ import javax.portlet.RenderResponse;
 
 import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.web.security.permission.resource.TermModelResourcePermission;
+import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.web.util.TermActionDropdownItemsProvider;
+import osp.icecap.sss.web.util.TermAdminActionDropdownItemsProvider;
 
 public class TermVerticalCard extends BaseVerticalCard {
 	public TermVerticalCard(
@@ -44,16 +47,16 @@ public class TermVerticalCard extends BaseVerticalCard {
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
 		System.out.println("TermVerticalCard.getActionDropdownItems() called.....");
-			TermActionDropdownItemsProvider
-				termActionDropdownItemsProvider =
-					new TermActionDropdownItemsProvider(
+			TermAdminActionDropdownItemsProvider
+				termAdminActionDropdownItemsProvider =
+					new TermAdminActionDropdownItemsProvider(
 									_term, 
 									_renderRequest, 
 									_renderResponse,
 									_permissionChecker, 
 									_trashHelper);
 
-			return termActionDropdownItemsProvider.getActionDropdownItems();
+			return termAdminActionDropdownItemsProvider.getActionDropdownItems();
 	}
 
 	public String getAspectRatioCssClasses() {
@@ -72,7 +75,7 @@ public class TermVerticalCard extends BaseVerticalCard {
 	public String getHref() {
 		System.out.println("TermVerticalCard.getHref() called.....");
 		try {
-			if (!TermModelResourcePermission.contains(
+			if (!TermModelPermissionHelper.contains(
 					_permissionChecker, _term, ActionKeys.UPDATE)) {
 
 				return null;

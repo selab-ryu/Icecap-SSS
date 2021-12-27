@@ -22,13 +22,14 @@
 <%
 	Term term = (Term)renderRequest.getAttribute(IcecapSSSWebKeys.TERM);
 
-	String cmd = ParamUtil.getString(renderRequest, Constants.CMD, IcecapSSSActionKeys.ADD_TERM);
+	String cmd = ParamUtil.getString(renderRequest, Constants.CMD, Constants.ADD);
 	
 	String defaultTermType = IcecapSSSTermTypes.STRING;
 
 	String submitButtonLabel = "";
 	
-	if( cmd.equals(IcecapSSSActionKeys.ADD_TERM) ){
+	System.out.println("CMD: "+cmd);
+	if( cmd.equals(Constants.ADD) ){
 		submitButtonLabel = LanguageUtil.get(locale, "add-term", "Add Term");
 	}
 	else{
@@ -104,6 +105,7 @@
 <aui:container>
 	<aui:row>
 		<aui:col>
+			<input type="hidden" name="<portlet:namespace/>termId" value="<%= Validator.isNotNull(term)?term.getTermId():StringPool.BLANK %>"/>
 			<input type="hidden" name="<portlet:namespace/>selectedTermType" value="<%= defaultTermType %>"/>
 			<%@include file="jspf/term-definition.jspf" %>
 		</aui:col>

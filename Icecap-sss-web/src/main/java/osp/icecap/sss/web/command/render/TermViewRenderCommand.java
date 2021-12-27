@@ -10,12 +10,13 @@ import org.osgi.service.component.annotations.Component;
 
 import osp.icecap.sss.constants.IcecapSSSJsps;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
+import osp.icecap.sss.constants.MVCCommandNames;
 
 @Component(
 	    immediate = true,
 	    property = {
-	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_MANAGER,
-	        "mvc.command.name=/html/TermManager/view-term"
+	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
+	        "mvc.command.name="+MVCCommandNames.RENDER_ADMIN_TERM_VIEW
 	    },
 	    service = MVCRenderCommand.class
 	)
@@ -24,6 +25,6 @@ public class TermViewRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
-		return IcecapSSSJsps.VIEW_TERM_JSP;
+		return IcecapSSSJsps.ADMIN_VIEW_TERM_JSP;
 	}
 }
