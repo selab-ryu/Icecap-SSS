@@ -11,7 +11,7 @@ public class IcecapSSSConstants {
 	public static final String TERM_PORTLET_INSTANCE_CONFIGURATION =
 		"TERM_PORTLET_INSTANCE_CONFIGURATION";
 	
-	public static final String SEARCH_CONTAINER_ID="termSearchContainer";
+	public static final String SEARCH_CONTAINER_ID="searchedTermsContainer";
 	
 	public static final String API_BUNDLE_NAME="osp.icecap.sss.api";
 	public static final String SERVICE_BUNDLE_NAME="osp.icecap.sss.service";

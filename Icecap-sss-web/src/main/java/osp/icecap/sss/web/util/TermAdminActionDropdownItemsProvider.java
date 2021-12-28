@@ -60,8 +60,7 @@ public class TermAdminActionDropdownItemsProvider {
 			Term term, 
 			RenderRequest renderRequest,
 			RenderResponse renderResponse, 
-			PermissionChecker permissionChecker,
-			TrashHelper trashHelper) {
+			PermissionChecker permissionChecker) {
 
 		_term = term;
 		_renderRequest = renderRequest;
@@ -70,7 +69,6 @@ public class TermAdminActionDropdownItemsProvider {
 		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(renderResponse);
 		_locale = renderRequest.getLocale();
 		_permissionChecker = permissionChecker;
-		_trashHelper = trashHelper;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
 	}
@@ -412,18 +410,6 @@ public class TermAdminActionDropdownItemsProvider {
 			Term.class.getName(), _term.getUuid());
 	}
 
-	private boolean _isTrashEnabled() {
-		try {
-			return _trashHelper.isTrashEnabled(
-				PortalUtil.getScopeGroupId(_httpServletRequest));
-		}
-		catch (PortalException pe) {
-			pe.printStackTrace();
-		}
-		
-		return false;
-	}
-
 	private final Term _term;
 	private final HttpServletRequest _httpServletRequest;
 	private final PermissionChecker _permissionChecker;
@@ -431,6 +417,5 @@ public class TermAdminActionDropdownItemsProvider {
 	private final RenderResponse _renderResponse;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
-	private final TrashHelper _trashHelper;
 	private final Locale _locale;
 }

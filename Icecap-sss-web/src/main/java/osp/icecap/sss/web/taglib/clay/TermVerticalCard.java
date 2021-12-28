@@ -47,16 +47,8 @@ public class TermVerticalCard extends BaseVerticalCard {
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
 		System.out.println("TermVerticalCard.getActionDropdownItems() called.....");
-			TermAdminActionDropdownItemsProvider
-				termAdminActionDropdownItemsProvider =
-					new TermAdminActionDropdownItemsProvider(
-									_term, 
-									_renderRequest, 
-									_renderResponse,
-									_permissionChecker, 
-									_trashHelper);
 
-			return termAdminActionDropdownItemsProvider.getActionDropdownItems();
+			return null;
 	}
 
 	public String getAspectRatioCssClasses() {

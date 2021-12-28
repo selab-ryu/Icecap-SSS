@@ -3,18 +3,13 @@ package osp.icecap.sss.web.display.context.term.admin;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
-import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -27,28 +22,22 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.trash.TrashHelper;
-import com.liferay.trash.util.TrashWebKeys;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
@@ -56,19 +45,19 @@ import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSDisplayStyles;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
-import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
-import osp.icecap.sss.service.TermLocalServiceUtil;
+import osp.icecap.sss.service.TermLocalService;
 
-public class TermAdminDisplayContext {
+public class TermAdminDisplayContext implements Serializable{
 	
 	private static final Log _log = LogFactoryUtil.getLog(TermAdminDisplayContext.class);
 
-	private final RenderRequest _renderRequest;
-	private final RenderResponse _renderResponse;
+	private final LiferayPortletRequest _renderRequest;
+	private final LiferayPortletResponse _renderResponse;
 	private final HttpServletRequest _httpServletRequest;
+	private TermLocalService _termLocalService;
 	private TrashHelper _trashHelper;
 	private Integer _status;
 	private String _displayStyle;
@@ -80,16 +69,36 @@ public class TermAdminDisplayContext {
 	private String _orderByType;
 	private String _eventName;
 	private Boolean _showScheduled;
+	private String _namespace;
+	private ThemeDisplay _themeDisplay;
 
-	public TermAdminDisplayContext(
-			RenderRequest renderRequest,
-			RenderResponse renderResponse,
+	public TermAdminDisplayContext (
+			LiferayPortletRequest renderRequest,
+			LiferayPortletResponse renderResponse,
+			HttpServletRequest httpServletRequest,
+			TermLocalService termLocalService,
 			TrashHelper trashHelper) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_httpServletRequest = httpServletRequest;
+		_termLocalService = termLocalService;
 		_trashHelper = trashHelper;
-		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
+		
+		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		_namespace = _themeDisplay.getPortletDisplay().getNamespace();
+	}
+
+	public LiferayPortletRequest getLiferayPortletRequest() {
+		return _renderRequest;
+	}
+	
+	public LiferayPortletResponse getLiferayPortletResponse() {
+		return _renderResponse;
+	}
+
+	public HttpServletRequest getHttpServletRequest() {
+		return _httpServletRequest;
 	}
 
 	public SearchContainer<Term> getSearchContainer(){
@@ -98,36 +107,38 @@ public class TermAdminDisplayContext {
 
 		portletURL.setParameter(IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_TERM_LIST);
 
-		String termsNavigation = ParamUtil.getString(	_httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
-		System.out.println("TermDisplayContext:getSearchContainer:termsNavigation - "+termsNavigation);
+		String navigation = ParamUtil.getString(	_httpServletRequest, IcecapSSSWebKeys.NAVIGATION, IcecapSSSConstants.NAVIGATION_MINE);
+		System.out.println("TermDisplayContext:getSearchContainer:termsNavigation - "+navigation);
 
-		portletURL.setParameter(IcecapSSSWebKeys.NAVIGATION, termsNavigation);
+		portletURL.setParameter(IcecapSSSWebKeys.NAVIGATION, navigation);
 
-		SearchContainer<Term> termsSearchContainer =
+		SearchContainer<Term> searchContainer =
 					new SearchContainer<Term>(
 										_renderRequest,
 										portletURL,
 										null,
 										"no-terms-were-found");
-
-		termsSearchContainer.setOrderByCol(_getOrderByCol());
-		termsSearchContainer.setOrderByType(_getOrderByType());
 		
-		termsSearchContainer.setOrderByComparator(
-					TermLocalServiceUtil.getOrderByNameComparator(
-							termsSearchContainer.getOrderByCol(),
-							termsSearchContainer.getOrderByType()));
-		termsSearchContainer.setRowChecker(
-			new EmptyOnClickRowChecker(_renderResponse));
+		searchContainer.setId(_namespace+IcecapSSSConstants.SEARCH_CONTAINER_ID);
+		searchContainer.setOrderByCol(_getOrderByCol());
+		searchContainer.setOrderByType(_getOrderByType());
+		
+		OrderByComparator<Term> orderByComparator = _termLocalService.getOrderByNameComparator(
+				searchContainer.getOrderByCol(), 
+				searchContainer.getOrderByType()
+		);
+		searchContainer.setOrderByComparator( orderByComparator );
+		
+		searchContainer.setRowChecker( new EmptyOnClickRowChecker(_renderResponse) );
 		
 		try {
-			_populateResults(termsSearchContainer);
+			_populateResults(searchContainer);
 		} catch (PortalException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return termsSearchContainer;
+		return searchContainer;
 	}
 
 	public List<String> getAvailableActions(Term term)
@@ -246,6 +257,9 @@ public class TermAdminDisplayContext {
 		return portletURL;
 	}
 
+	public TrashHelper getTrashHelper() {
+		return _trashHelper;
+	}
 
 	public boolean isMultipleSelection() {
 		if (_multipleSelection != null) {
@@ -281,8 +295,10 @@ public class TermAdminDisplayContext {
 		return statuses;
 	}
 	
-	public TrashHelper getTrashHelper() {
-		return _trashHelper;
+	private int getStatus() {
+		_status = ParamUtil.getInteger(_httpServletRequest, IcecapSSSTermAttributes.STATUS, WorkflowConstants.STATUS_ANY);
+
+		return _status;
 	}
 
 	private void _populateResults(SearchContainer<Term> searchContainer)
@@ -319,7 +335,7 @@ public class TermAdminDisplayContext {
 				entriesResults = new ArrayList<>(assetEntries.size());
 
 				for (AssetEntry assetEntry : assetEntries) {
-					entriesResults.add(TermLocalServiceUtil.getTerm(assetEntry.getClassPK()));
+					entriesResults.add(_termLocalService.getTerm(assetEntry.getClassPK()));
 				}
 			}
 			// Keywords are not presented
@@ -328,27 +344,27 @@ public class TermAdminDisplayContext {
 
 				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
 					searchContainer.setTotal(
-						TermLocalServiceUtil.countTermsByG_U_S(
+						_termLocalService.countTermsByG_U_S(
 							themeDisplay.getScopeGroupId(),
 							themeDisplay.getUserId(),
 							WorkflowConstants.STATUS_ANY));
 
-					entriesResults = TermLocalServiceUtil.getTermsByG_U_S(
+					entriesResults = _termLocalService.getTermsByG_U_S(
 							themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
 							WorkflowConstants.STATUS_ANY, searchContainer.getStart(),
 							searchContainer.getEnd()); //,
 					//searchContainer.getOrderByComparator());
 				}
 				else if( termsNavigation.equals(IcecapSSSConstants.NAVIGATION_GROUP)){
-					System.out.println("Group Total: "+TermLocalServiceUtil.countTermsByG_S(
+					System.out.println("Group Total: "+_termLocalService.countTermsByG_S(
 							themeDisplay.getScopeGroupId(),
 							WorkflowConstants.STATUS_ANY));
 					searchContainer.setTotal(
-						TermLocalServiceUtil.countTermsByG_S(
+						_termLocalService.countTermsByG_S(
 							themeDisplay.getScopeGroupId(),
 							WorkflowConstants.STATUS_ANY));
 					
-					entriesResults = TermLocalServiceUtil.getTermsByG_S(
+					entriesResults = _termLocalService.getTermsByG_S(
 							themeDisplay.getScopeGroupId(),
 							WorkflowConstants.STATUS_ANY, 
 							searchContainer.getStart(),
@@ -356,10 +372,10 @@ public class TermAdminDisplayContext {
 					//searchContainer.getOrderByComparator());
 				}
 				else {
-					System.out.println("All Total: "+TermLocalServiceUtil.countAllTerms() );
-					searchContainer.setTotal(TermLocalServiceUtil.countAllTerms());
+					System.out.println("All Total: "+_termLocalService.countAllTerms() );
+					searchContainer.setTotal(_termLocalService.countAllTerms());
 					
-					entriesResults = TermLocalServiceUtil.getAllTerms(
+					entriesResults = _termLocalService.getAllTerms(
 							searchContainer.getStart(),
 							searchContainer.getEnd());// ,
 					//searchContainer.getOrderByComparator());
@@ -379,10 +395,10 @@ public class TermAdminDisplayContext {
 					_httpServletRequest);
 
 				searchContext.setAttribute(Field.STATUS, _getStatuses());
+				searchContext.setStart(searchContainer.getStart());
 				searchContext.setEnd(searchContainer.getEnd());
 				searchContext.setIncludeDiscussions(true);
 				searchContext.setKeywords(keywords);
-				searchContext.setStart(searchContainer.getStart());
 
 				String termsNavigation = ParamUtil.getString(
 					_httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
@@ -491,7 +507,7 @@ public class TermAdminDisplayContext {
 
 		try {
 			return Optional.of(
-				TermLocalServiceUtil.getTerm(searchResult.getClassPK()));
+				_termLocalService.getTerm(searchResult.getClassPK()));
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {

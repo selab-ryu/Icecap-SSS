@@ -3,6 +3,8 @@ package osp.icecap.sss.web.command.render;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.trash.TrashHelper;
 
 import java.util.Enumeration;
@@ -17,7 +19,9 @@ import org.osgi.service.component.annotations.Reference;
 import osp.icecap.sss.constants.IcecapSSSJsps;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
+import osp.icecap.sss.service.TermLocalService;
 import osp.icecap.sss.web.display.context.term.admin.TermAdminDisplayContext;
+import osp.icecap.sss.web.display.context.term.admin.TermAdminManagementToolbarDisplayContext;
 
 @Component(
 	    immediate = true,
@@ -33,18 +37,31 @@ public class TermListViewRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
-		Enumeration<String> keys = renderRequest.getParameterNames();
-		while( keys.hasMoreElements() ) {
-			String key = keys.nextElement();
-			System.out.println( key + " : " + ParamUtil.getString(renderRequest, key));
+		TermAdminDisplayContext termAdminDisplayContext = 
+				(TermAdminDisplayContext)renderRequest.getPortletSession().getAttribute(TermAdminDisplayContext.class.getName());
+		
+		if( Validator.isNull(termAdminDisplayContext) ) {
+			System.out.println("TermAdminDisplayContext is null so that it is created with default search process.");
+			termAdminDisplayContext = new TermAdminDisplayContext(
+												PortalUtil.getLiferayPortletRequest(renderRequest),
+												PortalUtil.getLiferayPortletResponse(renderResponse),
+												PortalUtil.getHttpServletRequest(renderRequest),
+												_termLocalService,
+												_trashHelper);
+		}
+		else {
+			System.out.println("TermAdminDisplayContext is not null.");
 		}
 		
+		TermAdminManagementToolbarDisplayContext termAdminManagementToolbarDisplayContext =
+				new TermAdminManagementToolbarDisplayContext(
+							renderRequest, 
+							renderResponse, 
+							termAdminDisplayContext
+				);
 		renderRequest.setAttribute(
-				TermAdminDisplayContext.class.getName(), 
-				new TermAdminDisplayContext(
-						renderRequest,
-						renderResponse,
-						_trashHelper));
+				TermAdminManagementToolbarDisplayContext.class.getName(), 
+				termAdminManagementToolbarDisplayContext );
 		
 		return IcecapSSSJsps.ADMIN_TERM_LIST_JSP;
 	}
@@ -57,7 +74,10 @@ public class TermListViewRenderCommand implements MVCRenderCommand {
 	
 	@Reference(unbind = "-")
 	protected void setTrashHelper(TrashHelper trashHelper) {
-	  this._trashHelper = trashHelper;
+	  _trashHelper = trashHelper;
 	}
 	protected TrashHelper _trashHelper;
+	
+	@Reference
+	private TermLocalService _termLocalService;
 }

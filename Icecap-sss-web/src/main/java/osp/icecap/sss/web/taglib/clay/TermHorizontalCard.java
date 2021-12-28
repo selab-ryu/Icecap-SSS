@@ -66,16 +66,8 @@ public class TermHorizontalCard extends BaseHorizontalCard {
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
 		System.out.println("TermHorizontalCard.getActionDropdownItems() called.....");
-		TermAdminActionDropdownItemsProvider
-			termAdminActionDropdownItemsProvider =
-				new TermAdminActionDropdownItemsProvider(
-								_term, 
-								_renderRequest, 
-								_renderResponse,
-								_permissionChecker, 
-								_trashHelper);
 
-		return termAdminActionDropdownItemsProvider.getActionDropdownItems();
+		return null;
 	}
 
 	@Override
