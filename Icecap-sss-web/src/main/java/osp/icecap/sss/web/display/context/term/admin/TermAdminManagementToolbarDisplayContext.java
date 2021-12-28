@@ -67,8 +67,6 @@ public class TermAdminManagementToolbarDisplayContext
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	
-	private final SearchContainer<Term> _searchContainer;
-	
 	private final HttpServletRequest _httpServletRequest;
 	private final PermissionChecker _permissionChecker;
 	
@@ -95,7 +93,6 @@ public class TermAdminManagementToolbarDisplayContext
 		 _navigation = getNavigation();
 		 System.out.println("***** TermAdminManagementToolbarDisplayContext(). _navigation: "+_navigation);
 		 
-		 _searchContainer = termAdminDisplayContext.getSearchContainer();
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		_locale = _themeDisplay.getLocale();
 		_permissionChecker = _themeDisplay.getPermissionChecker();
@@ -290,6 +287,6 @@ public class TermAdminManagementToolbarDisplayContext
 
 	@Override
 	public int getItemsTotal() {
-		return _searchContainer.getTotal();
+		return searchContainer.getTotal();
 	}
 }
