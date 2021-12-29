@@ -27,20 +27,16 @@ import osp.icecap.sss.web.display.context.term.admin.TermAdminManagementToolbarD
 	    immediate = true,
 	    property = {
 	        "javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
-	        "mvc.command.name="+MVCCommandNames.RENDER_ROOT,
-	        "mvc.command.name="+MVCCommandNames.RENDER_ADMIN_TERM_LIST
+	        "mvc.command.name="+MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS
 	    },
 	    service = MVCRenderCommand.class
 	)
-public class TermListViewRenderCommand implements MVCRenderCommand {
+public class SearchTermsRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
-		System.out.println("TermListViewRenderCommand.render()");
 		TermAdminDisplayContext termAdminDisplayContext = 
-//				(TermAdminDisplayContext)renderRequest.getAttribute(TermAdminDisplayContext.class.getName());
-		
 					new TermAdminDisplayContext(
 												PortalUtil.getLiferayPortletRequest(renderRequest),
 												PortalUtil.getLiferayPortletResponse(renderResponse),

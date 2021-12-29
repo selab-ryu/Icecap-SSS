@@ -46,7 +46,8 @@ public class SearchTermsActionCommand extends BaseMVCActionCommand {
 				_termLocalService,
 				_trashHelper );
 
-		actionRequest.getPortletSession().setAttribute(TermAdminDisplayContext.class.getName(), termAdminDisplayContext);
+//		actionRequest.getPortletSession().setAttribute(TermAdminDisplayContext.class.getName(), termAdminDisplayContext);
+		actionRequest.setAttribute(TermAdminDisplayContext.class.getName(), termAdminDisplayContext);
 		
 		RenderURL renderURL = actionResponse.createRedirectURL(Copy.ALL);
 		renderURL.setParameter(

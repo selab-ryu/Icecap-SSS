@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -43,6 +44,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.RenderURL;
 import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
@@ -126,10 +128,10 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public String getSearchActionURL() {
 		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
-		ActionURL searchURL =  _liferayPortletResponse.createActionURL();
+		RenderURL searchURL =  _liferayPortletResponse.createRenderURL();
 		searchURL.setParameter(
-				ActionRequest.ACTION_NAME,
-				MVCCommandNames.ACTION_ADMIN_SEARCH_TERMS);
+				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
+				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
 		System.out.println("searchURL: "+searchURL);
 		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
 
@@ -288,5 +290,38 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public int getItemsTotal() {
 		return searchContainer.getTotal();
+	}
+
+	@Override
+	public List<ViewTypeItem> getViewTypeItems() {
+		if (ArrayUtil.isEmpty(getDisplayViews())) {
+			return null;
+		}
+
+		return new ViewTypeItemList(getPortletURL(), getDisplayStyle()) {
+			{
+				if (ArrayUtil.contains(getDisplayViews(), "card")) {
+					ViewTypeItem viewType = addCardViewTypeItem();
+				}
+
+				if (ArrayUtil.contains(getDisplayViews(), "list")) {
+					ViewTypeItem viewType = addListViewTypeItem();
+				}
+
+				if (ArrayUtil.contains(getDisplayViews(), "table")) {
+					ViewTypeItem viewType = addTableViewTypeItem();
+				}
+			}
+		};
+	}
+
+	@Override
+	protected String getDefaultDisplayStyle() {
+		return IcecapSSSConstants.VIEW_TYPE_TABLE;
+	}
+
+	@Override
+	protected String getDisplayStyle() {
+		return _termAdminDisplayContext.getDisplayStyle();
 	}
 }
