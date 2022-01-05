@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSConstants;
-import osp.icecap.sss.constants.IcecapSSSDisplayStyles;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
@@ -112,21 +111,23 @@ public class TermAdminDisplayContext implements Serializable{
 
 		portletURL.setParameter(IcecapSSSWebKeys.NAVIGATION, navigation);
 
-		SearchContainer<Term> searchContainer =
+		_displayStyle = getDisplayStyle();
+		
+		SearchContainer<Term>searchContainer =
 					new SearchContainer<Term>(
 										_renderRequest,
 										portletURL,
 										null,
 										"no-terms-were-found");
 		
-		searchContainer.setId(_namespace+IcecapSSSConstants.SEARCH_CONTAINER_ID);
+		searchContainer.setId(getSearchContainerId());
 		searchContainer.setOrderByCol(_getOrderByCol());
 		searchContainer.setOrderByType(_getOrderByType());
+		OrderByComparator<Term> orderByComparator = 
+				_termLocalService.getOrderByNameComparator(
+							searchContainer.getOrderByCol(), 
+							searchContainer.getOrderByType() );
 		
-		OrderByComparator<Term> orderByComparator = _termLocalService.getOrderByNameComparator(
-				searchContainer.getOrderByCol(), 
-				searchContainer.getOrderByType()
-		);
 		searchContainer.setOrderByComparator( orderByComparator );
 		
 		searchContainer.setRowChecker( new EmptyOnClickRowChecker(_renderResponse) );
@@ -134,11 +135,14 @@ public class TermAdminDisplayContext implements Serializable{
 		try {
 			_populateResults(searchContainer);
 		} catch (PortalException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		return searchContainer;
+	}
+	
+	public String getSearchContainerId() {
+		return IcecapSSSConstants.SEARCH_CONTAINER_ID;
 	}
 
 	public List<String> getAvailableActions(Term term)
@@ -193,7 +197,7 @@ public class TermAdminDisplayContext implements Serializable{
 		}
 
 		_displayStyle = ParamUtil.getString(
-			_httpServletRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSDisplayStyles.LIST);
+			_httpServletRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE);
 
 		return _displayStyle;
 	}
@@ -280,6 +284,14 @@ public class TermAdminDisplayContext implements Serializable{
 		_keywords = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.KEYWORDS);
 
 		return _keywords;
+	}
+	
+	public boolean hasKeywords() {
+		if( Validator.isNull(_keywords) || _keywords.isEmpty() ) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	private int[] _getStatuses() {

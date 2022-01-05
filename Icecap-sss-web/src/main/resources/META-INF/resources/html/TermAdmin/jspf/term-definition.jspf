@@ -36,27 +36,30 @@
 								<liferay-ui:input-localized 
 												type="textarea"
 												name="definition"
-												xml="" >
+												xml="<%= Validator.isNotNull(term)?term.getDefinition():StringPool.BLANK %>" >
 								</liferay-ui:input-localized>
 						</aui:field-wrapper>
 					</aui:col>
 			</aui:row>
 			<aui:row>
 					<aui:col md="12">
-						<aui:input name="synonyms" label="synonyms" placeholder="ex)synTerm1, synterm2" helpMessage="term-synonyms-help"></aui:input>
+						<aui:input name="synonyms" 
+										label="synonyms" 
+										placeholder="ex)synTerm1, synterm2" 
+										helpMessage="term-synonyms-help"
+										value="<%= Validator.isNotNull(term)?term.getSynonyms():StringPool.BLANK %>"></aui:input>
 						<aui:field-wrapper name="tooltip" label="tooltip" helpMessage="term-tooltip-help">
 								<liferay-ui:input-localized 
 												name="tooltip"
 												placeholder="Enter simple example to be displayed as a placeholder of the input control." 
-												xml="" >
+												xml="<%= Validator.isNotNull(term)?term.getTooltip():StringPool.BLANK %>" >
 								</liferay-ui:input-localized>
 						</aui:field-wrapper>
-						<aui:input name="value" label="default-value" helpMessage="term-default-value-help"></aui:input>
+						<aui:input name="value" 
+										label="default-value" 
+										helpMessage="term-default-value-help"
+										value="<%= Validator.isNotNull(term)?term.getSynonyms():StringPool.BLANK %>"></aui:input>
 					</aui:col>
 			</aui:row>
-			<aui:row id="stringAttributes">
-				<aui:col md="12" id="typeDedicatedAttributes">
-				</aui:col>
-			</aui:row>	
 	</aui:fieldset>
 </aui:fieldset-group>

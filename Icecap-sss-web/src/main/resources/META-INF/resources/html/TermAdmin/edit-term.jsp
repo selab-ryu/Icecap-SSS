@@ -64,6 +64,11 @@
 
 <portlet:actionURL name="<%= MVCCommandNames.ACTION_LOAD_TERM_ATTRIBURES %>" var="loadTermAttributesURL"/>
 
+<div class="container-fluid container-fluid-max-xl main-content-body">
+
+<liferay-asset:asset-categories-error />
+<liferay-asset:asset-tags-error />
+
 <aui:row>
 	<aui:col md="3" cssClass="term-type-section">
 		<aui:form name="termTypeForm" method="POST" action="<%= loadTermAttributesURL %>">
@@ -113,6 +118,7 @@
 		actionURL = updateTermURL.toString();
 	}
 %>
+
 <aui:form name="termDefForm" method="POST" action="<%= actionURL %>">
 	<aui:row>
 		<aui:col>
@@ -175,10 +181,10 @@
 		<aui:col>
 			<aui:fieldset-group markupView="lexicon">
 				<aui:fieldset collapsed="<%= false %>" collapsible="<%= true %>" label="categorization" helpMessage="term-categories-help">
-					<liferay-asset:asset-categories-selector className="<%=Term.class.getName()%>" classPK="<%= 0 %>"/>
+					<liferay-asset:asset-categories-selector 
+								className="<%=Term.class.getName()%>" 
+								classPK="<%= Validator.isNotNull(term)?term.getTermId():0 %>"/>
 				</aui:fieldset>
-				<liferay-asset:asset-categories-error />
-				<liferay-asset:asset-tags-error />
 			</aui:fieldset-group>
 		</aui:col>
 	</aui:row>
@@ -189,7 +195,7 @@
 	</aui:button-row>
 
 </aui:form>
-
+<div class="container-fluid container-fluid-max-xl main-content-body">
 <script>
 $(document).ready(function(){
 	var hasDedicatedAttributes = function( termType ){

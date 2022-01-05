@@ -22,6 +22,7 @@ public class MVCCommandNames {
 	public static final String RENDER_ADMIN_TERM_DELETE = "/html/TermAdmin/delete-term";
 	public static final String RENDER_ADMIN_TERM_VIEW = "/html/TermAdmin/view-term";
 	public static final String RENDER_ADMIN_SEARCH_TERMS = "/html/TermAdmin/search-terms";
+	public static final String RENDER_ADMIN_CHANGE_VIEW = "/html/TermAdmin/change-view";
 	
 	public static final String ACTION_ADMIN_CHANGE_VIEW_TYPE = "/html/TermAdmin/change-view-type";
 	public static final String ACTION_ADMIN_TERM_ADD = "/html/TermAdmin/add-term";

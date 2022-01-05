@@ -18,7 +18,7 @@
 <portlet:defineObjects />
 
 <%
-	String curentURL = themeDisplay.getURLCurrent();
+	String currentURL = themeDisplay.getURLCurrent();
 	String backURL = ParamUtil.getString(renderRequest, "BACK_URL", "");
 	String redirect = ParamUtil.getString(renderRequest, "redirect", "");;
 %>

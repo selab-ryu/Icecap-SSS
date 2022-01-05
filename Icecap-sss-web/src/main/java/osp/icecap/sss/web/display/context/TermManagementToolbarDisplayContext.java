@@ -152,7 +152,7 @@ public class TermManagementToolbarDisplayContext extends SearchContainerManageme
 		Debug.printHeader("TermManagementToolbarDisplayContext.getDisplayViews()");
 		System.out.println("Default Display View types are define in IcecapSSSConstants");
 		Debug.printFooter("TermManagementToolbarDisplayContext.getDisplayViews()");
-		return IcecapSSSConstants.VIEW_TYPES();
+		return null;
 	}
 	
 	@Override

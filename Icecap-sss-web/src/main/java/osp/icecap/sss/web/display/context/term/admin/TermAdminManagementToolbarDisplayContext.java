@@ -4,43 +4,31 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchCon
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.trash.TrashHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.portlet.ActionRequest;
-import javax.portlet.ActionURL;
-import javax.portlet.MimeResponse.Copy;
-import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -49,13 +37,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSConstants;
-import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.debug.Debug;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.security.permission.resource.TermResourcePermissionHelper;
+import osp.icecap.sss.web.taglib.clay.TermVerticalCard;
 
 public class TermAdminManagementToolbarDisplayContext 
 						extends SearchContainerManagementToolbarDisplayContext{
@@ -93,64 +81,64 @@ public class TermAdminManagementToolbarDisplayContext
 		 _trashHelper = _termAdminDisplayContext.getTrashHelper();
 		 _displayStyle = _termAdminDisplayContext.getDisplayStyle();
 		 _navigation = getNavigation();
-		 System.out.println("***** TermAdminManagementToolbarDisplayContext(). _navigation: "+_navigation);
 		 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		_locale = _themeDisplay.getLocale();
 		_permissionChecker = _themeDisplay.getPermissionChecker();
 		
-		System.out.println(	"Search Container ID: "+super.getSearchContainerId());
 	}
 
 	@Override
 	public String getClearResultsURL() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
 		PortletURL clearResultsURL = super.getPortletURL();
 		clearResultsURL.setParameter(IcecapSSSWebKeys.KEYWORDS, StringPool.BLANK);
-		System.out.println("clearResultsURL: "+clearResultsURL.toString());
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
 		return clearResultsURL.toString();
 	}
 	
 	@Override
 	public String getSearchContainerId() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
-		String searchContainerId = super.getNamespace()+IcecapSSSConstants.SEARCH_CONTAINER_ID;
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
+		String searchContainerId = _termAdminDisplayContext.getSearchContainerId();
 		
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
 		return searchContainerId;
 	}
 	
 	public SearchContainer<Term> getSearchContainer(){
-		return _termAdminDisplayContext.getSearchContainer();
+		return searchContainer;
 	}
 	
 	@Override
 	public String getSearchActionURL() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
 		RenderURL searchURL =  _liferayPortletResponse.createRenderURL();
 		searchURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
 				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
-		System.out.println("searchURL: "+searchURL);
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
+//		System.out.println("searchURL: "+searchURL);
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
 
 		return searchURL.toString();
 	}
 	
 	@Override
 	protected String[] getDisplayViews() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getDisplayViews()");
-		System.out.println("Default Display View types are define in IcecapSSSConstants");
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getDisplayViews()");
-		return IcecapSSSConstants.VIEW_TYPES();
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getDisplayViews()");
+		String[] viewTypes = new String[] { 
+				IcecapSSSConstants.VIEW_TYPE_CARDS, 
+				IcecapSSSConstants.VIEW_TYPE_LIST,
+				IcecapSSSConstants.VIEW_TYPE_TABLE};
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getDisplayViews()");
+		return viewTypes;
 	}
 	
 	@Override
 	protected String[] getNavigationKeys() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
 		System.out.println("Default NavigationKeys are define in IcecapSSSConstants");
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
 		return IcecapSSSConstants.NAVIGATION_KEYS();
 	}
 	
@@ -158,28 +146,42 @@ public class TermAdminManagementToolbarDisplayContext
 	// These items appear on the management toolbar.
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getActionDropdownItems()");
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getActionDropdownItems()");
 		List<DropdownItem> itemList = 
 					new DropdownItemList() {
 						{
 							boolean stagedActions = false;
-							
+							getSelectedItems();
 							add(
 								dropdownItem -> {
-									dropdownItem.putData(ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_ADMIN_TERM_DELETE);
-									dropdownItem.setIcon("times-circle");
+									dropdownItem.putData(
+											ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_ADMIN_TERM_DELETE);
+									dropdownItem.setIcon("trash");
 									dropdownItem.setLabel(LanguageUtil.get(request, "delete"));
 									dropdownItem.setQuickAction(true);
 								});
 						}
 					};
 					
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getActionDropdownItems()");
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getActionDropdownItems()");
 		return itemList;
 	}
 	
+	public List<String> getAvailableActions( Term term ){
+		if( Validator.isNull(_termAdminDisplayContext)) {
+			return null;
+		}
+		
+		try {
+			return _termAdminDisplayContext.getAvailableActions(term);
+		} catch (PortalException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public List<DropdownItem> getTermActionDropdownItems( long termId){
-		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getTermActionDropdownItems()");
+//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getTermActionDropdownItems()");
 		List<DropdownItem> itemList = 
 				new DropdownItemList() {
 					{
@@ -218,7 +220,7 @@ public class TermAdminManagementToolbarDisplayContext
 					}
 				};
 				
-		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getTermActionDropdownItems()");
+//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getTermActionDropdownItems()");
 		return itemList;
 	}
 
@@ -249,6 +251,22 @@ public class TermAdminManagementToolbarDisplayContext
 				};
 		
 		return menu;
+	}
+	
+	public TermVerticalCard getVerticalCard( 
+			Term term, 
+			RenderRequest renderRequest,
+			RenderResponse renderResponse,
+			RowChecker rowChecker,
+			String termViewURL) {
+		
+		return new TermVerticalCard(
+				term, 
+				renderRequest, 
+				renderResponse, 
+				rowChecker, 
+				termViewURL, 
+				getTermActionDropdownItems(term.getTermId()));
 	}
 
 	private boolean _hasDeletePermission( long termId ) {
@@ -283,6 +301,7 @@ public class TermAdminManagementToolbarDisplayContext
 
 		redirectURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_LIST);
+		redirectURL.setParameter(	IcecapSSSWebKeys.DISPLAY_STYLE, _displayStyle);
 
 		return redirectURL.toString();
 	}
@@ -298,21 +317,58 @@ public class TermAdminManagementToolbarDisplayContext
 			return null;
 		}
 
-		return new ViewTypeItemList(getPortletURL(), getDisplayStyle()) {
-			{
-				if (ArrayUtil.contains(getDisplayViews(), "card")) {
-					ViewTypeItem viewType = addCardViewTypeItem();
-				}
+		List<ViewTypeItem> viewTypeItemList = new ArrayList<ViewTypeItem>();
 
-				if (ArrayUtil.contains(getDisplayViews(), "list")) {
-					ViewTypeItem viewType = addListViewTypeItem();
-				}
+		String[] displayViews = getDisplayViews();
+		
+		RenderURL renderURL = _liferayPortletResponse.createRenderURL();
+		
+		String keywords = _termAdminDisplayContext.getKeywords();
+		String renderCommand = MVCCommandNames.RENDER_ADMIN_TERM_LIST;
+		if( Validator.isNotNull(keywords) && !keywords.isEmpty() ) {
+			renderCommand = MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS;
+		}
+		
+		if (ArrayUtil.contains(displayViews, IcecapSSSConstants.VIEW_TYPE_CARDS)) {
+			ViewTypeItem viewType = new ViewTypeItem();
+			
+			viewType.setActive( _displayStyle.equals(IcecapSSSConstants.VIEW_TYPE_CARDS) );
+			viewType.setHref(renderURL,
+						IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, renderCommand,
+						IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_CARDS,
+						IcecapSSSWebKeys.KEYWORDS, keywords);
+			viewType.setIcon("cards2");
+			viewType.setLabel(LanguageUtil.get(LocaleUtil.getMostRelevantLocale(), "cards"));
+			viewTypeItemList.add(viewType);
+		}
 
-				if (ArrayUtil.contains(getDisplayViews(), "table")) {
-					ViewTypeItem viewType = addTableViewTypeItem();
-				}
-			}
-		};
+		if (ArrayUtil.contains(displayViews, IcecapSSSConstants.VIEW_TYPE_LIST)) {
+			ViewTypeItem viewType = new ViewTypeItem();
+			
+			viewType.setActive( _displayStyle.equals(IcecapSSSConstants.VIEW_TYPE_LIST) );
+			viewType.setHref(renderURL,
+						IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, renderCommand,
+						IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_LIST,
+						IcecapSSSWebKeys.KEYWORDS, keywords);
+			viewType.setIcon("list");
+			viewType.setLabel(LanguageUtil.get(LocaleUtil.getMostRelevantLocale(), "list"));
+			viewTypeItemList.add(viewType);
+		}
+
+		if (ArrayUtil.contains(displayViews, IcecapSSSConstants.VIEW_TYPE_TABLE)) {
+			ViewTypeItem viewType = new ViewTypeItem();
+			
+			viewType.setActive( _displayStyle.equals(IcecapSSSConstants.VIEW_TYPE_TABLE) );
+			viewType.setHref(renderURL,
+						IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, renderCommand,
+						IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE,
+						IcecapSSSWebKeys.KEYWORDS, keywords);
+			viewType.setIcon("table");
+			viewType.setLabel(LanguageUtil.get(LocaleUtil.getMostRelevantLocale(), "table"));
+			viewTypeItemList.add(viewType);
+		}
+		
+		return viewTypeItemList;
 	}
 
 	@Override
@@ -323,5 +379,92 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	protected String getDisplayStyle() {
 		return _termAdminDisplayContext.getDisplayStyle();
+	}
+
+	@Override
+	public String getSortingURL() {
+		Debug.printHeader("++++ getSortingURL");
+		_termAdminDisplayContext.getKeywords();
+		return super.getSortingURL();
+	}
+
+	@Override
+	protected List<DropdownItem> getFilterNavigationDropdownItems() {
+		// TODO Auto-generated method stub
+		return super.getFilterNavigationDropdownItems();
+	}
+
+	@Override
+	protected List<DropdownItem> getOrderByDropdownItems() {
+		// TODO Auto-generated method stub
+		return super.getOrderByDropdownItems();
+	}
+
+	@Override
+	protected String[] getOrderByKeys() {
+		return new String[] {LanguageUtil.get(_locale, "parameter-name"), LanguageUtil.get(_locale, "modified-date")};
+	}
+
+	@Override
+	public Boolean isSelectable() {
+		return true;
+	}
+
+	@Override
+	public Boolean getSupportsBulkActions() {
+		return true;
+	}
+
+	@Override
+	public Boolean isShowAdvancedSearch() {
+		return false;
+	}
+
+	@Override
+	public String getComponentId() {
+		return "termAdminManagementToolbar";
+	}
+
+	@Override
+	public String getSearchFormMethod() {
+		System.out.println("----- Search Form Method: "+super.getSearchFormMethod());
+		return super.getSearchFormMethod();
+	}
+
+	@Override
+	public String getSearchFormName() {
+		System.out.println("----- Search Form Name: "+super.getSearchFormName());
+		return "searchForm";
+//		return super.getSearchFormName();
+	}
+
+	@Override
+	public String getSearchInputName() {
+		System.out.println("----- Search Input Name: "+super.getSearchInputName());
+		return super.getSearchInputName();
+	}
+
+	@Override
+	public String getSearchValue() {
+		System.out.println("----- Search Value: "+super.getSearchValue());
+		return super.getSearchValue();
+	}
+
+	@Override
+	public int getSelectedItems() {
+		System.out.println("----- Selected Items: "+super.getSelectedItems());
+		return super.getSelectedItems();
+	}
+
+	@Override
+	public String getDefaultEventHandler() {
+		if( Validator.isNull(super.getDefaultEventHandler())) {
+			System.out.println("Default Event Handler is null.");
+			return null;
+		}
+		else {
+			System.out.println("Default Event Handler: "+super.getDefaultEventHandler());
+		}
+		return super.getDefaultEventHandler();
 	}
 }

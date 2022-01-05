@@ -10,6 +10,7 @@ Export-Package: \
 	osp.icecap.sss.util.comparator,\
 	osp.icecap.sss.security.permission.resource,\
 	osp.icecap.sss.util,\
-	osp.icecap.sss.debug
+	osp.icecap.sss.debug,\
+	osp.icecap.sss.util.term
 -check: EXPORTS
 -includeresource: META-INF/service.xml=../Icecap-sss-service/service.xml
