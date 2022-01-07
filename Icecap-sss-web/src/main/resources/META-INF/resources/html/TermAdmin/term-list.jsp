@@ -1,4 +1,6 @@
 
+<%@page import="com.liferay.portal.kernel.util.DateUtil"%>
+<%@page import="java.util.Date"%>
 <%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
 <%@page import="osp.icecap.sss.web.taglib.clay.TermVerticalCard"%>
 <%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
@@ -63,6 +65,10 @@
 	>	</liferay-frontend:sidebar-panel>
 	
 	<div class="sidenav-content">
+		<aui:form action="" method="get" name="fm">
+			<aui:input name="cmd" type="hidden"></aui:input>
+			<aui:input name="redirect" type="hidden"></aui:input>
+		
 	 	<liferay-ui:search-container 
 	 		id="<%= IcecapSSSConstants.SEARCH_CONTAINER_ID %>"
 		    searchContainer="<%= termAdminManagementToolbarDisplayContext.getSearchContainer() %>" >
@@ -77,10 +83,10 @@
 					<%
 					Map<String, Object> rowData = new HashMap<>();
 
-					rowData.put("actions", StringUtil.merge(termAdminManagementToolbarDisplayContext.getAvailableActions(term)));
+					// rowData.put("actions", StringUtil.merge(termAdminManagementToolbarDisplayContext.getAvailableActions(term)));
 
 					row.setData(rowData);
-					row.setCssClass("col-md-12");
+					//row.setCssClass("col-md-12");
 
 					PortletURL rowURL = renderResponse.createRenderURL();
 
@@ -152,7 +158,7 @@
 							
 							<liferay-ui:search-container-column-text 
 										name="modified-date"
-										property="modifiedDate"/>
+										value="<%= DateUtil.getDate(term.getModifiedDate(), "yyyy-MM-dd", locale) %>"/>
 							
 							<liferay-ui:search-container-column-status 
 										name="status" 
@@ -179,6 +185,27 @@
 					</c:otherwise>
 				</c:choose>
 		</liferay-ui:search-container>
+		</aui:form>
 	</div>
 </div>
 
+<script type="text/javascript">
+Liferay.componentReady('termAdminManagementToolbar').then(function(
+		managementToolbar
+	) {
+
+		managementToolbar.on('actionItemClicked', function(event) {
+			confirm('confirm...');
+			console.log('Data CMD: ', event.data.item.data.cmd );
+			var form = document.getElementById('<portlet:namespace />fm');
+
+			Liferay.Util.postForm(form, {
+				data:{
+					cmd: event.data.item.data.cmd,
+					redirect: '<%= currentURL %>'
+				},
+				url: '<portlet:actionURL name="<%=MVCCommandNames.ACTION_ADMIN_BULK_ACTIONS %>" />'
+			});
+		});
+	});
+</script>

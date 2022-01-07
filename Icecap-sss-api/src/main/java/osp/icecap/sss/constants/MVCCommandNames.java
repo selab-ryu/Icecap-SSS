@@ -31,4 +31,5 @@ public class MVCCommandNames {
 	public static final String ACTION_ADMIN_TERM_PUBLISH = "/html/TermAdmin/publish-term";
 	public static final String ACTION_ADMIN_LOAD_TERM_ATTRIBURES = "/html/TermAdmin/load-term-attributes";
 	public static final String ACTION_ADMIN_SEARCH_TERMS = "/html/TermAdmin/search-terms";
+	public static final String ACTION_ADMIN_BULK_ACTIONS = "/html/TermAdmin/bulk-actions";
 }

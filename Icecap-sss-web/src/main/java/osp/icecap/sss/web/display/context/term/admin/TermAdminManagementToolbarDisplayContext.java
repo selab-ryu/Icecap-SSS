@@ -6,6 +6,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.ActionURL;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -106,6 +108,18 @@ public class TermAdminManagementToolbarDisplayContext
 		return searchContainerId;
 	}
 	
+	
+	public Long[] getSelectedTerms(){
+		List<ResultRow> rows = searchContainer.getResultRows();
+		List<Long> selected = new ArrayList<Long>(); 
+		System.out.println("++++ ");
+		for( ResultRow row : rows ) {
+			System.out.println(row.getState());
+		}
+		
+		return (Long[])selected.toArray();
+	}
+	
 	public SearchContainer<Term> getSearchContainer(){
 		return searchContainer;
 	}
@@ -151,14 +165,15 @@ public class TermAdminManagementToolbarDisplayContext
 					new DropdownItemList() {
 						{
 							boolean stagedActions = false;
-							getSelectedItems();
+							
+							PortletURL actionURL = _liferayPortletResponse.createActionURL();
+							
 							add(
 								dropdownItem -> {
-									dropdownItem.putData(
-											ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_ADMIN_TERM_DELETE);
 									dropdownItem.setIcon("trash");
 									dropdownItem.setLabel(LanguageUtil.get(request, "delete"));
 									dropdownItem.setQuickAction(true);
+									dropdownItem.putData("cmd", IcecapSSSActionKeys.DELETE_TERMS);
 								});
 						}
 					};
@@ -178,6 +193,13 @@ public class TermAdminManagementToolbarDisplayContext
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public String getBulkActionURL() {
+		ActionURL actionURL = _liferayPortletResponse.createActionURL();
+		actionURL.setParameter("actionName", MVCCommandNames.ACTION_ADMIN_BULK_ACTIONS);
+		
+		return actionURL.toString();
 	}
 	
 	public List<DropdownItem> getTermActionDropdownItems( long termId){

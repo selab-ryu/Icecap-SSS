@@ -20,6 +20,7 @@ public class IcecapSSSWebKeys {
 	public static final String ORDER_BY_COL = "orderByCol";
 	public static final String ORDER_BY_TYPE = "orderByType";
 	public static final String REDIRECT = "redirect";
+	public static final String ROW_IDS = "rowIds";
 	public static final String SELECT_TERM = "selectTerm";
 	public static final String SELECTED_GROUP_ID = "selectedGroupId";
 	public static final String SELECTED_GROUP_IDS = "selectedGroupIds";
