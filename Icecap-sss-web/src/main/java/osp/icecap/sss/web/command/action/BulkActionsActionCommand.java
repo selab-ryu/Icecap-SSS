@@ -49,16 +49,6 @@ public class BulkActionsActionCommand extends BaseMVCActionCommand {
 		actionResponse.sendRedirect(redirect);
 		
 		Debug.printFooter("BulkActionsActionCommand");
-		
-//		String CMD = ParamUtil.getString(actionRequest, Constants.CMD);
-//		String redirect = ParamUtil.getString(actionRequest, IcecapSSSWebKeys.REDIRECT);
-//		
-//		System.out.println("-- CMD: "+CMD);
-		
-//		JSONArray jsonTermIds = JSONFactoryUtil.createJSONArray(strTermIds);
-//		for( int i=0; i<jsonTermIds.length(); i++) {
-//			_termLocalService.removeTerm(jsonTermIds.getLong(i));
-//		}
 	}
 
 	@Reference

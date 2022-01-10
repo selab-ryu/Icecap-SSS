@@ -27,7 +27,6 @@
 	AssetEntry assetEntry = 
 				AssetEntryLocalServiceUtil.getEntry(Term.class.getName(), termId);
 
-	String currentURL = PortalUtil.getCurrentURL(request);
 	PortalUtil.addPortletBreadcrumbEntry(request, term.getDisplayTitle(locale), currentURL);
 	
 	PortalUtil.setPageSubtitle(term.getDisplayTitle(locale), request);
@@ -42,52 +41,67 @@
 	<portlet:param name="mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_ADMIN_TERM_LIST %>" />
 </liferay-portlet:renderURL>
 
+<aui:container>
 <liferay-ui:header
 		backURL="<%=redirect%>"
 		title="view-term-list" 
 />
 
-<dl>
-	<dt>Term</dt>
-	<dd><%=term.getDisplayTitle(locale)%></dd>
-	<dt>Parameter Name</dt>
-	<dd><%=term.getTermName()%></dd>
-	<dt>Type</dt>
-	<dd><%=term.getTermType()%></dd>
-	<dt>Definition</dt>
-	<dd><%=term.getDefinition(locale, true) %></dd>
-</dl>
+<aui:row>
+	<aui:col>
+	<dl>
+		<dt>Term</dt>
+		<dd><%=term.getDisplayTitle(locale)%></dd>
+		<dt>Parameter Name</dt>
+		<dd><%=term.getTermName()%></dd>
+		<dt>Type</dt>
+		<dd><%=term.getTermType()%></dd>
+		<dt>Definition</dt>
+		<dd><%=term.getDefinition(locale, true) %></dd>
+	</dl>
+	</aui:col>
+</aui:row>
 
+<aui:row>
+	<aui:col>
 <liferay-ui:ratings 
 		className="<%=Term.class.getName()%>"
 		classPK="<%=termId%>" type="stars" />
-<% 
-	Discussion discussion = 
-	CommentManagerUtil.getDiscussion(
-			user.getUserId(), 
-			scopeGroupId, 
-			Term.class.getName(), 
-			termId, 
-			new ServiceContextFunction(request));
-%>
+	</aui:col>
+</aui:row>
 
-<c:if test="<%= discussion != null %>">
-	<h2>
-		<strong>
-			<liferay-ui:message 
-					arguments="<%= discussion.getDiscussionCommentsCount() %>" 
-					key='<%= (discussion.getDiscussionCommentsCount() == 1) ? "x-comment" : "x-comments" %>' />
-		</strong>
-	</h2>
-</c:if>
-<c:if test="<%= themeDisplay.isSignedIn() %>">
-	<liferay-comment:discussion
-			className="<%= Term.class.getName() %>"
-			classPK="<%= termId %>"
-			discussion="<%= discussion %>"
-			formName="fm2"
-			ratingsEnabled="true"
-			redirect="<%= currentURL %>"
-			userId="<%= term.getUserId() %>"
-	/>
-</c:if>
+<aui:row>
+	<aui:col>
+	<% 
+		Discussion discussion = 
+		CommentManagerUtil.getDiscussion(
+				user.getUserId(), 
+				scopeGroupId, 
+				Term.class.getName(), 
+				termId, 
+				new ServiceContextFunction(request));
+	%>
+	
+	<c:if test="<%= discussion != null %>">
+		<h2>
+			<strong>
+				<liferay-ui:message 
+						arguments="<%= discussion.getDiscussionCommentsCount() %>" 
+						key='<%= (discussion.getDiscussionCommentsCount() == 1) ? "x-comment" : "x-comments" %>' />
+			</strong>
+		</h2>
+	</c:if>
+	<c:if test="<%= themeDisplay.isSignedIn() %>">
+		<liferay-comment:discussion
+				className="<%= Term.class.getName() %>"
+				classPK="<%= termId %>"
+				discussion="<%= discussion %>"
+				formName="fm2"
+				ratingsEnabled="true"
+				redirect="<%= currentURL %>"
+				userId="<%= term.getUserId() %>"
+		/>
+	</c:if>
+	</aui:col>
+</aui:row>
+</aui:container>

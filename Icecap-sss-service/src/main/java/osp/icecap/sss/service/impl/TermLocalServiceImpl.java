@@ -171,9 +171,14 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		}
 		System.out.println("Finished Registering as a Asset...");
 		
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(term.getCompanyId(), 
-				term.getGroupId(), term.getUserId(), Term.class.getName(), 
-				term.getPrimaryKey(), term, sc);
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+				term.getCompanyId(), 
+				term.getGroupId(), 
+				term.getUserId(), 
+				Term.class.getName(), 
+				term.getPrimaryKey(), 
+				term, 
+				sc);
 		
 		return term;
 	}
@@ -206,6 +211,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		
 		term.setUserId(sc.getUserId());
 		term.setModifiedDate(new Date() );
+
 		term.setStatus(status);
 		
 		term.setExpandoBridgeAttributes(sc);
@@ -246,6 +252,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		return term;
 	}
 	
+	@Indexable(type = IndexableType.REINDEX)
 	public Term updateStatus(
 			long userId, 
 			long termId, 
@@ -260,18 +267,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		term.setStatusByUserName(user.getFullName());
 		term.setStatusDate(new Date());
 
-		updateTerm( 
-				term.getTermId(), 
-				term.getTermName(), 
-				term.getTermVersion(), 
-				term.getTermType(), 
-				term.getDisplayNameMap(), 
-				term.getDefinitionMap(), 
-				term.getTooltipMap(), 
-				term.getSynonyms(), 
-				term.getStatus(),
-				term.getAttributesJSON(),
-				sc);
+		super.termPersistence.update(term, sc);
 		
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			super.assetEntryLocalService.updateVisible(Term.class.getName(), termId, true);

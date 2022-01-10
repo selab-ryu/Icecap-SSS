@@ -386,6 +386,7 @@ public interface TermLocalService
 
 	public void removeTerms(long[] termIds) throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public Term updateStatus(
 			long userId, long termId, int status, ServiceContext sc)
 		throws PortalException, SystemException;

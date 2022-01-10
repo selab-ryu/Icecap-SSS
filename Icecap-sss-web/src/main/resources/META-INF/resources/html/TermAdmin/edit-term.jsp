@@ -70,11 +70,9 @@
 <liferay-asset:asset-tags-error />
 
 <aui:row>
-	<aui:col md="3" cssClass="term-type-section">
-		<aui:form name="termTypeForm" method="POST" action="<%= loadTermAttributesURL %>">
-			<aui:fieldset-group markupView="lexicon">
-				<aui:fieldset label="term-type" helpMessage="term-type-select-help">
-					<aui:select name="termType" label="">
+	<aui:col md="3">
+		<aui:form name="termTypeForm" method="POST" action="<%= loadTermAttributesURL %>" markupView="lexicon">
+					<aui:select name="termType" label="term-type" helpMessage="term-type-select-help">
 						<%
 						final String[] parameterTypes = IcecapSSSTermTypes.getTypes();
 						for( String parameterType : parameterTypes ){
@@ -97,8 +95,6 @@
 					
 					<input type="hidden" name="<portlet:namespace/>mvcRenderCommandName" value="<%= MVCCommandNames.RENDER_ADMIN_TERM_EDIT %>" >
 					<input type="hidden" name="<portlet:namespace/>termListViewURL" value="<%= redirect %>" >
-				</aui:fieldset>
-			</aui:fieldset-group>
 		</aui:form>
 	</aui:col>
 	<aui:col md="7">
