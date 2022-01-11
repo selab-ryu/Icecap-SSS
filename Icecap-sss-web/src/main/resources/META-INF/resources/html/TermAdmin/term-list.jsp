@@ -65,7 +65,9 @@
 	>	</liferay-frontend:sidebar-panel>
 	
 	<div class="sidenav-content">
-		<aui:form action="" method="get" name="fm">
+		<aui:form action="" 
+				method="<%= termAdminManagementToolbarDisplayContext.getSearchFormMethod() %>" 
+				name="<%= termAdminManagementToolbarDisplayContext.getSearchFormName() %>">
 			<aui:input name="cmd" type="hidden"></aui:input>
 			<aui:input name="redirect" type="hidden"></aui:input>
 		
@@ -77,7 +79,6 @@
 							className="osp.icecap.sss.model.Term" 
 							keyProperty="termId" 
 							modelVar="term"
-							 
 							escapedModel="<%=true%>">
 							
 					<%

@@ -59,6 +59,7 @@ public class TermAdminDisplayContext implements Serializable{
 	private TermLocalService _termLocalService;
 	private TrashHelper _trashHelper;
 	private Integer _status;
+	private String _navigation;
 	private String _displayStyle;
 	private String _keywords;
 	private Boolean _multipleSelection;
@@ -123,6 +124,7 @@ public class TermAdminDisplayContext implements Serializable{
 		searchContainer.setId(getSearchContainerId());
 		searchContainer.setOrderByCol(_getOrderByCol());
 		searchContainer.setOrderByType(_getOrderByType());
+		
 		OrderByComparator<Term> orderByComparator = 
 				_termLocalService.getOrderByNameComparator(
 							searchContainer.getOrderByCol(), 
@@ -295,7 +297,7 @@ public class TermAdminDisplayContext implements Serializable{
 	}
 
 	private int[] _getStatuses() {
-		int[] statuses = {WorkflowConstants.STATUS_APPROVED};
+		int[] statuses = {getStatus()};
 
 		if (_isShowScheduled()) {
 			statuses = new int[] {
@@ -327,6 +329,7 @@ public class TermAdminDisplayContext implements Serializable{
 			String keywords = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.KEYWORDS, null);
 			System.out.println("_populateResults: keywords - "+keywords);
 			
+			getStatus();
 			// Browse through category system. Use Asset service
 			if ((assetCategoryId != 0) || Validator.isNotNull(assetTagName)) {
 				AssetEntryQuery assetEntryQuery = new AssetEntryQuery(Term.class.getName(), searchContainer);
@@ -355,39 +358,41 @@ public class TermAdminDisplayContext implements Serializable{
 				String termsNavigation = ParamUtil.getString( _httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
 
 				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
+					System.out.println("");
 					searchContainer.setTotal(
 						_termLocalService.countTermsByG_U_S(
 							themeDisplay.getScopeGroupId(),
 							themeDisplay.getUserId(),
-							WorkflowConstants.STATUS_ANY));
+							_status));
 
 					entriesResults = _termLocalService.getTermsByG_U_S(
 							themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
-							WorkflowConstants.STATUS_ANY, searchContainer.getStart(),
+							_status, searchContainer.getStart(),
 							searchContainer.getEnd()); //,
 					//searchContainer.getOrderByComparator());
 				}
 				else if( termsNavigation.equals(IcecapSSSConstants.NAVIGATION_GROUP)){
 					System.out.println("Group Total: "+_termLocalService.countTermsByG_S(
 							themeDisplay.getScopeGroupId(),
-							WorkflowConstants.STATUS_ANY));
+							_status));
 					searchContainer.setTotal(
 						_termLocalService.countTermsByG_S(
 							themeDisplay.getScopeGroupId(),
-							WorkflowConstants.STATUS_ANY));
+							_status));
 					
 					entriesResults = _termLocalService.getTermsByG_S(
 							themeDisplay.getScopeGroupId(),
-							WorkflowConstants.STATUS_ANY, 
+							_status, 
 							searchContainer.getStart(),
 							searchContainer.getEnd());// ,
 					//searchContainer.getOrderByComparator());
 				}
 				else {
-					System.out.println("All Total: "+_termLocalService.countAllTerms() );
-					searchContainer.setTotal(_termLocalService.countAllTerms());
+					System.out.println("All Total: "+_termLocalService.countTermsByStatus(_status) );
+					searchContainer.setTotal(_termLocalService.countTermsByStatus(_status));
 					
-					entriesResults = _termLocalService.getAllTerms(
+					entriesResults = _termLocalService.getTermsByStatus(
+							_status,
 							searchContainer.getStart(),
 							searchContainer.getEnd());// ,
 					//searchContainer.getOrderByComparator());

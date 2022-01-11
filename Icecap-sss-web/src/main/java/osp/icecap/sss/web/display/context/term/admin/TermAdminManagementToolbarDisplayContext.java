@@ -2,6 +2,7 @@ package osp.icecap.sss.web.display.context.term.admin;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownGroupItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
@@ -11,20 +12,21 @@ import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.trash.TrashHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,7 +37,6 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.RenderURL;
-import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSConstants;
@@ -54,12 +55,10 @@ public class TermAdminManagementToolbarDisplayContext
 	private final TrashHelper _trashHelper;
 	private final String _displayStyle;
 	private final String _navigation;
+	private final int _status;
+	private final String _orderByCol;
+	private final String _orderByType;
 	private final TermAdminDisplayContext _termAdminDisplayContext;
-	
-	private final LiferayPortletRequest _liferayPortletRequest;
-	private final LiferayPortletResponse _liferayPortletResponse;
-	
-	private final HttpServletRequest _httpServletRequest;
 	private final PermissionChecker _permissionChecker;
 	
 	private final Locale _locale;
@@ -76,15 +75,15 @@ public class TermAdminManagementToolbarDisplayContext
 				termAdminDisplayContext.getSearchContainer());
 		
 		_termAdminDisplayContext = termAdminDisplayContext;
-		_liferayPortletRequest = _termAdminDisplayContext.getLiferayPortletRequest();
-		_liferayPortletResponse = _termAdminDisplayContext.getLiferayPortletResponse();
-		_httpServletRequest = _termAdminDisplayContext.getHttpServletRequest();
 
 		 _trashHelper = _termAdminDisplayContext.getTrashHelper();
 		 _displayStyle = _termAdminDisplayContext.getDisplayStyle();
 		 _navigation = getNavigation();
+		 _orderByCol = getOrderByCol();
+		 _orderByType = getOrderByType();
+		 _status = getFilterStatus();
 		 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		_themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		_locale = _themeDisplay.getLocale();
 		_permissionChecker = _themeDisplay.getPermissionChecker();
 		
@@ -127,7 +126,7 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public String getSearchActionURL() {
 //		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
-		RenderURL searchURL =  _liferayPortletResponse.createRenderURL();
+		RenderURL searchURL =  liferayPortletResponse.createRenderURL();
 		searchURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
 				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
@@ -135,6 +134,15 @@ public class TermAdminManagementToolbarDisplayContext
 //		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
 
 		return searchURL.toString();
+	}
+	
+	public PortletURL getFilterURL() {
+		PortletURL filterURL =  liferayPortletResponse.createRenderURL();
+		filterURL.setParameter(
+				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
+				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
+
+		return filterURL;
 	}
 	
 	@Override
@@ -156,6 +164,59 @@ public class TermAdminManagementToolbarDisplayContext
 		return IcecapSSSConstants.NAVIGATION_KEYS();
 	}
 	
+	protected Map<String, Integer> getStatusMap(){
+
+		Map<String, Integer> statusMap = new LinkedHashMap<>();
+
+		statusMap.put("Any", Integer.valueOf(WorkflowConstants.STATUS_ANY));
+//		statusMap.put("Draft", Integer.valueOf(WorkflowConstants.STATUS_DRAFT));
+		statusMap.put("Pending", Integer.valueOf(WorkflowConstants.STATUS_PENDING));
+		statusMap.put("Approved", Integer.valueOf(WorkflowConstants.STATUS_APPROVED));
+//		statusMap.put("Denied", Integer.valueOf(WorkflowConstants.STATUS_DENIED));
+//		statusMap.put("Scheduled", Integer.valueOf(WorkflowConstants.STATUS_SCHEDULED));
+//		statusMap.put("Expired", Integer.valueOf(WorkflowConstants.STATUS_EXPIRED));
+
+		return statusMap;
+	}
+	
+	protected List<DropdownItem> getFilterByStatusDropdownItems() {
+		return getStatusDropdownItems(
+						getStatusMap(), 
+						getFilterURL(), 
+						getStatusParam(),
+						getFilterStatus());
+	}
+	
+	protected List<DropdownItem> getStatusDropdownItems(
+			Map<String, Integer> statusMap, 
+			PortletURL filterURL,
+			String parameterName, 
+			int parameterValue){
+		return new DropdownItemList() {
+			{
+				for (Map.Entry<String, Integer> entry : statusMap.entrySet()) {
+					add(
+						dropdownItem -> {
+							dropdownItem.setActive(parameterValue == entry.getValue());
+							dropdownItem.setHref(
+									filterURL, parameterName, entry.getValue());
+							dropdownItem.setLabel(
+								LanguageUtil.get(request, entry.getKey()));
+						});
+				}
+			}
+		};
+	}
+	
+	protected int getFilterStatus() {
+		return ParamUtil.getInteger(
+			liferayPortletRequest, getStatusParam(), WorkflowConstants.STATUS_ANY);
+	}
+	
+	protected String getStatusParam() {
+		return "status";
+	}
+	
 	// Dropdown Items for management toolbar. multi selection.
 	// These items appear on the management toolbar.
 	@Override
@@ -166,7 +227,7 @@ public class TermAdminManagementToolbarDisplayContext
 						{
 							boolean stagedActions = false;
 							
-							PortletURL actionURL = _liferayPortletResponse.createActionURL();
+							PortletURL actionURL = liferayPortletResponse.createActionURL();
 							
 							add(
 								dropdownItem -> {
@@ -196,7 +257,7 @@ public class TermAdminManagementToolbarDisplayContext
 	}
 	
 	public String getBulkActionURL() {
-		ActionURL actionURL = _liferayPortletResponse.createActionURL();
+		ActionURL actionURL = liferayPortletResponse.createActionURL();
 		actionURL.setParameter("actionName", MVCCommandNames.ACTION_ADMIN_BULK_ACTIONS);
 		
 		return actionURL.toString();
@@ -210,7 +271,7 @@ public class TermAdminManagementToolbarDisplayContext
 						if (_hasUpdatePermission( termId )) {
 							add(dropdownItem -> {
 								dropdownItem.setHref(
-										_liferayPortletResponse.createRenderURL(), 
+										liferayPortletResponse.createRenderURL(), 
 										IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_EDIT, 
 										Constants.CMD, Constants.UPDATE,
 										IcecapSSSWebKeys.REDIRECT, _getRedirectURL(), 
@@ -222,7 +283,7 @@ public class TermAdminManagementToolbarDisplayContext
 						}
 
 						if (_hasDeletePermission( termId )) {
-							PortletURL deleteURL =  _liferayPortletResponse.createActionURL();
+							PortletURL deleteURL = liferayPortletResponse.createActionURL();
 							
 							long[] termIds = { termId};
 							deleteURL.setParameter(ActionRequest.ACTION_NAME, MVCCommandNames.ACTION_ADMIN_TERM_DELETE);
@@ -236,7 +297,7 @@ public class TermAdminManagementToolbarDisplayContext
 								dropdownItem.setHref(deleteURL);
 								dropdownItem.setIcon("delete");
 								dropdownItem.setLabel(
-									LanguageUtil.get(_httpServletRequest, "delete"));
+									LanguageUtil.get(request, "delete"));
 							});		
 						}
 					}
@@ -319,7 +380,7 @@ public class TermAdminManagementToolbarDisplayContext
 	}
 	
 	private String _getRedirectURL() {
-		PortletURL redirectURL = _liferayPortletResponse.createRenderURL();
+		PortletURL redirectURL = liferayPortletResponse.createRenderURL();
 
 		redirectURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_LIST);
@@ -343,7 +404,7 @@ public class TermAdminManagementToolbarDisplayContext
 
 		String[] displayViews = getDisplayViews();
 		
-		RenderURL renderURL = _liferayPortletResponse.createRenderURL();
+		RenderURL renderURL = liferayPortletResponse.createRenderURL();
 		
 		String keywords = _termAdminDisplayContext.getKeywords();
 		String renderCommand = MVCCommandNames.RENDER_ADMIN_TERM_LIST;
@@ -412,14 +473,27 @@ public class TermAdminManagementToolbarDisplayContext
 
 	@Override
 	protected List<DropdownItem> getFilterNavigationDropdownItems() {
-		// TODO Auto-generated method stub
-		return super.getFilterNavigationDropdownItems();
-	}
 
+		DropdownItemList filterNavigationDropdownItems = new DropdownItemList();
+		
+		List<DropdownItem> filterByScopeDropdownItemList = super.getFilterNavigationDropdownItems();
+		DropdownGroupItem filterByScopeGroup = new DropdownGroupItem();
+//		filterByScopeGroup.setLabel("Filter By Scope");
+		filterByScopeGroup.setDropdownItems(filterByScopeDropdownItemList);
+		filterNavigationDropdownItems.add(filterByScopeGroup);
+		
+		List<DropdownItem> filterByStatusDropdownItemList = getFilterByStatusDropdownItems();
+		DropdownGroupItem filterByStatusGroup = new DropdownGroupItem();
+		filterByStatusGroup.setLabel("Filter By Status");
+		filterByStatusGroup.setDropdownItems(filterByStatusDropdownItemList);
+		filterNavigationDropdownItems.add(filterByStatusGroup);
+		
+		return filterNavigationDropdownItems;
+	}
+	
 	@Override
-	protected List<DropdownItem> getOrderByDropdownItems() {
-		// TODO Auto-generated method stub
-		return super.getOrderByDropdownItems();
+	protected String getFilterNavigationDropdownItemsLabel() {
+		return LanguageUtil.get(request, "filter-by-scope");
 	}
 
 	@Override
@@ -457,7 +531,6 @@ public class TermAdminManagementToolbarDisplayContext
 	public String getSearchFormName() {
 		System.out.println("----- Search Form Name: "+super.getSearchFormName());
 		return "searchForm";
-//		return super.getSearchFormName();
 	}
 
 	@Override

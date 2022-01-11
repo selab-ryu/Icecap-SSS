@@ -19,6 +19,7 @@ import org.osgi.service.component.annotations.Reference;
 import osp.icecap.sss.constants.IcecapSSSJsps;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
+import osp.icecap.sss.debug.Debug;
 import osp.icecap.sss.service.TermLocalService;
 import osp.icecap.sss.web.display.context.term.admin.TermAdminDisplayContext;
 import osp.icecap.sss.web.display.context.term.admin.TermAdminManagementToolbarDisplayContext;
@@ -35,6 +36,14 @@ public class SearchTermsRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
+		
+		Debug.printHeader("SearchTermsRenderCommand");
+		
+		Enumeration<String> keys = renderRequest.getParameterNames();
+		while( keys.hasMoreElements() ) {
+			String key = keys.nextElement();
+			System.out.println(key + ": "+ParamUtil.getString(renderRequest, key));
+		}
 		
 		TermAdminDisplayContext termAdminDisplayContext = 
 					new TermAdminDisplayContext(
@@ -54,6 +63,7 @@ public class SearchTermsRenderCommand implements MVCRenderCommand {
 				TermAdminManagementToolbarDisplayContext.class.getName(), 
 				termAdminManagementToolbarDisplayContext );
 		
+		Debug.printFooter("SearchTermsRenderCommand");
 		return IcecapSSSJsps.ADMIN_TERM_LIST_JSP;
 	}
 
