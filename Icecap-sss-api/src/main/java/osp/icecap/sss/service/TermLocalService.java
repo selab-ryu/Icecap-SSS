@@ -237,10 +237,18 @@ public interface TermLocalService
 	public List<Term> getAllTerms(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getAllTerms(
+		int start, int end, OrderByComparator<Term> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getApprovedTerms(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getApprovedTerms(long groupId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getApprovedTerms(
+		long groupId, int start, int end, OrderByComparator<Term> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
@@ -321,6 +329,11 @@ public interface TermLocalService
 		long groupId, int status, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<Term> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByG_U_S(long groupId, long userId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -328,10 +341,19 @@ public interface TermLocalService
 		long groupId, long userId, int status, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<Term> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByGroupId(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByGroupId(long groupId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByGroupId(
+		long groupId, int start, int end, OrderByComparator<Term> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByName(String termName);
@@ -343,10 +365,18 @@ public interface TermLocalService
 	public List<Term> getTermsByStatus(int status, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByStatus(
+		int status, int start, int end, OrderByComparator<Term> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByUserId(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByUserId(long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByUserId(
+		long userId, int start, int end, OrderByComparator<Term> comparator);
 
 	/**
 	 * Returns all the terms matching the UUID and company.

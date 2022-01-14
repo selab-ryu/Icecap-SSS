@@ -280,6 +280,15 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getAllTerms(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getAllTerms(start, end, comparator);
+	}
+
+	@Override
 	public java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
 		long groupId) {
 
@@ -291,6 +300,16 @@ public class TermLocalServiceWrapper
 		long groupId, int start, int end) {
 
 		return _termLocalService.getApprovedTerms(groupId, start, end);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getApprovedTerms(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getApprovedTerms(
+			groupId, start, end, comparator);
 	}
 
 	@Override
@@ -420,6 +439,16 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByG_S(
+		long groupId, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByG_S(
+			groupId, status, start, end, comparator);
+	}
+
+	@Override
 	public java.util.List<osp.icecap.sss.model.Term> getTermsByG_U_S(
 		long groupId, long userId, int status) {
 
@@ -435,6 +464,16 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByG_U_S(
+			groupId, userId, status, start, end, comparator);
+	}
+
+	@Override
 	public java.util.List<osp.icecap.sss.model.Term> getTermsByGroupId(
 		long groupId) {
 
@@ -446,6 +485,16 @@ public class TermLocalServiceWrapper
 		long groupId, int start, int end) {
 
 		return _termLocalService.getTermsByGroupId(groupId, start, end);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByGroupId(
+			groupId, start, end, comparator);
 	}
 
 	@Override
@@ -470,6 +519,16 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByStatus(
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByStatus(
+			status, start, end, comparator);
+	}
+
+	@Override
 	public java.util.List<osp.icecap.sss.model.Term> getTermsByUserId(
 		long userId) {
 
@@ -481,6 +540,16 @@ public class TermLocalServiceWrapper
 		long userId, int start, int end) {
 
 		return _termLocalService.getTermsByUserId(userId, start, end);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByUserId(
+		long userId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByUserId(
+			userId, start, end, comparator);
 	}
 
 	/**

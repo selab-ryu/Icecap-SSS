@@ -6,11 +6,11 @@ import osp.icecap.sss.model.Term;
 
 public class TermNameComparator extends OrderByComparator<Term> {
 
-	public static final String ORDER_BY_ASC = "Term.name ASC";
+	public static final String ORDER_BY_ASC = "Term.termName ASC";
 
-	public static final String ORDER_BY_DESC = "Term.name DESC";
+	public static final String ORDER_BY_DESC = "Term.termName DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"name"};
+	public static final String[] ORDER_BY_FIELDS = {"termName"};
 
 	public TermNameComparator() {
 		this(false);
@@ -27,6 +27,7 @@ public class TermNameComparator extends OrderByComparator<Term> {
 
 		int value = title1.compareTo(title2);
 
+		System.out.println("*** Compate: "+value);
 		if (_ascending) {
 			return value;
 		}

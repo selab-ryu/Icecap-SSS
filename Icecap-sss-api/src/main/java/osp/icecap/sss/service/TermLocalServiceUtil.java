@@ -257,6 +257,12 @@ public class TermLocalServiceUtil {
 		return getService().getAllTerms(start, end);
 	}
 
+	public static List<Term> getAllTerms(
+		int start, int end, OrderByComparator<Term> comparator) {
+
+		return getService().getAllTerms(start, end, comparator);
+	}
+
 	public static List<Term> getApprovedTerms(long groupId) {
 		return getService().getApprovedTerms(groupId);
 	}
@@ -265,6 +271,12 @@ public class TermLocalServiceUtil {
 		long groupId, int start, int end) {
 
 		return getService().getApprovedTerms(groupId, start, end);
+	}
+
+	public static List<Term> getApprovedTerms(
+		long groupId, int start, int end, OrderByComparator<Term> comparator) {
+
+		return getService().getApprovedTerms(groupId, start, end, comparator);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
@@ -371,6 +383,14 @@ public class TermLocalServiceUtil {
 		return getService().getTermsByG_S(groupId, status, start, end);
 	}
 
+	public static List<Term> getTermsByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByG_S(
+			groupId, status, start, end, comparator);
+	}
+
 	public static List<Term> getTermsByG_U_S(
 		long groupId, long userId, int status) {
 
@@ -384,6 +404,14 @@ public class TermLocalServiceUtil {
 			groupId, userId, status, start, end);
 	}
 
+	public static List<Term> getTermsByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByG_U_S(
+			groupId, userId, status, start, end, comparator);
+	}
+
 	public static List<Term> getTermsByGroupId(long groupId) {
 		return getService().getTermsByGroupId(groupId);
 	}
@@ -392,6 +420,12 @@ public class TermLocalServiceUtil {
 		long groupId, int start, int end) {
 
 		return getService().getTermsByGroupId(groupId, start, end);
+	}
+
+	public static List<Term> getTermsByGroupId(
+		long groupId, int start, int end, OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByGroupId(groupId, start, end, comparator);
 	}
 
 	public static List<Term> getTermsByName(String termName) {
@@ -406,12 +440,24 @@ public class TermLocalServiceUtil {
 		return getService().getTermsByStatus(status, start, end);
 	}
 
+	public static List<Term> getTermsByStatus(
+		int status, int start, int end, OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByStatus(status, start, end, comparator);
+	}
+
 	public static List<Term> getTermsByUserId(long userId) {
 		return getService().getTermsByUserId(userId);
 	}
 
 	public static List<Term> getTermsByUserId(long userId, int start, int end) {
 		return getService().getTermsByUserId(userId, start, end);
+	}
+
+	public static List<Term> getTermsByUserId(
+		long userId, int start, int end, OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByUserId(userId, start, end, comparator);
 	}
 
 	/**

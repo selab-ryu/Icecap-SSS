@@ -7,14 +7,14 @@ import osp.icecap.sss.model.Term;
 
 public class TermModifiedDateComparator extends OrderByComparator<Term> {
 	public static final String ORDER_BY_ASC =
-			"Term.modifiedDate ASC, Term.termId ASC";
+			"Term.modifiedDate ASC, Term.termName ASC";
 
 		public static final String[] ORDER_BY_CONDITION_FIELDS = {"modifiedDate"};
 
 		public static final String ORDER_BY_DESC =
-			"Term.modifiedDate DESC, Term.termId DESC";
+			"Term.modifiedDate DESC, Term.termName DESC";
 
-		public static final String[] ORDER_BY_FIELDS = {"modifiedDate", "termId"};
+		public static final String[] ORDER_BY_FIELDS = {"modifiedDate", "termName"};
 
 		public TermModifiedDateComparator() {
 			this(false);

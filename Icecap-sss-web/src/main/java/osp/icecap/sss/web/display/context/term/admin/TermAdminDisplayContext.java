@@ -368,8 +368,8 @@ public class TermAdminDisplayContext implements Serializable{
 					entriesResults = _termLocalService.getTermsByG_U_S(
 							themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
 							_status, searchContainer.getStart(),
-							searchContainer.getEnd()); //,
-					//searchContainer.getOrderByComparator());
+							searchContainer.getEnd(),
+							searchContainer.getOrderByComparator());
 				}
 				else if( termsNavigation.equals(IcecapSSSConstants.NAVIGATION_GROUP)){
 					System.out.println("Group Total: "+_termLocalService.countTermsByG_S(
@@ -384,8 +384,8 @@ public class TermAdminDisplayContext implements Serializable{
 							themeDisplay.getScopeGroupId(),
 							_status, 
 							searchContainer.getStart(),
-							searchContainer.getEnd());// ,
-					//searchContainer.getOrderByComparator());
+							searchContainer.getEnd(),
+							searchContainer.getOrderByComparator());
 				}
 				else {
 					System.out.println("All Total: "+_termLocalService.countTermsByStatus(_status) );
@@ -394,8 +394,8 @@ public class TermAdminDisplayContext implements Serializable{
 					entriesResults = _termLocalService.getTermsByStatus(
 							_status,
 							searchContainer.getStart(),
-							searchContainer.getEnd());// ,
-					//searchContainer.getOrderByComparator());
+							searchContainer.getEnd() ,
+					        searchContainer.getOrderByComparator());
 				}
 			}
 			// If keywords are presented, it should use search engine!!!

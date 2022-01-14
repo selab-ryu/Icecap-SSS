@@ -22,20 +22,13 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -49,8 +42,6 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
-import osp.icecap.sss.constants.IcecapSSSConstants;
-import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.exception.DuplicatedTermNameException;
 import osp.icecap.sss.exception.InvalidTermException;
 import osp.icecap.sss.exception.NoSuchTermException;
@@ -309,15 +300,22 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	public List<Term> getAllTerms( int start, int end ){
 		return super.termPersistence.findAll(start, end);
 	}
+	public List<Term> getAllTerms( int start, int end, OrderByComparator<Term> comparator){
+		return super.termPersistence.findAll(start, end, comparator);
+	}
 	public int countAllTerms() {
 		return super.termPersistence.countAll();
 	}
+	
 	
 	public List<Term> getTermsByGroupId( long groupId ){
 		return super.termPersistence.findByGroupId(groupId);
 	}
 	public List<Term>  getTermsByGroupId( long groupId, int start, int end ){
 		return super.termPersistence.findByGroupId(groupId, start, end);
+	}
+	public List<Term>  getTermsByGroupId( long groupId, int start, int end, OrderByComparator<Term> comparator ){
+		return super.termPersistence.findByGroupId(groupId, start, end, comparator);
 	}
 	public int countTermsByGroupId(long groupId) {
 		return super.termPersistence.countByGroupId(groupId);
@@ -328,6 +326,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	}
 	public List<Term>  getTermsByUserId( long userId, int start, int end ){
 		return super.termPersistence.findByUserId(userId, start, end);
+	}
+	public List<Term>  getTermsByUserId( long userId, int start, int end, OrderByComparator<Term> comparator ){
+		return super.termPersistence.findByUserId(userId, start, end, comparator);
 	}
 	public int countTermsByUserId(long userId) {
 		return super.termPersistence.countByUserId(userId);
@@ -344,6 +345,12 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			return super.termPersistence.findAll(start, end);
 		else
 			return super.termPersistence.findByStatus(status, start, end);
+	}
+	public List<Term>  getTermsByStatus( int status, int start, int end, OrderByComparator<Term> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findAll(start, end, comparator);
+		else
+			return super.termPersistence.findByStatus(status, start, end, comparator);
 	}
 	public int countTermsByStatus(int status) {
 		if( status == WorkflowConstants.STATUS_ANY )
@@ -368,6 +375,12 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		else
 			return super.termPersistence.findByG_S(groupId, status, start, end);
 	}
+	public List<Term> getTermsByG_S( long groupId, int status, int start, int end, OrderByComparator<Term> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByGroupId(groupId, start, end, comparator);
+		else
+			return super.termPersistence.findByG_S(groupId, status, start, end, comparator);
+	}
 	public int countTermsByG_S( long groupId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.termPersistence.countByGroupId(groupId);
@@ -387,6 +400,12 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		else
 			return super.termPersistence.findByG_U_S(groupId, userId, status, start, end);
 	}
+	public List<Term> getTermsByG_U_S( long groupId, long userId, int status, int start, int end, OrderByComparator<Term> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByG_U(groupId, userId, start, end, comparator);
+		else
+			return super.termPersistence.findByG_U_S(groupId, userId, status, start, end, comparator);
+	}
 	public int countTermsByG_U_S( long groupId, long userId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.termPersistence.countByG_U(groupId, userId);
@@ -399,6 +418,9 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 	}
 	public List<Term> getApprovedTerms( long groupId, int start, int end ){
 		return super.termPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end);
+	}
+	public List<Term> getApprovedTerms( long groupId, int start, int end, OrderByComparator<Term> comparator ){
+		return super.termPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end, comparator);
 	}
 	public int countApprovedTerms( long groupId ) {
 		return super.termPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
@@ -421,12 +443,12 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 
 		OrderByComparator<Term> orderByComparator = null;
 
-		if (orderByCol.equals("name")) {
+		if (orderByCol.equals("termName")) {
 			orderByComparator = new TermNameComparator(orderByAsc);
 			System.out.println("Create TermNameComparator");
 		}
 		else {
-			orderByComparator = new TermVersionComparator(orderByAsc);
+			orderByComparator = new TermModifiedDateComparator(orderByAsc);
 			System.out.println("Create TermVersionComparator");
 		}
 

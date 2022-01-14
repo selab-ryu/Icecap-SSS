@@ -6,11 +6,11 @@ import osp.icecap.sss.model.Term;
 
 public class TermVersionComparator extends OrderByComparator<Term> {
 
-	public static final String ORDER_BY_ASC = "Term.version ASC";
+	public static final String ORDER_BY_ASC = "Term.termVersion ASC";
 
-	public static final String ORDER_BY_DESC = "Term.version DESC";
+	public static final String ORDER_BY_DESC = "Term.termVersion DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"version"};
+	public static final String[] ORDER_BY_FIELDS = {"termVersion"};
 
 	public TermVersionComparator() {
 		this(false);

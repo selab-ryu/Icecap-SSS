@@ -70,7 +70,7 @@
 <liferay-asset:asset-tags-error />
 
 <aui:row>
-	<aui:col md="3">
+	<aui:col md="3" cssClass="card-horizontal">
 		<aui:form name="termTypeForm" method="POST" action="<%= loadTermAttributesURL %>" markupView="lexicon">
 					<aui:select name="termType" label="term-type" helpMessage="term-type-select-help">
 						<%
