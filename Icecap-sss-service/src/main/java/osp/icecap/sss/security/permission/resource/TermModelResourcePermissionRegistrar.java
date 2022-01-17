@@ -57,7 +57,7 @@ public class TermModelResourcePermissionRegistrar {
 	public void activate(BundleContext bundleContext) {
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		properties.put("model.class.name", Term.class.getName());
+//		properties.put("model.class.name", Term.class.getName());
 		
 		_serviceRegistration = bundleContext.registerService(
 				ModelResourcePermission.class,

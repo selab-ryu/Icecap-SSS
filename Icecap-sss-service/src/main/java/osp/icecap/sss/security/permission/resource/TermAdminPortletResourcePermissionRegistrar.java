@@ -34,7 +34,7 @@ public class TermAdminPortletResourcePermissionRegistrar {
 		
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		properties.put("resource.name", IcecapSSSConstants.RESOURCE_NAME);
+//		properties.put("resource.name", IcecapSSSConstants.RESOURCE_NAME);
 
 		_serviceRegistration = bundleContext.registerService(
 				PortletResourcePermission.class,

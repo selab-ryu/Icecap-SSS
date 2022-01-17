@@ -45,6 +45,7 @@ import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
+import osp.icecap.sss.debug.Debug;
 import osp.icecap.sss.model.Term;
 import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.service.TermLocalService;
@@ -69,8 +70,9 @@ public class TermAdminDisplayContext implements Serializable{
 	private String _orderByType;
 	private String _eventName;
 	private Boolean _showScheduled;
-	private String _namespace;
 	private ThemeDisplay _themeDisplay;
+	
+	private SearchContainer< Term> _searchContainer;
 
 	public TermAdminDisplayContext (
 			LiferayPortletRequest renderRequest,
@@ -85,8 +87,24 @@ public class TermAdminDisplayContext implements Serializable{
 		_termLocalService = termLocalService;
 		_trashHelper = trashHelper;
 		
+		_navigation = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.NAVIGATION, IcecapSSSConstants.NAVIGATION_MINE);
+		_displayStyle = ParamUtil.getString(
+				_httpServletRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE);
+		_status = ParamUtil.getInteger(_httpServletRequest, IcecapSSSTermAttributes.STATUS, WorkflowConstants.STATUS_ANY);
+		_orderByCol = ParamUtil.getString(
+				_httpServletRequest, IcecapSSSWebKeys.ORDER_BY_COL, IcecapSSSTermAttributes.TERM_NAME);
+		_orderByType = ParamUtil.getString(
+				_httpServletRequest, IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.ASC);
+		_keywords = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.KEYWORDS, null);
+		
+		System.out.println("_performRetrieval: keywords - "+_keywords);
+
+		
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		_namespace = _themeDisplay.getPortletDisplay().getNamespace();
+		
+		_searchContainer = _createSearchContainer(
+				IcecapSSSConstants.SEARCH_CONTAINER_ID,
+				getSearchURL( Validator.isNotNull(_keywords) && !_keywords.isEmpty() ) );
 	}
 
 	public LiferayPortletRequest getLiferayPortletRequest() {
@@ -100,47 +118,45 @@ public class TermAdminDisplayContext implements Serializable{
 	public HttpServletRequest getHttpServletRequest() {
 		return _httpServletRequest;
 	}
-
-	public SearchContainer<Term> getSearchContainer(){
-
+	
+	public PortletURL getSearchURL( boolean hasKeywords ) {
 		PortletURL portletURL = this.getPortletURL();
 
-		portletURL.setParameter(IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_TERM_LIST);
-
-		String navigation = ParamUtil.getString(	_httpServletRequest, IcecapSSSWebKeys.NAVIGATION, IcecapSSSConstants.NAVIGATION_MINE);
-		System.out.println("TermDisplayContext:getSearchContainer:termsNavigation - "+navigation);
-
-		portletURL.setParameter(IcecapSSSWebKeys.NAVIGATION, navigation);
-
-		_displayStyle = getDisplayStyle();
+		portletURL.setParameter(IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_LIST);
 		
-		SearchContainer<Term>searchContainer =
+		return portletURL;
+	}
+	
+	public SearchContainer<Term> getSearchContainer(){
+		return _searchContainer;
+	}
+
+	private SearchContainer<Term> _createSearchContainer( String searchContainerId, PortletURL searchURL ){
+
+		_searchContainer =
 					new SearchContainer<Term>(
 										_renderRequest,
-										portletURL,
+										searchURL,
 										null,
 										"no-terms-were-found");
 		
-		searchContainer.setId(getSearchContainerId());
-		searchContainer.setOrderByCol(_getOrderByCol());
-		searchContainer.setOrderByType(_getOrderByType());
+		_searchContainer.setId(searchContainerId);
+		_searchContainer.setOrderByCol(_orderByCol);
+		_searchContainer.setOrderByType(_orderByType);
 		
-		OrderByComparator<Term> orderByComparator = 
-				_termLocalService.getOrderByNameComparator(
-							searchContainer.getOrderByCol(), 
-							searchContainer.getOrderByType() );
+		OrderByComparator<Term> orderByComparator = _termLocalService.getOrderByNameComparator( _orderByCol, _orderByType );
 		
-		searchContainer.setOrderByComparator( orderByComparator );
+		_searchContainer.setOrderByComparator( orderByComparator );
 		
-		searchContainer.setRowChecker( new EmptyOnClickRowChecker(_renderResponse) );
+		_searchContainer.setRowChecker( new EmptyOnClickRowChecker(_renderResponse) );
 		
 		try {
-			_populateResults(searchContainer);
+			_performRetrieval(_searchContainer);
 		} catch (PortalException e) {
 			e.printStackTrace();
 		}
 		
-		return searchContainer;
+		return _searchContainer;
 	}
 	
 	public String getSearchContainerId() {
@@ -193,14 +209,6 @@ public class TermAdminDisplayContext implements Serializable{
 	}
 
 	public String getDisplayStyle() {
-		System.out.println("TermDisplayContext.getDisplayStyle() called.......");
-		if (Validator.isNotNull(_displayStyle)) {
-			return _displayStyle;
-		}
-
-		_displayStyle = ParamUtil.getString(
-			_httpServletRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE);
-
 		return _displayStyle;
 	}
 	
@@ -297,7 +305,7 @@ public class TermAdminDisplayContext implements Serializable{
 	}
 
 	private int[] _getStatuses() {
-		int[] statuses = {getStatus()};
+		int[] statuses = {_status};
 
 		if (_isShowScheduled()) {
 			statuses = new int[] {
@@ -309,27 +317,17 @@ public class TermAdminDisplayContext implements Serializable{
 		return statuses;
 	}
 	
-	private int getStatus() {
-		_status = ParamUtil.getInteger(_httpServletRequest, IcecapSSSTermAttributes.STATUS, WorkflowConstants.STATUS_ANY);
-
-		return _status;
-	}
-
-	private void _populateResults(SearchContainer<Term> searchContainer)
+	private void _performRetrieval(SearchContainer<Term> searchContainer)
 			throws PortalException {
 
-			System.out.println("_populateResults");
+//			System.out.println("_performRetrieval");
 			ThemeDisplay themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(	WebKeys.THEME_DISPLAY);
 
 			List<Term> entriesResults = null;
 
 			long assetCategoryId = ParamUtil.getLong(_httpServletRequest, IcecapSSSWebKeys.CATEGORY_ID);
 			String assetTagName = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.TAG);
-
-			String keywords = ParamUtil.getString(_httpServletRequest, IcecapSSSWebKeys.KEYWORDS, null);
-			System.out.println("_populateResults: keywords - "+keywords);
 			
-			getStatus();
 			// Browse through category system. Use Asset service
 			if ((assetCategoryId != 0) || Validator.isNotNull(assetTagName)) {
 				AssetEntryQuery assetEntryQuery = new AssetEntryQuery(Term.class.getName(), searchContainer);
@@ -354,11 +352,10 @@ public class TermAdminDisplayContext implements Serializable{
 				}
 			}
 			// Keywords are not presented
-			else if (Validator.isNull(keywords)) {
+			else if (Validator.isNull(_keywords)) {
 				String termsNavigation = ParamUtil.getString( _httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
 
 				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
-					System.out.println("");
 					searchContainer.setTotal(
 						_termLocalService.countTermsByG_U_S(
 							themeDisplay.getScopeGroupId(),
@@ -372,9 +369,6 @@ public class TermAdminDisplayContext implements Serializable{
 							searchContainer.getOrderByComparator());
 				}
 				else if( termsNavigation.equals(IcecapSSSConstants.NAVIGATION_GROUP)){
-					System.out.println("Group Total: "+_termLocalService.countTermsByG_S(
-							themeDisplay.getScopeGroupId(),
-							_status));
 					searchContainer.setTotal(
 						_termLocalService.countTermsByG_S(
 							themeDisplay.getScopeGroupId(),
@@ -388,7 +382,6 @@ public class TermAdminDisplayContext implements Serializable{
 							searchContainer.getOrderByComparator());
 				}
 				else {
-					System.out.println("All Total: "+_termLocalService.countTermsByStatus(_status) );
 					searchContainer.setTotal(_termLocalService.countTermsByStatus(_status));
 					
 					entriesResults = _termLocalService.getTermsByStatus(
@@ -402,12 +395,6 @@ public class TermAdminDisplayContext implements Serializable{
 			else {
 				Indexer<Term> indexer = IndexerRegistryUtil.getIndexer(Term.class);
 
-				if( Validator.isNull(indexer) ) {
-					System.out.println("Indexer for term does not exist!!!");
-				} else {
-					System.out.println("Indexer for term exists: "+indexer.getClassName());
-				}
-				
 				SearchContext searchContext = SearchContextFactory.getInstance(
 					_httpServletRequest);
 
@@ -415,37 +402,24 @@ public class TermAdminDisplayContext implements Serializable{
 				searchContext.setStart(searchContainer.getStart());
 				searchContext.setEnd(searchContainer.getEnd());
 				searchContext.setIncludeDiscussions(true);
-				searchContext.setKeywords(keywords);
+				searchContext.setKeywords(_keywords);
 
-				String termsNavigation = ParamUtil.getString(
-					_httpServletRequest, IcecapSSSWebKeys.NAVIGATION);
-				System.out.println("TermDisplayContext: _populateResults: termsNavigation - "+termsNavigation);
-
-				if (termsNavigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
+				if (_navigation.equals(IcecapSSSConstants.NAVIGATION_MINE)) {
 					searchContext.setOwnerUserId(themeDisplay.getUserId());
 				}
 
-				String orderByCol = ParamUtil.getString(
-					_httpServletRequest, IcecapSSSWebKeys.ORDER_BY_COL, IcecapSSSTermAttributes.TERM_NAME);
-				String orderByType = ParamUtil.getString(
-					_httpServletRequest, IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.ASC);
-				System.out.println("TermDisplayContext: _populateResults: orderByCol - "+orderByCol);
-				System.out.println("TermDisplayContext: _populateResults: orderByType - "+orderByType);
-
-				Sort sort = null;
+				Debug.printHeader("Retrieval with Keywords: "+_keywords);
+				System.out.println("TermDisplayContext: _performRetrieval: orderByCol - "+ _orderByCol);
+				System.out.println("TermDisplayContext: _performRetrieval: orderByType - "+ _orderByType);
+				Debug.printFooter("Retrieval with Keywords: "+_keywords);
 
 				boolean orderByAsc = true;
 
-				if (Objects.equals(orderByType, IcecapSSSConstants.DSC)) {
+				if (_orderByType.equals(IcecapSSSConstants.DSC)) {
 					orderByAsc = false;
 				}
 
-				if (Objects.equals(orderByCol, IcecapSSSTermAttributes.TERM_NAME)) {
-					sort = new Sort(IcecapSSSTermAttributes.TERM_NAME, Sort.STRING_TYPE, orderByAsc);
-				}
-				else {
-					sort = new Sort(orderByCol, orderByAsc);
-				}
+				Sort sort = new Sort(_orderByCol, Sort.CUSTOM_TYPE, orderByAsc);
 
 				searchContext.setSorts(sort);
 
@@ -455,7 +429,7 @@ public class TermAdminDisplayContext implements Serializable{
 
 				List<SearchResult> searchResults =
 					SearchResultUtil.getSearchResults(
-						hits, LocaleUtil.getDefault());
+						hits, _themeDisplay.getLocale() );
 
 				Stream<SearchResult> stream = searchResults.stream();
 
@@ -473,7 +447,7 @@ public class TermAdminDisplayContext implements Serializable{
 			searchContainer.setResults(entriesResults);
 		}
 
-		private Boolean _getListable() {
+	private Boolean _getListable() {
 			Boolean listable = null;
 
 			String listableValue = ParamUtil.getString(
@@ -485,7 +459,7 @@ public class TermAdminDisplayContext implements Serializable{
 			}
 
 			return listable;
-		}
+	}
 		
 	private String _getOrderByCol() {
 		if (Validator.isNotNull(_orderByCol)) {

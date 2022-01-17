@@ -1,13 +1,8 @@
 package osp.icecap.sss.web.command.action;
 
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.service.persistence.PortletUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.trash.TrashHelper;
 
 import javax.portlet.ActionRequest;
@@ -36,7 +31,7 @@ public class SearchTermsActionCommand extends BaseMVCActionCommand {
 	@Override
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 
-		System.out.println("SearchTermsActionCommand.doProcessAction");
+//		System.out.println("SearchTermsActionCommand.doProcessAction");
 		
 		TermAdminDisplayContext termAdminDisplayContext = 
 				new TermAdminDisplayContext(
@@ -46,7 +41,6 @@ public class SearchTermsActionCommand extends BaseMVCActionCommand {
 				_termLocalService,
 				_trashHelper );
 
-//		actionRequest.getPortletSession().setAttribute(TermAdminDisplayContext.class.getName(), termAdminDisplayContext);
 		actionRequest.setAttribute(TermAdminDisplayContext.class.getName(), termAdminDisplayContext);
 		
 		RenderURL renderURL = actionResponse.createRedirectURL(Copy.ALL);

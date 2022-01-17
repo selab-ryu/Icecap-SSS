@@ -37,7 +37,7 @@ public class TermListViewRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
-		System.out.println("TermListViewRenderCommand.render()");
+//		System.out.println("TermListViewRenderCommand.render()");
 		TermAdminDisplayContext termAdminDisplayContext = 
 //				(TermAdminDisplayContext)renderRequest.getAttribute(TermAdminDisplayContext.class.getName());
 		

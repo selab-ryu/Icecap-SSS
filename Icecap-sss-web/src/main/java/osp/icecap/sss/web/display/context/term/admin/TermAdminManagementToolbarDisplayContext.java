@@ -12,13 +12,16 @@ import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.persistence.PortletUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -37,9 +40,11 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.RenderURL;
+import javax.servlet.http.HttpServletRequest;
 
 import osp.icecap.sss.constants.IcecapSSSActionKeys;
 import osp.icecap.sss.constants.IcecapSSSConstants;
+import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.debug.Debug;
@@ -56,8 +61,14 @@ public class TermAdminManagementToolbarDisplayContext
 	private final String _displayStyle;
 	private final String _navigation;
 	private final int _status;
+	private String _keywords;
+	private Boolean _multipleSelection;
+	private Boolean _showAddButton;
 	private final String _orderByCol;
 	private final String _orderByType;
+	
+	private final String _namespace;
+	private final HttpServletRequest _httpServletRequest;
 	private final TermAdminDisplayContext _termAdminDisplayContext;
 	private final PermissionChecker _permissionChecker;
 	
@@ -76,23 +87,62 @@ public class TermAdminManagementToolbarDisplayContext
 		
 		_termAdminDisplayContext = termAdminDisplayContext;
 
-		 _trashHelper = _termAdminDisplayContext.getTrashHelper();
-		 _displayStyle = _termAdminDisplayContext.getDisplayStyle();
-		 _navigation = getNavigation();
-		 _orderByCol = getOrderByCol();
-		 _orderByType = getOrderByType();
-		 _status = getFilterStatus();
+		_trashHelper = _termAdminDisplayContext.getTrashHelper();
 		 
+		_navigation = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.NAVIGATION, IcecapSSSConstants.NAVIGATION_MINE);
+		_displayStyle = ParamUtil.getString(
+				renderRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE);
+		_status = ParamUtil.getInteger(renderRequest, IcecapSSSTermAttributes.STATUS, WorkflowConstants.STATUS_ANY);
+		_orderByCol = ParamUtil.getString(
+				renderRequest, IcecapSSSWebKeys.ORDER_BY_COL, IcecapSSSTermAttributes.TERM_NAME);
+		_orderByType = ParamUtil.getString(
+				renderRequest, IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.ASC);
+		_keywords = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.KEYWORDS, null);
+		 
+		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
 		_themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		_namespace = _themeDisplay.getPortletDisplay().getNamespace();
 		_locale = _themeDisplay.getLocale();
 		_permissionChecker = _themeDisplay.getPermissionChecker();
 		
+	}
+	
+	private Boolean _getListable() {
+		Boolean listable = null;
+
+		String listableValue = ParamUtil.getString(
+			_httpServletRequest, IcecapSSSWebKeys.LISTABLE, null);
+
+		if (Validator.isNotNull(listableValue)) {
+			listable = ParamUtil.getBoolean(
+				_httpServletRequest, IcecapSSSWebKeys.LISTABLE, true);
+		}
+
+		return listable;
+	}
+	
+	private boolean _isMultipleSelection() {
+		if (_multipleSelection != null) {
+			return _multipleSelection;
+		}
+
+		_multipleSelection = ParamUtil.getBoolean(
+			_httpServletRequest, IcecapSSSWebKeys.MULTIPLE_SELECTION);
+
+		return _multipleSelection;
+	}
+
+	@Override
+	protected PortletURL getPortletURL() {
+		PortletURL portletURL = _termAdminDisplayContext.getPortletURL();
+
+		return portletURL;
 	}
 
 	@Override
 	public String getClearResultsURL() {
 //		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
-		PortletURL clearResultsURL = super.getPortletURL();
+		PortletURL clearResultsURL = _termAdminDisplayContext.getPortletURL();
 		clearResultsURL.setParameter(IcecapSSSWebKeys.KEYWORDS, StringPool.BLANK);
 //		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
 		return clearResultsURL.toString();
@@ -100,47 +150,40 @@ public class TermAdminManagementToolbarDisplayContext
 	
 	@Override
 	public String getSearchContainerId() {
-//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
-		String searchContainerId = _termAdminDisplayContext.getSearchContainerId();
+		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
+//		String searchContainerId = _termAdminDisplayContext.getSearchContainerId();
+		String searchContainerId = super.searchContainer.getId( _httpServletRequest, _namespace);
 		
-//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
+		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchContainerId()");
 		return searchContainerId;
 	}
 	
-	
-	public Long[] getSelectedTerms(){
-		List<ResultRow> rows = searchContainer.getResultRows();
-		List<Long> selected = new ArrayList<Long>(); 
-		System.out.println("++++ ");
-		for( ResultRow row : rows ) {
-			System.out.println(row.getState());
-		}
-		
-		return (Long[])selected.toArray();
-	}
-	
 	public SearchContainer<Term> getSearchContainer(){
-		return searchContainer;
+		return super.searchContainer;
 	}
 	
 	@Override
 	public String getSearchActionURL() {
-//		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
-		RenderURL searchURL =  liferayPortletResponse.createRenderURL();
+		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
+		PortletURL searchURL =  _termAdminDisplayContext.getPortletURL();
+		
 		searchURL.setParameter(
-				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
-				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
-//		System.out.println("searchURL: "+searchURL);
-//		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
+				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, 
+				MVCCommandNames.RENDER_ADMIN_TERM_LIST);
+		
+		System.out.println("Order By Type: "+ _orderByType);
+		
+		
+		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
 
 		return searchURL.toString();
 	}
 	
 	public PortletURL getFilterURL() {
-		PortletURL filterURL =  liferayPortletResponse.createRenderURL();
+		PortletURL filterURL =  _termAdminDisplayContext.getPortletURL();
 		filterURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
-				MVCCommandNames.RENDER_ADMIN_SEARCH_TERMS);
+				MVCCommandNames.RENDER_ADMIN_TERM_LIST);
 
 		return filterURL;
 	}
@@ -159,7 +202,7 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	protected String[] getNavigationKeys() {
 //		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
-		System.out.println("Default NavigationKeys are define in IcecapSSSConstants");
+//		System.out.println("Default NavigationKeys are define in IcecapSSSConstants");
 //		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getNavigationKeys()");
 		return IcecapSSSConstants.NAVIGATION_KEYS();
 	}
@@ -291,7 +334,7 @@ public class TermAdminManagementToolbarDisplayContext
 							deleteURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
 							deleteURL.setParameter(IcecapSSSWebKeys.TERM_IDS, Arrays.toString(termIds) );
 							
-							System.out.println("deleteURL: "+deleteURL.toString());
+//							System.out.println("deleteURL: "+deleteURL.toString());
 
 							add( dropdownItem -> {
 								dropdownItem.setHref(deleteURL);
@@ -313,7 +356,7 @@ public class TermAdminManagementToolbarDisplayContext
 				_permissionChecker, 
 				_themeDisplay.getScopeGroupId(), 
 				IcecapSSSActionKeys.ADD_TERM)) {
-			System.out.println("Group "+_themeDisplay.getScopeGroupId()+ " is not permitted for ADD_TERM");
+//			System.out.println("Group "+_themeDisplay.getScopeGroupId()+ " is not permitted for ADD_TERM");
 			return null;
 		}
 		
@@ -361,7 +404,7 @@ public class TermAdminManagementToolbarDisplayContext
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Delete Permission: "+hasPermission);
+//		System.out.println("Delete Permission: "+hasPermission);
 		return hasPermission;
 	}
 	
@@ -375,7 +418,7 @@ public class TermAdminManagementToolbarDisplayContext
 			e.printStackTrace();
 		}
 		
-		System.out.println("Update Permission: "+hasPermission);
+//		System.out.println("Update Permission: "+hasPermission);
 		return hasPermission;
 	}
 	
@@ -466,9 +509,9 @@ public class TermAdminManagementToolbarDisplayContext
 
 	@Override
 	public String getSortingURL() {
-		Debug.printHeader("++++ getSortingURL");
-		_termAdminDisplayContext.getKeywords();
-		return super.getSortingURL();
+		Debug.printHeader("getSortingURL");
+		return _termAdminDisplayContext.getSearchURL( 
+					Validator.isNotNull(_keywords) && !_keywords.isEmpty() ).toString();
 	}
 
 	@Override
@@ -523,42 +566,42 @@ public class TermAdminManagementToolbarDisplayContext
 
 	@Override
 	public String getSearchFormMethod() {
-		System.out.println("----- Search Form Method: "+super.getSearchFormMethod());
+//		System.out.println("----- Search Form Method: "+super.getSearchFormMethod());
 		return super.getSearchFormMethod();
 	}
 
 	@Override
 	public String getSearchFormName() {
-		System.out.println("----- Search Form Name: "+super.getSearchFormName());
+//		System.out.println("----- Search Form Name: "+super.getSearchFormName());
 		return "searchForm";
 	}
 
 	@Override
 	public String getSearchInputName() {
-		System.out.println("----- Search Input Name: "+super.getSearchInputName());
+//		System.out.println("----- Search Input Name: "+super.getSearchInputName());
 		return super.getSearchInputName();
 	}
 
 	@Override
 	public String getSearchValue() {
-		System.out.println("----- Search Value: "+super.getSearchValue());
+//		System.out.println("----- Search Value: "+super.getSearchValue());
 		return super.getSearchValue();
 	}
 
 	@Override
 	public int getSelectedItems() {
-		System.out.println("----- Selected Items: "+super.getSelectedItems());
+//		System.out.println("----- Selected Items: "+super.getSelectedItems());
 		return super.getSelectedItems();
 	}
 
 	@Override
 	public String getDefaultEventHandler() {
 		if( Validator.isNull(super.getDefaultEventHandler())) {
-			System.out.println("Default Event Handler is null.");
+//			System.out.println("Default Event Handler is null.");
 			return null;
 		}
 		else {
-			System.out.println("Default Event Handler: "+super.getDefaultEventHandler());
+//			System.out.println("Default Event Handler: "+super.getDefaultEventHandler());
 		}
 		return super.getDefaultEventHandler();
 	}
