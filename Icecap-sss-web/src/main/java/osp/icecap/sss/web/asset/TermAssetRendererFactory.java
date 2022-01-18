@@ -1,4 +1,4 @@
-package osp.icecap.sss.asset;
+package osp.icecap.sss.web.asset;
 
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -24,14 +24,14 @@ import javax.servlet.ServletContext;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import osp.icecap.sss.asset.TermAssetRenderer;
 import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
+import osp.icecap.sss.web.security.permission.resource.TermModelPermissionHelper;
 import osp.icecap.sss.service.TermLocalService;
+import osp.icecap.sss.web.asset.TermAssetRenderer;
 
 @Component(
 		immediate = true,
@@ -45,7 +45,7 @@ public class TermAssetRendererFactory extends BaseAssetRendererFactory<Term> {
 	@Reference(unbind = "-")
 	protected void setTermLocalService(
 			TermLocalService termLocalService) {
-
+		System.out.println("===== TermLocalService referenced in RendererFactory ");
 		_termLocalService = termLocalService;
 	}
 	private TermLocalService _termLocalService;

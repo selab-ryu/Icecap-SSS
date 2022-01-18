@@ -1,8 +1,0 @@
-<%@page import="osp.icecap.sss.constants.IcecapSSSTermTypes"%>
-
-
-<script>
-(function (){
-	
-}());
-</script>

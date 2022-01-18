@@ -1,3 +1,0 @@
-<%@page import="osp.icecap.sss.internal.security.permission.resource.TermPermission"%>
-<%@page import="java.util.Date"%>
-<%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>

@@ -4,7 +4,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 
 <resource-action-mapping>
 	<portlet-resource>
-		<portlet-name>osp_icecap_sss_web_TermManagerPortlet</portlet-name>
+		<portlet-name>osp_icecap_sss_web_term_admin_portlet_TermAdminPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD_TO_PAGE</action-key>

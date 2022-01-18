@@ -1,20 +1,16 @@
 package osp.icecap.sss.security.permission.resource;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermission;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.StagedModelPermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.WorkflowedModelPermissionLogic;
-import com.liferay.portal.kernel.security.permission.resource.definition.ModelResourcePermissionDefinition;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
 
 import java.util.Dictionary;
-import java.util.function.Consumer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -29,8 +25,7 @@ import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalService;
 
 @Component (
-		immediate=true,
-		service = {}
+		immediate=true
 )
 public class TermModelResourcePermissionRegistrar {
 
@@ -57,7 +52,7 @@ public class TermModelResourcePermissionRegistrar {
 	public void activate(BundleContext bundleContext) {
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-//		properties.put("model.class.name", Term.class.getName());
+		properties.put("model.class.name", Term.class.getName());
 		
 		_serviceRegistration = bundleContext.registerService(
 				ModelResourcePermission.class,

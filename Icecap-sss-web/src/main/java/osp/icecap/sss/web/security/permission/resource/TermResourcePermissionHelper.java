@@ -1,11 +1,10 @@
-package osp.icecap.sss.security.permission.resource;
+package osp.icecap.sss.web.security.permission.resource;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -22,6 +21,7 @@ public class TermResourcePermissionHelper {
 			unbind = "-"
 	)
 	protected void setPortletResourcePermission(PortletResourcePermission portletResourcePermission) {
+		System.out.println("setPortletResourcePermission() to init _portletResourcePermission....");
 		_portletResourcePermission = portletResourcePermission;
 	}
 	private static PortletResourcePermission _portletResourcePermission;
@@ -48,18 +48,6 @@ public class TermResourcePermissionHelper {
 			PermissionChecker permissionChecker, 
 			long groupId, 
 			String actionId){
-		
-		/*
-		System.out.println("groupId: "+groupId );
-		System.out.println("Action ID: "+actionId);
-		System.out.println("Resource Name: "+_portletResourcePermission.getResourceName());
-		*/
-		
-		if( Validator.isNull(_portletResourcePermission) ) {
-			System.out.println("_portletResourcePermission is null... somthing happened....");
-			
-			return true;
-		}
 		
 		return _portletResourcePermission.contains(permissionChecker, groupId, actionId);
 	}

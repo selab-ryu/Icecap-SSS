@@ -5,6 +5,5 @@ package osp.icecap.sss.constants;
  */
 public class IcecapSSSWebPortletKeys {
 
-	public static final String TERM_MANAGER = "osp_icecap_sss_web_TermManagerPortlet";
 	public static final String TERM_ADMIN = "osp_icecap_sss_web_term_admin_portlet_TermAdminPortlet";
 }

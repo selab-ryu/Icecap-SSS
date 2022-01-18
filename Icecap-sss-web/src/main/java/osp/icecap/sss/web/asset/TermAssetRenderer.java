@@ -1,4 +1,4 @@
-package osp.icecap.sss.asset;
+package osp.icecap.sss.web.asset;
 
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.petra.string.StringUtil;

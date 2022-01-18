@@ -6,7 +6,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	<model-resource>
 		<model-name>osp.icecap.sss</model-name>
 		<portlet-ref>
-			<portlet-name>osp_icecap_sss_web_TermManagerPortlet</portlet-name>
+			<portlet-name>osp_icecap_sss_web_term_admin_portlet_TermAdminPortlet</portlet-name>
 		</portlet-ref>
 		<root>true</root>
 		<weight>1</weight>
@@ -36,7 +36,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	<model-resource>
 		<model-name>osp.icecap.sss.model.Term</model-name>
 		<portlet-ref>
-			<portlet-name>osp_icecap_sss_web_TermManagerPortlet</portlet-name>
+			<portlet-name>osp_icecap_sss_web_term_admin_portlet_TermAdminPortlet</portlet-name>
 		</portlet-ref>
 		<weight>2</weight>
 		<permissions>

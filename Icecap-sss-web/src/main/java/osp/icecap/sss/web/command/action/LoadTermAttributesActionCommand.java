@@ -22,7 +22,7 @@ import osp.icecap.sss.constants.MVCCommandNames;
 @Component(
 		property = {
 				"javax.portlet.name=" + IcecapSSSWebPortletKeys.TERM_ADMIN,
-				"mvc.command.name=" + MVCCommandNames.ACTION_LOAD_TERM_ATTRIBURES
+				"mvc.command.name=" + MVCCommandNames.ACTION_ADMIN_LOAD_TERM_ATTRIBURES
 		},
 		service = MVCActionCommand.class
 )

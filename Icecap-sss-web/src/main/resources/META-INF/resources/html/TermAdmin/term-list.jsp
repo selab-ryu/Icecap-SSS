@@ -1,18 +1,15 @@
 
 <%@page import="com.liferay.portal.kernel.util.DateUtil"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
 <%@page import="osp.icecap.sss.web.taglib.clay.TermVerticalCard"%>
 <%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="osp.icecap.sss.web.display.context.TermManagementToolbarDisplayContext"%>
 <%@page import="com.liferay.portal.kernel.dao.search.SearchContainer"%>
 <%@page import="com.liferay.portal.kernel.util.StringUtil"%>
 <%@page import="javax.portlet.PortletURL"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
-<%@page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker"%>
 <%@page import="com.liferay.portal.kernel.util.Constants"%>
 <%@page import="com.liferay.portal.kernel.dao.search.RowChecker"%>
 <%@page import="osp.icecap.sss.constants.IcecapSSSConstants"%>
@@ -56,7 +53,7 @@
 </portlet:actionURL>
 
 <clay:management-toolbar
-	displayContext="<%=termAdminManagementToolbarDisplayContext%>"
+	displayContext="<%= termAdminManagementToolbarDisplayContext %>"
 />
 	
 <div class="closed container-fluid container-fluid-max-xl sidenav-container sidenav-right" id="<portlet:namespace />infoPanelId">

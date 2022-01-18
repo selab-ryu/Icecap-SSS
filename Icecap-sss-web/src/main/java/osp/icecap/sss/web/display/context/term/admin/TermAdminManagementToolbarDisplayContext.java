@@ -49,8 +49,8 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.debug.Debug;
 import osp.icecap.sss.model.Term;
-import osp.icecap.sss.security.permission.resource.TermModelPermissionHelper;
-import osp.icecap.sss.security.permission.resource.TermResourcePermissionHelper;
+import osp.icecap.sss.web.security.permission.resource.TermModelPermissionHelper;
+import osp.icecap.sss.web.security.permission.resource.TermResourcePermissionHelper;
 import osp.icecap.sss.web.taglib.clay.TermVerticalCard;
 
 public class TermAdminManagementToolbarDisplayContext 
@@ -103,6 +103,7 @@ public class TermAdminManagementToolbarDisplayContext
 		_themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		_namespace = _themeDisplay.getPortletDisplay().getNamespace();
 		_locale = _themeDisplay.getLocale();
+		
 		_permissionChecker = _themeDisplay.getPermissionChecker();
 		
 	}
@@ -356,7 +357,6 @@ public class TermAdminManagementToolbarDisplayContext
 				_permissionChecker, 
 				_themeDisplay.getScopeGroupId(), 
 				IcecapSSSActionKeys.ADD_TERM)) {
-//			System.out.println("Group "+_themeDisplay.getScopeGroupId()+ " is not permitted for ADD_TERM");
 			return null;
 		}
 		

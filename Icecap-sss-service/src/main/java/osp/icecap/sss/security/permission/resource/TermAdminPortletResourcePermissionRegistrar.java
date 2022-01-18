@@ -19,8 +19,7 @@ import osp.icecap.sss.constants.IcecapSSSConstants;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 
 @Component (
-		immediate=true,
-		service = {}
+		immediate=true
 )
 public class TermAdminPortletResourcePermissionRegistrar {
 	
@@ -34,7 +33,7 @@ public class TermAdminPortletResourcePermissionRegistrar {
 		
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-//		properties.put("resource.name", IcecapSSSConstants.RESOURCE_NAME);
+		properties.put("resource.name", IcecapSSSConstants.RESOURCE_NAME);
 
 		_serviceRegistration = bundleContext.registerService(
 				PortletResourcePermission.class,
