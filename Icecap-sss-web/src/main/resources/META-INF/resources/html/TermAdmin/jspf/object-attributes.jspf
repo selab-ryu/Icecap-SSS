@@ -23,15 +23,9 @@
 			</aui:container>
 		</aui:fieldset>
 	</aui:fieldset-group>
-	<%
-	%>
 	
 	<script>
 	(function (){
-		var refDataTypes = [];
-		var selectedDataType;
-		var dirty;
-		
 		var getDataTypeOptionValue = function( dataType ){
 			return dataType.name+'_'+dataType.version;	
 		}
@@ -58,6 +52,50 @@
 			$option.text( text );
 		}
 		
+		var addSelectDataTypeItem = function( name, version){
+			var dataType = {};
+			dataType.name = name;
+			dataType.version = version;
+			
+			refDataTypes.push( dataType );
+			//console.log( <portlet:namespace/>listItems );
+			
+			var optionValue = getDataTypeOptionValue(dataType);
+			$('#<portlet:namespace/>refDataTypeList').append(
+					'<option value="' + optionValue + '">' +
+					getDataTypeOptionText(dataType) + '</option>');
+			$('#<portlet:namespace/>refDataTypeList').val( optionValue);
+			selectedDataType = dataType;
+			
+			$('#<portlet:namespace/>refDataTypes').val( JSON.stringify(refDataTypes) );
+			console.log('addSelectDataTypeItem: ', $('#<portlet:namespace/>refDataTypes').val());
+		};
+		
+
+		var refDataTypes = [];
+		
+		<%
+			if( Validator.isNotNull(term) && !term.getAttributesJSON().isEmpty() ){
+		%>
+		var attr = <%= term.getAttributesJSON() %> ;
+		var dataTypes = JSON.parse( attr['refDataTypes_'] );
+		console.log('dataTypes: ', dataTypes );
+		dataTypes.forEach( x =>  
+			addSelectDataTypeItem(x.name, x.version)
+		);
+		
+		<% }
+			else{
+		%>
+		refDataTypes = [];
+		<% } %>
+		
+		console.log('Very first refDataTypes: ', refDataTypes );
+		
+		var selectedDataType;
+		var dirty;
+		
+		
 		$('#<portlet:namespace/>addRefDataType').click( function(){
 			var dataType = getDataType();
 			
@@ -70,6 +108,9 @@
 					dataType.name+' '+dataType.version + '</option>');
 			$('#<portlet:namespace/>refDataTypeList').val( optionValue);
 			selectedDataType = dataType;
+			
+			$('#<portlet:namespace/>refDataTypes').val( JSON.stringify(refDataTypes) );
+			console.log('added refDataTypes', $('#<portlet:namespace/>refDataTypes').val());
 		});
 		
 		$('#<portlet:namespace/>refDataTypeList').change( function(){
@@ -113,6 +154,9 @@
 			});
 			
 			console.log( 'Updated refDataTypes.... ', refDataTypes );
+			$('<portlet:namespace/>refDataTypes').val( JSON.toString(refDataTypes) );
+			console.log('updateded refDataTypes', refDataTypes);
+
 		});
 		
 		$('#<portlet:namespace/>deleteRefDataType').click( function(){
@@ -133,6 +177,9 @@
 						}
 					}
 				}
+			
+				$('<portlet:namespace/>refDataTypes').val( JSON.toString(refDataTypes) );
+				console.log('deleted refDataTypes', refDataTypes);
 			
 			$('#<portlet:namespace/>refDataTypeList').trigger('change');
 		});

@@ -1,3 +1,6 @@
+<%@page import="osp.icecap.sss.util.term.IcecapSSSTermAttributeUtil"%>
+<%@page import="com.liferay.portal.kernel.json.JSONFactoryUtil"%>
+<%@page import="com.liferay.portal.kernel.json.JSONObject"%>
 <%@page import="javax.portlet.PortletURL"%>
 <%@page import="com.liferay.portal.kernel.util.Validator"%>
 <%@page import="com.liferay.portal.kernel.util.HtmlUtil"%>
@@ -62,7 +65,7 @@
 <portlet:actionURL name="<%= MVCCommandNames.ACTION_ADMIN_TERM_UPDATE %>" var="updateTermURL">
 </portlet:actionURL>
 
-<portlet:actionURL name="<%= MVCCommandNames.ACTION_LOAD_TERM_ATTRIBURES %>" var="loadTermAttributesURL"/>
+<portlet:actionURL name="<%= MVCCommandNames.ACTION_ADMIN_LOAD_TERM_ATTRIBURES %>" var="loadTermAttributesURL"/>
 
 <div class="container-fluid container-fluid-max-xl main-content-body">
 
@@ -113,8 +116,12 @@
 	else{
 		actionURL = updateTermURL.toString();
 	}
+	
+	JSONObject jsonDedicatedAttrs = null;
+	if( Validator.isNotNull(term) ){
+		jsonDedicatedAttrs = IcecapSSSTermAttributeUtil.toJsonObject(term.getAttributesJSON());
+	}
 %>
-
 <aui:form name="termDefForm" method="POST" action="<%= actionURL %>">
 	<aui:row>
 		<aui:col>

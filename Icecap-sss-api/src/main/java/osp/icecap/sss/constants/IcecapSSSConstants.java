@@ -12,13 +12,14 @@ public class IcecapSSSConstants {
 		"TERM_PORTLET_INSTANCE_CONFIGURATION";
 	
 	public static final String SEARCH_CONTAINER_ID="searchedTermsContainer";
+	public static final String DEFAULT_SEARCH_CONTAINER_EVENT_NAME="defaultSearchContainerEventName";
 	
 	public static final String API_BUNDLE_NAME="osp.icecap.sss.api";
 	public static final String SERVICE_BUNDLE_NAME="osp.icecap.sss.service";
 	public static final String WEB_BUNDLE_NAME="osp.icecap.sss.web";
 	
 	public static final String ASC = "asc";
-	public static final String DSC = "dsc";
+	public static final String DSC = "desc";
 	
 	public static final String NAVIGATION_ALL = "all";
 	public static final String NAVIGATION_MINE = "mine";

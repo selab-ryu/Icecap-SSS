@@ -25,7 +25,7 @@ public class TermKeywordContributor implements KeywordQueryContributor {
 	@Override
 	public void contribute(String keywords, BooleanQuery booleanQuery,
 			KeywordQueryContributorHelper keywordQueryContributorHelper) {
-		System.out.println("TermKeywordContributor: contribute");
+//		System.out.println("TermKeywordContributor: contribute");
 		
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
@@ -33,6 +33,8 @@ public class TermKeywordContributor implements KeywordQueryContributor {
 		queryHelper.addSearchLocalizedTerm( booleanQuery, searchContext, IcecapSSSTermAttributes.DISPLAY_NAME, false);
 		queryHelper.addSearchLocalizedTerm( booleanQuery, searchContext, IcecapSSSTermAttributes.DEFINITION, false);
 		queryHelper.addSearchTerm( booleanQuery, searchContext, IcecapSSSTermAttributes.SYNONYMS, false);
+		queryHelper.addSearchTerm( booleanQuery, searchContext, IcecapSSSTermAttributes.STATUS, false);
+		queryHelper.addSearchTerm( booleanQuery, searchContext, Field.MODIFIED_DATE, false);
   
 	}
 

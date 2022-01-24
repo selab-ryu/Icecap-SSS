@@ -57,14 +57,8 @@ public class TermAdminManagementToolbarDisplayContext
 						extends SearchContainerManagementToolbarDisplayContext{
 
 	private final ThemeDisplay _themeDisplay;
-	private final TrashHelper _trashHelper;
 	private final String _displayStyle;
-	private final String _navigation;
-	private final int _status;
 	private String _keywords;
-	private Boolean _multipleSelection;
-	private Boolean _showAddButton;
-	private final String _orderByCol;
 	private final String _orderByType;
 	
 	private final String _namespace;
@@ -87,14 +81,8 @@ public class TermAdminManagementToolbarDisplayContext
 		
 		_termAdminDisplayContext = termAdminDisplayContext;
 
-		_trashHelper = _termAdminDisplayContext.getTrashHelper();
-		 
-		_navigation = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.NAVIGATION, IcecapSSSConstants.NAVIGATION_MINE);
 		_displayStyle = ParamUtil.getString(
 				renderRequest, IcecapSSSWebKeys.DISPLAY_STYLE, IcecapSSSConstants.VIEW_TYPE_TABLE);
-		_status = ParamUtil.getInteger(renderRequest, IcecapSSSTermAttributes.STATUS, WorkflowConstants.STATUS_ANY);
-		_orderByCol = ParamUtil.getString(
-				renderRequest, IcecapSSSWebKeys.ORDER_BY_COL, IcecapSSSTermAttributes.TERM_NAME);
 		_orderByType = ParamUtil.getString(
 				renderRequest, IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.ASC);
 		_keywords = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.KEYWORDS, null);
@@ -108,31 +96,6 @@ public class TermAdminManagementToolbarDisplayContext
 		
 	}
 	
-	private Boolean _getListable() {
-		Boolean listable = null;
-
-		String listableValue = ParamUtil.getString(
-			_httpServletRequest, IcecapSSSWebKeys.LISTABLE, null);
-
-		if (Validator.isNotNull(listableValue)) {
-			listable = ParamUtil.getBoolean(
-				_httpServletRequest, IcecapSSSWebKeys.LISTABLE, true);
-		}
-
-		return listable;
-	}
-	
-	private boolean _isMultipleSelection() {
-		if (_multipleSelection != null) {
-			return _multipleSelection;
-		}
-
-		_multipleSelection = ParamUtil.getBoolean(
-			_httpServletRequest, IcecapSSSWebKeys.MULTIPLE_SELECTION);
-
-		return _multipleSelection;
-	}
-
 	@Override
 	protected PortletURL getPortletURL() {
 		PortletURL portletURL = _termAdminDisplayContext.getPortletURL();
@@ -143,7 +106,7 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public String getClearResultsURL() {
 //		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
-		PortletURL clearResultsURL = _termAdminDisplayContext.getPortletURL();
+		PortletURL clearResultsURL = getPortletURL();
 		clearResultsURL.setParameter(IcecapSSSWebKeys.KEYWORDS, StringPool.BLANK);
 //		Debug.printFooter("TermAdminManagementToolbarDisplayContext.getClearResultsURL()");
 		return clearResultsURL.toString();
@@ -166,7 +129,7 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public String getSearchActionURL() {
 		Debug.printHeader("TermAdminManagementToolbarDisplayContext.getSearchActionURL()");
-		PortletURL searchURL =  _termAdminDisplayContext.getPortletURL();
+		PortletURL searchURL =  getPortletURL();
 		
 		searchURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, 
@@ -181,7 +144,7 @@ public class TermAdminManagementToolbarDisplayContext
 	}
 	
 	public PortletURL getFilterURL() {
-		PortletURL filterURL =  _termAdminDisplayContext.getPortletURL();
+		PortletURL filterURL =  getPortletURL();
 		filterURL.setParameter(
 				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME,
 				MVCCommandNames.RENDER_ADMIN_TERM_LIST);
@@ -271,8 +234,6 @@ public class TermAdminManagementToolbarDisplayContext
 						{
 							boolean stagedActions = false;
 							
-							PortletURL actionURL = liferayPortletResponse.createActionURL();
-							
 							add(
 								dropdownItem -> {
 									dropdownItem.setIcon("trash");
@@ -301,7 +262,7 @@ public class TermAdminManagementToolbarDisplayContext
 	}
 	
 	public String getBulkActionURL() {
-		ActionURL actionURL = liferayPortletResponse.createActionURL();
+		PortletURL actionURL = liferayPortletResponse.createActionURL();
 		actionURL.setParameter("actionName", MVCCommandNames.ACTION_ADMIN_BULK_ACTIONS);
 		
 		return actionURL.toString();
@@ -315,7 +276,7 @@ public class TermAdminManagementToolbarDisplayContext
 						if (_hasUpdatePermission( termId )) {
 							add(dropdownItem -> {
 								dropdownItem.setHref(
-										liferayPortletResponse.createRenderURL(), 
+										getPortletURL(), 
 										IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_EDIT, 
 										Constants.CMD, Constants.UPDATE,
 										IcecapSSSWebKeys.REDIRECT, _getRedirectURL(), 
@@ -335,8 +296,6 @@ public class TermAdminManagementToolbarDisplayContext
 							deleteURL.setParameter(IcecapSSSWebKeys.REDIRECT, _getRedirectURL());
 							deleteURL.setParameter(IcecapSSSWebKeys.TERM_IDS, Arrays.toString(termIds) );
 							
-//							System.out.println("deleteURL: "+deleteURL.toString());
-
 							add( dropdownItem -> {
 								dropdownItem.setHref(deleteURL);
 								dropdownItem.setIcon("delete");
@@ -366,7 +325,7 @@ public class TermAdminManagementToolbarDisplayContext
 						addDropdownItem(
 								dropdownItem -> {
 									dropdownItem.setHref(
-											liferayPortletResponse.createRenderURL(),
+											getPortletURL(),
 											IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_EDIT,
 											IcecapSSSWebKeys.REDIRECT, currentURLObj.toString(),
 											Constants.CMD, Constants.ADD);
@@ -423,11 +382,7 @@ public class TermAdminManagementToolbarDisplayContext
 	}
 	
 	private String _getRedirectURL() {
-		PortletURL redirectURL = liferayPortletResponse.createRenderURL();
-
-		redirectURL.setParameter(
-				IcecapSSSWebKeys.MVC_RENDER_COMMAND_NAME, MVCCommandNames.RENDER_ADMIN_TERM_LIST);
-		redirectURL.setParameter(	IcecapSSSWebKeys.DISPLAY_STYLE, _displayStyle);
+		PortletURL redirectURL = getPortletURL();
 
 		return redirectURL.toString();
 	}
@@ -510,8 +465,17 @@ public class TermAdminManagementToolbarDisplayContext
 	@Override
 	public String getSortingURL() {
 		Debug.printHeader("getSortingURL");
-		return _termAdminDisplayContext.getSearchURL( 
-					Validator.isNotNull(_keywords) && !_keywords.isEmpty() ).toString();
+		
+		PortletURL portletURL = getPortletURL();
+		if( _orderByType.equals(IcecapSSSConstants.ASC) ) {
+			portletURL.setParameter(IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.DSC);
+		}
+		else {
+			portletURL.setParameter(IcecapSSSWebKeys.ORDER_BY_TYPE, IcecapSSSConstants.ASC);
+		}
+		
+		Debug.printFooter("getSortingURL");
+		return portletURL.toString();
 	}
 
 	@Override

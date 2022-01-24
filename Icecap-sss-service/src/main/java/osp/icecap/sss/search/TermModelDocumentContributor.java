@@ -26,7 +26,7 @@ public class TermModelDocumentContributor implements ModelDocumentContributor<Te
 	
 	@Override
 	public void contribute(Document document, Term term) {
-			System.out.println("TermModelDocumentContributor.......");
+//			System.out.println("TermModelDocumentContributor.......");
 			document.addDate(Field.MODIFIED_DATE, term.getModifiedDate());
 			document.addKeyword(IcecapSSSTermAttributes.TERM_NAME, term.getTermName());
 			document.addLocalizedKeyword(IcecapSSSTermAttributes.DEFINITION, term.getDefinitionMap(), true);
@@ -34,6 +34,7 @@ public class TermModelDocumentContributor implements ModelDocumentContributor<Te
 			document.addKeyword(IcecapSSSTermAttributes.SYNONYMS, term.getSynonyms());
 			document.addLocalizedKeyword(IcecapSSSTermAttributes.DISPLAY_NAME, term.getDisplayNameMap(), true);
 			document.addKeyword(IcecapSSSTermAttributes.TERM_TYPE, term.getTermType());
+			document.addKeyword(IcecapSSSTermAttributes.STATUS, term.getStatus());
 	}
 	
 }

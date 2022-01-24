@@ -21,7 +21,6 @@ import osp.icecap.sss.constants.IcecapSSSWebKeys;
 import osp.icecap.sss.constants.IcecapSSSWebPortletKeys;
 import osp.icecap.sss.constants.MVCCommandNames;
 import osp.icecap.sss.debug.Debug;
-import osp.icecap.sss.model.Term;
 import osp.icecap.sss.service.TermLocalService;
 
 @Component(

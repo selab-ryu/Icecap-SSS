@@ -1,5 +1,6 @@
 package osp.icecap.sss.util.term;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -14,6 +15,9 @@ import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.constants.IcecapSSSTermTypes;
 
 public class IcecapSSSTermAttributeUtil {
+	public static final int DEFAULT_STRING_MIN_LENGTH = 1;
+	public static final int DEFAULT_STRING_MAX_LENGTH = 32;
+	public static final boolean DEFAULT_STRING_NEW_LINE = false;
 	
 	public static String getTypeDedicatedAttributes( PortletRequest portletRequest, String termType ) throws Exception {
 		
@@ -78,18 +82,29 @@ public class IcecapSSSTermAttributeUtil {
 		String refDataTypes = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.REF_DATATYPES);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.REF_DATATYPES), refDataTypes);
+		jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		jsonAttr.put(IcecapSSSTermAttributes.REF_DATATYPES, refDataTypes);
 		
 		return jsonAttr.toJSONString();
+	}
+	
+	public static JSONObject toJsonObject( String strAttr ) {
+		
+		JSONObject json = null;
+		try {
+			json = JSONFactoryUtil.createJSONObject(strAttr);
+		} catch (JSONException e) {
+		}
+		
+		return json;
 	}
 	
 	public static String getObjectAttributesToJson( PortletRequest portletRequest ) {
 		String refDataTypes = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.REF_DATATYPES);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.REF_DATATYPES), refDataTypes);
+		jsonAttr.put(IcecapSSSTermAttributes.REF_DATATYPES, refDataTypes);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -101,10 +116,10 @@ public class IcecapSSSTermAttributeUtil {
 		String refDataTypes = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.REF_DATATYPES);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.URL_TYPE), urlType);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.REF_DATATYPES), refDataTypes);
+		jsonAttr.put(IcecapSSSTermAttributes.URL_TYPE, urlType);
+		jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		jsonAttr.put(IcecapSSSTermAttributes.REF_DATATYPES, refDataTypes);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -115,9 +130,9 @@ public class IcecapSSSTermAttributeUtil {
 		String dataTypeVersion = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.DATA_TYPE_VERSION);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.URL_TYPE), urlType);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DATA_TYPE_NAME), dataTypeName);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DATA_TYPE_VERSION), dataTypeVersion);
+		jsonAttr.put(IcecapSSSTermAttributes.URL_TYPE, urlType);
+		jsonAttr.put(IcecapSSSTermAttributes.DATA_TYPE_NAME, dataTypeName);
+		jsonAttr.put(IcecapSSSTermAttributes.DATA_TYPE_VERSION, dataTypeVersion);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -127,8 +142,8 @@ public class IcecapSSSTermAttributeUtil {
 		int dimensionY = ParamUtil.getInteger(portletRequest, IcecapSSSTermAttributes.DIMENSION_Y);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DIMENSION_X), dimensionX);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DIMENSION_Y), dimensionY);
+		jsonAttr.put(IcecapSSSTermAttributes.DIMENSION_X, dimensionX);
+		jsonAttr.put(IcecapSSSTermAttributes.DIMENSION_Y, dimensionY);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -141,7 +156,7 @@ public class IcecapSSSTermAttributeUtil {
 		String countryCode = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.COUNTRY_CODE);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.COUNTRY_CODE), countryCode);
+		jsonAttr.put(IcecapSSSTermAttributes.COUNTRY_CODE, countryCode);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -150,7 +165,7 @@ public class IcecapSSSTermAttributeUtil {
 		String displayFormat = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.DISPLAY_FORMAT);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DISPLAY_FORMAT), displayFormat);
+		jsonAttr.put(IcecapSSSTermAttributes.DISPLAY_FORMAT, displayFormat);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -163,11 +178,11 @@ public class IcecapSSSTermAttributeUtil {
 		boolean allowUncertainty = ParamUtil.getBoolean(portletRequest, IcecapSSSTermAttributes.UNCERTAINTY);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.ELEMENT_TYPE), elementType);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.UNIT), elementUnit);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.UNCERTAINTY), allowUncertainty);
+		jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		jsonAttr.put(IcecapSSSTermAttributes.ELEMENT_TYPE, elementType);
+		jsonAttr.put(IcecapSSSTermAttributes.UNIT, elementUnit);
+		jsonAttr.put(IcecapSSSTermAttributes.UNCERTAINTY, allowUncertainty);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -178,8 +193,8 @@ public class IcecapSSSTermAttributeUtil {
 		String listItems = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.LIST_ITEMS);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DISPLAY_STYLE), displayStyle);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.LIST_ITEMS), listItems);
+		jsonAttr.put(IcecapSSSTermAttributes.DISPLAY_STYLE, displayStyle);
+		jsonAttr.put(IcecapSSSTermAttributes.LIST_ITEMS, listItems);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -191,10 +206,10 @@ public class IcecapSSSTermAttributeUtil {
 		String listItems = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.LIST_ITEMS);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DISPLAY_STYLE), displayStyle);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.LIST_ITEMS), listItems);
+		jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		jsonAttr.put(IcecapSSSTermAttributes.DISPLAY_STYLE, displayStyle);
+		jsonAttr.put(IcecapSSSTermAttributes.LIST_ITEMS, listItems);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -204,7 +219,7 @@ public class IcecapSSSTermAttributeUtil {
 		String refDatabases = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.REF_DATABASES);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.REF_DATABASES), refDatabases);
+		jsonAttr.put(IcecapSSSTermAttributes.REF_DATABASES, refDatabases);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -216,9 +231,9 @@ public class IcecapSSSTermAttributeUtil {
 		String refDatabases = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.REF_DATABASES);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.REF_DATABASES), refDatabases);
+		jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		jsonAttr.put(IcecapSSSTermAttributes.REF_DATABASES, refDatabases);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -228,7 +243,7 @@ public class IcecapSSSTermAttributeUtil {
 		String displayStyle = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.DISPLAY_STYLE);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.DISPLAY_STYLE), displayStyle);
+		jsonAttr.put(IcecapSSSTermAttributes.DISPLAY_STYLE, displayStyle);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -245,17 +260,17 @@ public class IcecapSSSTermAttributeUtil {
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
 		if( !minValue.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_VALUE), minValue);
+			jsonAttr.put(IcecapSSSTermAttributes.MIN_VALUE, minValue);
 		if( !maxValue.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_VALUE), maxValue);
+			jsonAttr.put(IcecapSSSTermAttributes.MAX_VALUE, maxValue);
 		if( !minValue.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.LOWER_BOUNDARY), lowerBoundary);
+			jsonAttr.put(IcecapSSSTermAttributes.LOWER_BOUNDARY, lowerBoundary);
 		if( !maxValue.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.UPPER_BOUNDARY), upperBoundary);
+			jsonAttr.put(IcecapSSSTermAttributes.UPPER_BOUNDARY, upperBoundary);
 		if( !unit.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.UNIT), unit);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.UNCERTAINTY), uncertainty);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.SWEEPABLE), sweepable);
+			jsonAttr.put(IcecapSSSTermAttributes.UNIT, unit);
+		jsonAttr.put(IcecapSSSTermAttributes.UNCERTAINTY, uncertainty);
+		jsonAttr.put(IcecapSSSTermAttributes.SWEEPABLE, sweepable);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -268,13 +283,14 @@ public class IcecapSSSTermAttributeUtil {
 		String validationRule = ParamUtil.getString(portletRequest, IcecapSSSTermAttributes.VALIDATION_RULE);
 		
 		JSONObject jsonAttr = JSONFactoryUtil.createJSONObject();
-		if( minLength > 1 )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MIN_LENGTH), minLength);
-		if( maxLength > minLength )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.MAX_LENGTH), maxLength);
-		jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.NEW_LINE), newLine);
+		if( minLength > 1)
+			jsonAttr.put(IcecapSSSTermAttributes.MIN_LENGTH, minLength);
+		if( maxLength > minLength &&  maxLength != DEFAULT_STRING_MAX_LENGTH )
+			jsonAttr.put(IcecapSSSTermAttributes.MAX_LENGTH, maxLength);
+		if( newLine != DEFAULT_STRING_NEW_LINE )
+			jsonAttr.put(IcecapSSSTermAttributes.NEW_LINE, newLine);
 		if( !validationRule.isEmpty() )
-			jsonAttr.put(toJsonAttr(IcecapSSSTermAttributes.VALIDATION_RULE), validationRule);
+			jsonAttr.put(IcecapSSSTermAttributes.VALIDATION_RULE, validationRule);
 		
 		return jsonAttr.toJSONString();
 	}
@@ -287,9 +303,5 @@ public class IcecapSSSTermAttributeUtil {
 		}
 		
 		return jsonMap.toJSONString();
-	}
-	
-	public static String toJsonAttr ( String attr ) {
-		return attr + "_";
 	}
 }

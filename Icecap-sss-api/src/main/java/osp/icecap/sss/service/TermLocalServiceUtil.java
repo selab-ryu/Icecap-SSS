@@ -98,6 +98,10 @@ public class TermLocalServiceUtil {
 		return getService().countTermsByStatus(status);
 	}
 
+	public static int countTermsByU_S(long userId, int status) {
+		return getService().countTermsByU_S(userId, status);
+	}
+
 	public static int countTermsByUserId(long userId) {
 		return getService().countTermsByUserId(userId);
 	}
@@ -444,6 +448,24 @@ public class TermLocalServiceUtil {
 		int status, int start, int end, OrderByComparator<Term> comparator) {
 
 		return getService().getTermsByStatus(status, start, end, comparator);
+	}
+
+	public static List<Term> getTermsByU_S(long userId, int status) {
+		return getService().getTermsByU_S(userId, status);
+	}
+
+	public static List<Term> getTermsByU_S(
+		long userId, int status, int start, int end) {
+
+		return getService().getTermsByU_S(userId, status, start, end);
+	}
+
+	public static List<Term> getTermsByU_S(
+		long userId, int status, int start, int end,
+		OrderByComparator<Term> comparator) {
+
+		return getService().getTermsByU_S(
+			userId, status, start, end, comparator);
 	}
 
 	public static List<Term> getTermsByUserId(long userId) {

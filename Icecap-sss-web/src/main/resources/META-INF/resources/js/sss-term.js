@@ -1,16 +1,246 @@
-(function(SSS) {
+(function(SX, $, Liferay) {
     'use strict';
 
-    if (SSS) {
-        if (SSS.Term) return;
-    } else{
-    	SSS = {};
+    if (!SX) {
+    	return;
     }
     
-    console.log( 'SSS object:', SSS);
-	SSS.Term = function(){
+    SX = {
+    	SSS: {
+    		TermTypes: {
+                STRING: 'String',
+                NUMERIC: 'Numeric',
+                BOOLEAN : 'Boolean',
+                LIST: 'List',
+                LIST_ARRAY: 'ListArray',
+                MATRIX: 'Matrix',
+                FILE : 'File',
+                FILE_ARRAY: 'FileArray',
+                OBJECT : 'Object',
+                OBJECT_ARRAY : 'ObjectArray',
+                ARRAY : 'Array',
+                DATA_LINK : 'DataLink',
+                DATA_LINK_ARRAY : 'DataLinkArray',
+                DATE : 'Date',
+                PHONE : 'Phone',
+                EMAIL : 'EMail',
+                GROUP: 'Group',
+                COMMENT: 'Comment',
+    		},
+    		TermAttrNames: {
+    	    		ACTIVE: 'active',
+    	    		AVAILABLE_LANGUAGE_IDS: 'availableLanguageIds',
+    	            COUNTRY_CODE: 'countryCode',
+    	            DATATYPE_NAME: 'dataTypeName',
+    	            DATATYPE_VERSION: 'dataTypeVersion',
+    	            DEFINITION: 'definition',
+    	            DEFAULT_LANGUAGE_ID: 'defaultLanguageId',
+    	            DEFAULT_LOCALE: 'defaultLocale',
+    	            DEPENDENT_TERMS: 'dependentTerms',
+    	            DIMENSION_X: 'dimensionX',
+    	            DIMENSION_Y: 'dimensionY',
+    	            DISABLED: 'disabled',
+    	            DISPLAY_NAME: 'displayName',
+    	            DISPLAY_STYLE: 'displayStyle',
+    	            ELEMENT_TYPE: 'elementType',
+    	            FILE_ID: 'fileId',
+    	            FORMAT: 'format',
+    	            ID: 'id',
+    	            LIST_ITEM: 'listItem',
+    	            LIST_ITEM_VALUE: 'listItemValue',
+    	            LIST_ITEMS: 'listItems',
+    	            LOWER_BOUNDARY: 'lowerBoundary',
+    	            LOWER_OPERAND: 'lowerOperand',
+    	            MANDATORY: 'mandatory',
+    	            NAME: 'name',
+    	            MAX_LENGTH:"maxLength_",
+    	            MAX_VALUE:"maxValue_",
+    	            MIN_LENGTH:"minLength_",
+    	            MIN_VALUE:"minValue_",
+    	            NAME_TEXT: 'nameText',
+    	            NEW_LINE:"newLine_",
+    	            OPERAND: 'operand',
+    	            ORDER: 'order',
+    	            PATH: 'path',
+    	            PATH_TYPE: 'pathType',
+    	            RANGE: 'range',
+    	            REF_DATATYPES: 'refDataTypes',
+    	            REF_DATABASES: 'refDatabases',
+    	            SWEEPABLE: 'sweepable'
+    	            SYNONYMS: 'synonyms',
+    	            TERM_NAME: 'termName',
+    	            TEXT: 'text',
+    	            TOOLTIP: 'tooltip',
+    	            TTYPE: 'type',
+    	            UNCERTAINTY: 'uncertainty',
+    	            UNCERTAINTY_VALUE: 'uncertaintyValue',
+    	            UNIT: 'unit',
+    	            UPPER_BOUNDARY: 'upperBoundary',
+    	            UPPER_OPERAND: 'upperOperand',
+    	            URI: 'uri',
+    	            URI_TYPE: 'uriType',
+    	            URL: 'url',
+    	            VALIDATION_RULE : 'validationRule',
+    	            VALUE_DELIMITER: 'valueDelimiter',
+    	            VALUE: 'value',
+    	            VERSION: 'version',
+    	        }; // End of SSS.TermAttrNames
+    	},
+    	Util: {
+                getTermTypes: function() {
+                    let types = [];
+                    types.push(SX.SSS.TermTypes.NUMERIC);
+                    types.push(SX.SSS.TermTypes.STRING);
+                    types.push(SX.SSS.TermTypes.BOOLEAN);
+                    types.push(SX.SSS.TermTypes.ARRAY);
+                    types.push(SX.SSS.TermTypes.LIST);
+                    types.push(SX.SSS,TermTypes.LIST_ARRAY);
+                    types.push(SX.SSS,TermTypes.DATE);
+                    types.push(SX.SSS,TermTypes.PHONE);
+                    types.push(SX.SSS,TermTypes.EMAIL);
+                    types.push(SX.SSS,TermTypes.MATRIX);
+                    types.push(SX.SSS,TermTypes.DATA_LINK);
+                    types.push(SX.SSS,TermTypes.DATA_LINK_ARRAY);
+                    types.push(SX.SSS,TermTypes.OBJECT);
+                    types.push(SX.SSS,TermTypes.OBJECT_ARRAY);
+                    types.push(SX.SSS,TermTypes.FILE);
+                    types.push(SX.SSS,TermTypes.FILE_ARRAY);
+                    types.push(SX.SSS,TermTypes.GROUP);
+                    types.push(SX.SSS,TermTypes.COMMENT);
+                    return types;
+                },
+                guid: function() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(char) {
+                        let random = Math.random() * 16 | 0,
+                            value = char === 'x' ? random : (random & 0x3 | 0x8);
+                        return value.toString(16);
+                    })
+                },
+                toLocalizedXml: function(jsonObject, availableLanguageIds, defaultLanguageId) {
+                    if (!availableLanguageIds) availableLanguageIds = '';
+                    if (!defaultLanguageId) defaultLanguageId = '';
+
+                    let xml = '<?xml version=\'1.0\' encoding=\'UTF-8\'?>';
+                    xml += '<root available-locales=\'';
+                    xml += availableLanguageIds + '\' ';
+                    xml += 'default-locale=\'' + defaultLanguageId + '\'>';
+
+                    for (let languageId in jsonObject) {
+                        let value = jsonObject[languageId];
+                        xml += '<display language-id=\'' + languageId + '\'>' + value +
+                            '</display>';
+                    }
+                    xml += '</root>';
+
+                    return xml;
+                },
+                toJSON: function(obj) {
+                    return JSON.parse(JSON.stringify(obj));
+                },
+                isEmpty: function(obj) {
+                    if (obj == null) return true;
+                    if (obj.length == 0)
+                        return true;
+
+                    if (typeof obj !== 'object') return false;
+
+                    for (let key in obj) {
+                        if (SSS.Util.isEmpty(obj[key]) == false) return false;
+                    }
+
+                    return true;
+                },
+                removeArrayElement: function(array, index) {
+                    array.splice(index, 1);
+                    return array;
+                },
+                isBrowserEdge: function() {
+                    let ua = navigator.userAgent,
+                        tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+                    if (/trident/i.test(M[1])) {
+                        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                        //return {name:'IE',version:(tem[1]||'')};
+                        return false;
+                    }
+
+                    return true;
+                },
+                addFirstArgument: function(argument, args) {
+                    let newArgs = [];
+                    for (let i = 0; i < args.length; i++) {
+                        newArgs.push(args[i]);
+                    }
+                    newArgs.unshift(argument);
+                    return newArgs;
+                },
+                evalHttpParamSeparator: function(baseURL) {
+                    let sep = (baseURL.indexOf('?') > -1) ? '&' : '?';
+                    return sep;
+                },
+                getLocalFile: function( anchor ){
+                    return $(anchor)[0].files[0];
+                },
+                getLocalFileName: function( anchor ){
+                    let fileName = $(anchor).val();
+        			
+        			let slashIndex = fileName.lastIndexOf('\\');
+        			if( slashIndex < 0 )
+                        slashIndex = fileName.lastIndexOf('/');
+                         
+        			return fileName.slice(slashIndex+1);
+                },
+                randomString: function( length, code ){
+                    let mask = '';
+                    if (code.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+                    if (code.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    if (code.indexOf('1') > -1) mask += '0123456789';
+                    if (code.indexOf('!') > -1) mask += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+                    let result = '';
+                    for (let i = length; i > 0; --i){
+                        result += mask[Math.floor(Math.random() * mask.length)];
+                    } 
+                    return result;
+                },
+                getLocalizedInputValue(inputId, availableLanguageIds ){
+                	//console.log('availableLanguageIds:', availableLanguageIds);
+                	var listItem = {};
+                	listItem.displayName = {};
+                	availableLanguageIds.forEach( function(id){
+                		var localizedId = '#'+inputId+'_'+id;
+                		console.log( 'document way: ', document.getElementById(inputId+'_'+id));
+                		console.log('input: ', $(localizedId));
+                		console.log('localizedId: '+localizedId + ', '+$(localizedId).val() );
+                		listItem.displayName[id] = $(localizedId).val();
+                	});
+                	
+                	console.log('Localized List Item: ', listItem);
+                	return listItem;
+                },
+                setLocalizedInputValue(inputId, $parent, availableLanguageIds, displayName ){
+                	//console.log('availableLanguageIds:', availableLanguageIds);
+                	availableLanguageIds.forEach( function(id){
+                		var localizedId = inputId+'_'+id;
+                		if( displayName[id] ){
+                			$('#'+localizedId).val( displayName[id]);
+                			$('#'+inputId).val(displayName[id]);
+                		}
+                	});
+        			$parent.find('.form-text').empty();
+                },
+                clearLocalizedInputValue(inputId, $parent, availableLanguageIds){
+                	//console.log('availableLanguageIds:', availableLanguageIds);
+                	availableLanguageIds.forEach( function(id){
+                		var localizedId = inputId+'_'+id;
+                			$('#'+localizedId).val('');
+                			$('#'+inputId).val('');
+                	});
+        			$parent.find('.form-text').empty();
+                }
+        }; // End of SSS.Util
+    };
+    
+	SX.SSS.Term = function(){
 		var Term = this;
-		Term.version='20211019';
 		
 		var LocaleObject = function( jsonObject ){
 			var LO = this;
@@ -349,7 +579,7 @@
 		var NumericTerm = function( jsonObject ){
 			var NT = this;
 			_Term.apply(NT);
-			NT.type( SSS.TermTypes.NUMERIC);
+			NT.type( SX.SSS,TermTypes.NUMERIC);
 			NT.unit = function( unit ){
 				return NT.property.apply(NT, SSS.Util.addFirstArgument(SSS.TermAttrNames.UNIT, arguments));
 			};
@@ -408,7 +638,7 @@
 			var LT = this;
 			_Term.apply(LT);
 			
-			LT.type( SSS.TermTypes.LIST);
+			LT.type( SX.SSS,TermTypes.LIST);
 			
 			var ListItem = function( jsonObject ){
 				var Item = this;
@@ -717,7 +947,7 @@
 		var StringTerm = function( jsonObject ){
 			var ST = this;
 			_Term.apply(ST);
-			ST.type( SSS.TermTypes.STRING);
+			ST.type( SX.SSS,TermTypes.STRING);
 
 			ST.minLength = function( length ){
 				return ST.property.apply(ST, SSS.Util.addFirstArgument(SSS.TermAttrNames.MIN_LENGTH, arguments));
@@ -763,7 +993,7 @@
 		var BooleanTerm = function( jsonObject ){
 			var BT = this;
 			_Term.apply(BT);
-			BT.type( SSS.TermTypes.BOOLEAN );
+			BT.type( SX.SSS,TermTypes.BOOLEAN );
 
 			BT.clone = function(){
 				return new BooleanTerm( OSP.Util.toJSON(BT) );
@@ -794,7 +1024,7 @@
 			var FT = this;
 				
 			_Term.apply(FT);
-			FT.type(SSS.TermTypes.FILE);
+			FT.type(SX.SSS,TermTypes.FILE);
 
 			FT.uriType = function( type ){
 				return FT.property.apply(FT, SSS.Util.addFirstArgument(SSS.TermAttrNames.URI_TYPE, arguments));
@@ -836,7 +1066,7 @@
 			var FA = this;
 				
 			_Term.apply(FA);
-			FA.type(SSS.TermTypes.FILE_ARRAY);
+			FA.type(SX.SSS,TermTypes.FILE_ARRAY);
 
 			FA.uriType = function( type ){
 				return FA.property.apply(FA, SSS.Util.addFirstArgument(SSS.TermAttrNames.URI_TYPE, arguments));
@@ -901,7 +1131,7 @@
 			var MT = this;
 			_Term.apply(MT);
 			
-			MT.type( SSS.TermTypes.MATRIX );
+			MT.type( SX.SSS,TermTypes.MATRIX );
 
 			MT.dimensionX = function( dimension ) {
 				return MT.property.apply(MT, SSS.Util.addFirstArgument(SSS.TermAttrNames.DIMENSION_X, arguments));
@@ -956,7 +1186,7 @@
 		var CommentTerm = function( jsonObject ){
 			var CT = this;
 			_Term.apply(CT);
-			CT.type( SSS.TermTypes.COMMENT);
+			CT.type( SX.SSS,TermTypes.COMMENT);
 
 			CT.clone = function(){
 				return new CT( SSS.Util.toJSON(CT) );
@@ -988,7 +1218,7 @@
 			
 			_Term.apply(DT);
 			
-			DT.type( SSS.TermTypes.DATE);
+			DT.type( SX.SSS,TermTypes.DATE);
 			
 			DT.format = function(value){
 				return DT.property.apply(DT, SSS.Util.addFirstArgument(SSS.TermAttrNames.FORMAT, arguments));
@@ -1024,7 +1254,7 @@
 
 			_Term.apply(PT);
 
-			PT.type( SSS.TermTypes.PHONE);
+			PT.type( SX.SSS,TermTypes.PHONE);
 
 			PT.countryCode = function(value){
 				return PT.property.apply(PT, SSS.Util.addFirstArgument(SSS.TermAttrNames.COUNTRY_CODE, arguments));
@@ -1059,7 +1289,7 @@
 			var ET = this;
 			_Term.apply(ET);
 			
-			ET.type( SSS.TermTypes.EMAIL);
+			ET.type( SX.SSS,TermTypes.EMAIL);
 
 			ET.clone = function(){
 				return new EMailTerm( SSS.Util.toJSON(ET) );
@@ -1090,7 +1320,7 @@
 		var ObjectTerm = function( jsonObject ){
 			var OT = this;
 			_Term.apply(OT);
-			OT.type( SSS.TermTypes.OBJECT);
+			OT.type( SX.SSS,TermTypes.OBJECT);
 			
 			OT.refDataTypes = function( dataTypes ){
 				return OT.property.apply(OT, SSS.Util.addFirstArgument(SSS.TermAttrNames.REF_DATATYPES, arguments));
@@ -1155,7 +1385,7 @@
 		var ObjectArrayTerm = function( jsonObject ){
 			var OA = this;
 			_Term.apply(OA);
-			OA.type( SSS.TermTypes.OBJECT_ARRAY);
+			OA.type( SX.SSS,TermTypes.OBJECT_ARRAY);
 
 			OA.addObject = function( obj ){
 				let ary = OA.value();
@@ -1239,7 +1469,7 @@
 		var DataLinkTerm = function( jsonObject ){
 			var DL = this;
 			_Term.apply(DL);
-			DL.type( SSS.TermTypes.DATA_LINK);
+			DL.type( SX.SSS,TermTypes.DATA_LINK);
 
 			DL.refDatabases = function( databases ){
 				return DL.property.apply(DL, SSS.Util.addFirstArgument(SSS.TermAttrNames.REF_DATABASES, arguments));
@@ -1304,7 +1534,7 @@
 		var DataLinkArrayTerm = function( jsonObject ){
 			var DA = this;
 			_Term.apply(DA);
-			DA.type( SSS.TermTypes.DATA_LINK_ARRAY);
+			DA.type( SX.SSS,TermTypes.DATA_LINK_ARRAY);
 
 			DA.addDataLink = function( link ){
 				let ary = OA.value();
@@ -1391,7 +1621,7 @@
 		var ArrayTerm = function( jsonObject ){
 			var AT = this;
 			_Term.apply(AT);
-			AT.type( SSS.TermTypes.ARRAY);
+			AT.type( SX.SSS,TermTypes.ARRAY);
 			
 			AT.addElement = function( element ){
 				let ary = AT.value();
@@ -1445,7 +1675,7 @@
 		var GroupTerm = function( jsonObject ){
 			var GT = this;
 			_Term.apply(GT);
-			GT.type( SSS.TermTypes.GROUP);
+			GT.type( SX.SSS,TermTypes.GROUP);
 
 			GT.addTerm = function( termName ){
 				var terms = GT.value();
@@ -1520,4 +1750,4 @@
 			return $form;
 		}
 	};
-})(SSS);
+})(StationX, AUI.$, Liferay);

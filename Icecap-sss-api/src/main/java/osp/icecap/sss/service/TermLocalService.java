@@ -103,6 +103,8 @@ public interface TermLocalService
 
 	public int countTermsByStatus(int status);
 
+	public int countTermsByU_S(long userId, int status);
+
 	public int countTermsByUserId(long userId);
 
 	/**
@@ -367,6 +369,18 @@ public interface TermLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByStatus(
 		int status, int start, int end, OrderByComparator<Term> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByU_S(long userId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByU_S(
+		long userId, int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Term> getTermsByU_S(
+		long userId, int status, int start, int end,
+		OrderByComparator<Term> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Term> getTermsByUserId(long userId);

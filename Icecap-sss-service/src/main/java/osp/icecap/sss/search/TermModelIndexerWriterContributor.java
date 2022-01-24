@@ -23,9 +23,9 @@ public class TermModelIndexerWriterContributor implements ModelIndexerWriterCont
 	@Override
 	public void customize(BatchIndexingActionable batchIndexingActionable,
 			ModelIndexerWriterDocumentHelper modelIndexerWriterDocumentHelper) {
-		System.out.println("TermModelIndexerWriterContributor......");
+//		System.out.println("TermModelIndexerWriterContributor......");
 		batchIndexingActionable.setPerformActionMethod((Term term) -> {
-			System.out.println("setPerformActionMethod....");
+//			System.out.println("setPerformActionMethod....");
 			Document document = modelIndexerWriterDocumentHelper.getDocument(term);
 
 			batchIndexingActionable.addDocuments(document);

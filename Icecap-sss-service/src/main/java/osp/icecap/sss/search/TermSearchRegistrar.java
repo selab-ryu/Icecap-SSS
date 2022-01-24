@@ -29,7 +29,7 @@ public class TermSearchRegistrar {
 					Term.class, 
 					bundleContext, 
 					modelSearchDefinition -> {
-								System.out.println("TermSearchRegister activator: modelSearchDefinition");
+//								System.out.println("TermSearchRegister activator: modelSearchDefinition");
 								modelSearchDefinition.setDefaultSelectedFieldNames(
 										Field.COMPANY_ID,
 										Field.GROUP_ID, 
@@ -39,14 +39,14 @@ public class TermSearchRegistrar {
 										Field.MODIFIED_DATE, 
 										Field.ASSET_TAG_NAMES, 
 										Field.ASSET_CATEGORY_TITLES,
-										Field.SCOPE_GROUP_ID);//,
-//										Field.TITLE,
-//										IcecapSSSTermAttributes.TERM_NAME, 
-//										IcecapSSSTermAttributes.DEFINITION,
-//										IcecapSSSTermAttributes.TOOLTIP, 
-//										IcecapSSSTermAttributes.SYNONYMS,
-//										IcecapSSSTermAttributes.DISPLAY_NAME, 
-//										IcecapSSSTermAttributes.TERM_TYPE);
+										Field.SCOPE_GROUP_ID,
+										Field.TITLE,
+										IcecapSSSTermAttributes.TERM_NAME, 
+										IcecapSSSTermAttributes.DEFINITION,
+										IcecapSSSTermAttributes.TOOLTIP, 
+										IcecapSSSTermAttributes.SYNONYMS,
+										IcecapSSSTermAttributes.DISPLAY_NAME, 
+										IcecapSSSTermAttributes.TERM_TYPE);
 								modelSearchDefinition.setDefaultSelectedLocalizedFieldNames(
 										Field.TITLE, Field.CONTENT);
 
@@ -57,7 +57,7 @@ public class TermSearchRegistrar {
 								modelSearchDefinition.setSelectAllLocales(true);
 					});
 
-			System.out.println("===== End of TermSearchRegistrar activator() =====");
+//			System.out.println("===== End of TermSearchRegistrar activator() =====");
 	}
 
 	@Deactivate

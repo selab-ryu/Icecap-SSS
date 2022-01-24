@@ -42,6 +42,8 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
+import osp.icecap.sss.constants.IcecapSSSConstants;
+import osp.icecap.sss.constants.IcecapSSSTermAttributes;
 import osp.icecap.sss.exception.DuplicatedTermNameException;
 import osp.icecap.sss.exception.InvalidTermException;
 import osp.icecap.sss.exception.NoSuchTermException;
@@ -201,6 +203,7 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 		}
 		
 		term.setUserId(sc.getUserId());
+		term.setGroupId(sc.getScopeGroupId());
 		term.setModifiedDate(new Date() );
 
 		term.setStatus(status);
@@ -388,6 +391,31 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			return super.termPersistence.countByG_S(groupId, status);
 	}
 	
+	public List<Term> getTermsByU_S( long userId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByUserId(userId);
+		else
+			return super.termPersistence.findByU_S(userId, status);
+	}
+	public List<Term> getTermsByU_S( long userId, int status, int start, int end ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByUserId(userId, start, end);
+		else
+			return super.termPersistence.findByU_S(userId, status, start, end);
+	}
+	public List<Term> getTermsByU_S( long userId, int status, int start, int end, OrderByComparator<Term> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.findByUserId(userId, start, end, comparator);
+		else
+			return super.termPersistence.findByU_S(userId, status, start, end, comparator);
+	}
+	public int countTermsByU_S( long userId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.termPersistence.countByUserId(userId);
+		else
+			return super.termPersistence.countByU_S(userId, status);
+	}
+	
 	public List<Term> getTermsByG_U_S( long groupId, long userId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.termPersistence.findByG_U(groupId, userId);
@@ -437,19 +465,17 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 
 		boolean orderByAsc = true;
 
-		if (orderByType.equals("desc")) {
+		if (orderByType.equals(IcecapSSSConstants.DSC)) {
 			orderByAsc = false;
 		}
 
 		OrderByComparator<Term> orderByComparator = null;
 
-		if (orderByCol.equals("termName")) {
+		if (orderByCol.equals(IcecapSSSTermAttributes.TERM_NAME)) {
 			orderByComparator = new TermNameComparator(orderByAsc);
-			System.out.println("Create TermNameComparator");
 		}
 		else {
 			orderByComparator = new TermModifiedDateComparator(orderByAsc);
-			System.out.println("Create TermVersionComparator");
 		}
 
 		return orderByComparator;
@@ -463,7 +489,10 @@ public class TermLocalServiceImpl extends TermLocalServiceBaseImpl {
 			Term.class.getName(), searchContainer);
 
 		assetEntryQuery.setExcludeZeroViewCount(false);
-		assetEntryQuery.setOrderByCol1("termName");
+		assetEntryQuery.setOrderByCol1(searchContainer.getOrderByCol());
+		assetEntryQuery.setOrderByType1(searchContainer.getOrderByType());
+		
+		System.out.println("TermLocalService.getSearchContainerResults Type: "+searchContainer.getOrderByType());
 		assetEntryQuery.setVisible(Boolean.TRUE);
 
 		int total = AssetEntryServiceUtil.getEntriesCount(assetEntryQuery);

@@ -91,6 +91,11 @@ public class TermLocalServiceWrapper
 	}
 
 	@Override
+	public int countTermsByU_S(long userId, int status) {
+		return _termLocalService.countTermsByU_S(userId, status);
+	}
+
+	@Override
 	public int countTermsByUserId(long userId) {
 		return _termLocalService.countTermsByUserId(userId);
 	}
@@ -526,6 +531,30 @@ public class TermLocalServiceWrapper
 
 		return _termLocalService.getTermsByStatus(
 			status, start, end, comparator);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByU_S(
+		long userId, int status) {
+
+		return _termLocalService.getTermsByU_S(userId, status);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByU_S(
+		long userId, int status, int start, int end) {
+
+		return _termLocalService.getTermsByU_S(userId, status, start, end);
+	}
+
+	@Override
+	public java.util.List<osp.icecap.sss.model.Term> getTermsByU_S(
+		long userId, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<osp.icecap.sss.model.Term> comparator) {
+
+		return _termLocalService.getTermsByU_S(
+			userId, status, start, end, comparator);
 	}
 
 	@Override
