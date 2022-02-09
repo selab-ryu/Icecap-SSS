@@ -4,37 +4,102 @@
 				<aui:fieldset label="value-range" helpMessage="numeric-range-help">
 					<aui:row>
 						<aui:col md="3">
-							<aui:input name="minValue" label="min-value" type="number" ></aui:input>
+							<aui:input
+								name="minValue" 
+								label="min-value" 
+								type="number"
+								value="<%= Validator.isNull(jsonDedicatedAttrs) ? 1 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MIN_VALUE, 1) %>"
+								>
+							</aui:input>
 						</aui:col>
 						<aui:col md="3">
-							<aui:input name="maxValue" label="max-value" type="number"></aui:input>
+							<aui:input 
+								name="maxValue" 
+								label="max-value" 
+								type="number"
+								value="<%= Validator.isNull(jsonDedicatedAttrs) ? 1 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MAX_VALUE, 1) %>"
+								>
+							</aui:input>
 						</aui:col>
 					</aui:row>
 					<aui:row>
 						<aui:col md="3">
-							<aui:input name="lowerBoundary" label="include-lower-boundary" type="checkbox"></aui:input>
+							<aui:input 
+								name="lowerBoundary" 
+								label="include-lower-boundary" 
+								type="checkbox"
+								checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.LOWER_BOUNDARY, false) %>"
+								>
+							</aui:input>
 						</aui:col>
 						<aui:col md="3">
-							<aui:input name="upperBoundary" label="include-upper-boundary" type="checkbox"></aui:input>
+							<aui:input 
+								name="upperBoundary" 
+								label="include-upper-boundary" 
+								type="checkbox"
+								checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.UPPER_BOUNDARY, false) %>"
+								>
+							</aui:input>
 						</aui:col>
 					</aui:row>
 				</aui:fieldset>
 				<aui:row>
 					<aui:col md="3">
-						<aui:input name="unit" label="unit" helpMessage="numeric-unit-help"></aui:input>
+						<aui:input 
+							id="unit" 
+							name="unit" 
+							label="unit" 
+							helpMessage="numeric-unit-help"
+							value="<%= Validator.isNull(jsonDedicatedAttrs)? "" : jsonDedicatedAttrs.getString(IcecapSSSTermAttributes.UNIT, "") %>" 
+							>
+						</aui:input>
 					</aui:col>
 					<aui:col md="3">
-						<aui:input name="unitPreview" label="unit-preview" disabled="true"></aui:input>
+						<aui:fieldset label="unit-preview">
+							<div id="unitPreview" class="form-control"></div>
+						</aui:fieldset>
 					</aui:col>
 				</aui:row>
 				<aui:row>
 					<aui:col md="3">
-						<aui:input name="uncertainty" label="allow-uncertainty" type="checkbox" helpMessage="numeric-allow-uncertainty-help"></aui:input>
+						<aui:input 
+							name="uncertainty" 
+							label="allow-uncertainty" 
+							type="checkbox" 
+							helpMessage="numeric-allow-uncertainty-help"
+							checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.UNCERTAINTY, false) %>"
+							>
+						</aui:input>
 					</aui:col>
 					<aui:col md="3">
-						<aui:input name="sweepable" label="sweepable" type="checkbox" helpMessage="numeric-sweepable-help"></aui:input>
+						<aui:input 
+							name="sweepable" 
+							label="sweepable" 
+							type="checkbox" 
+							helpMessage="numeric-sweepable-help"
+							checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.SWEEPABLE, false) %>"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 			</aui:container>
 		</aui:fieldset>
 	</aui:fieldset-group>
+	
+<script>
+$(document).ready(function() {	
+	$('#<portlet:namespace/>unit').on("change input", function() {
+		var input = $('#<portlet:namespace/>unit');
+		
+		var html = katex.renderToString(input.val(), {
+		    throwOnError: false
+		});	
+		
+		var result = $('#unitPreview');
+				
+		result.empty();
+		result.append(html);
+	});
+	
+});
+</script>

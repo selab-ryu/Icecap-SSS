@@ -3,7 +3,14 @@
 			<aui:container>
 				<aui:row>
 					<aui:col>
-						<aui:input type="checkbox" name="countryCode" label="country-code" helpMessage="phone-country-code-help"></aui:input>
+						<aui:input 
+							type="checkbox" 
+							name="countryCode" 
+							label="country-code" 
+							helpMessage="phone-country-code-help"
+							checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.COUNTRY_CODE, false) %>"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 			</aui:container>

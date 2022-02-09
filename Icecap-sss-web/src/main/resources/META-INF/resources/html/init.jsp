@@ -17,6 +17,20 @@
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
 
+<!-- Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+
+<link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+body{
+	font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+</style>
+<!-- Font -->
+
 <%
 	String currentURL = themeDisplay.getURLCurrent();
 	String backURL = ParamUtil.getString(renderRequest, "BACK_URL", "");

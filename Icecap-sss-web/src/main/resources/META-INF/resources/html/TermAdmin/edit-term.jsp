@@ -15,13 +15,22 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
 <%@page import="osp.icecap.sss.constants.IcecapSSSWebKeys"%>
+<%@page import="osp.icecap.sss.constants.IcecapSSSTermAttributes"%>
 <%@page import="osp.icecap.sss.model.Term"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="com.liferay.portal.kernel.util.Validator"%>
 <%@ include file="../init.jsp" %>
 
 <script type="text/javascript" src="<%= renderRequest.getContextPath()%>/js/sss-constants.js"></script>
 <script type="text/javascript" src="<%= renderRequest.getContextPath()%>/js/sss-term.js"></script>
+
+<link rel="stylesheet" href="<%= renderRequest.getContextPath()%>/js/katex/katex.min.css" crossorigin="anonymous">
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script src="<%= renderRequest.getContextPath()%>/js/katex/katex.min.js" crossorigin="anonymous"></script>
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script src="<%= renderRequest.getContextPath()%>/js/katex/contrib/auto-render.min.js"crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script>
 
 <%
 	Term term = (Term)renderRequest.getAttribute(IcecapSSSWebKeys.TERM);
@@ -32,6 +41,12 @@
 
 	String submitButtonLabel = "";
 	
+	System.out.println("Redirect url : "+redirect);
+	
+	redirect = ParamUtil.getString(renderRequest, IcecapSSSWebKeys.REDIRECT);
+	
+	System.out.println("Redirect url : "+redirect);
+	 
 	System.out.println("CMD: "+cmd);
 	if( cmd.equals(Constants.ADD) ){
 		submitButtonLabel = LanguageUtil.get(locale, "add-term", "Add Term");

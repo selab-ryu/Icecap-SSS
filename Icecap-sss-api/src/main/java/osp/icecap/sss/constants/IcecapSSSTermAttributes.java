@@ -11,6 +11,8 @@ public class IcecapSSSTermAttributes {
 	public static final String DISPLAY_NAME = "displayName";
 	public static final String DISPLAY_STYLE = "displayStyle";
 	public static final String ELEMENT_TYPE = "elementType";
+	public static final String ELEMENT_UNIT = "elementUnit";
+	public static final String ELEMENT_UNCERTAINTY = "elementUncertainty";
 	public static final String LIST_ITEMS = "listItems";
 	public static final String LOWER_BOUNDARY = "lowerBoundary";
 	public static final String MAX_LENGTH = "maxLength";

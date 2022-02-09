@@ -66,7 +66,7 @@
     	            RANGE: 'range',
     	            REF_DATATYPES: 'refDataTypes',
     	            REF_DATABASES: 'refDatabases',
-    	            SWEEPABLE: 'sweepable'
+    	            SWEEPABLE: 'sweepable',
     	            SYNONYMS: 'synonyms',
     	            TERM_NAME: 'termName',
     	            TEXT: 'text',
@@ -83,8 +83,8 @@
     	            VALIDATION_RULE : 'validationRule',
     	            VALUE_DELIMITER: 'valueDelimiter',
     	            VALUE: 'value',
-    	            VERSION: 'version',
-    	        }; // End of SSS.TermAttrNames
+    	            VERSION: 'version'
+    	        }
     	},
     	Util: {
                 getTermTypes: function() {
@@ -236,7 +236,7 @@
                 	});
         			$parent.find('.form-text').empty();
                 }
-        }; // End of SSS.Util
+        } // End of SSS.Util
     };
     
 	SX.SSS.Term = function(){

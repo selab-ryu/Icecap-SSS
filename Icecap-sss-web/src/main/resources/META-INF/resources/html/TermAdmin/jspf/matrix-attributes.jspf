@@ -3,10 +3,24 @@
 			<aui:container>
 				<aui:row>
 					<aui:col md="2">
-						<aui:input name="dimensionX" label="dimension-x" type="number" value="2" helpMessage="matrix-dimension-x-help"></aui:input>
+						<aui:input 
+							name="dimensionX" 
+							label="dimension-x" 
+							type="number" 
+							value="<%= Validator.isNull(jsonDedicatedAttrs) ? 2 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.DIMENSION_X, 2) %>" 
+							helpMessage="matrix-dimension-x-help"
+							>
+						</aui:input>
 					</aui:col>
 					<aui:col md="2">
-						<aui:input name="dimensionY" label="dimension-y" type="number" value="2" helpMessage="matrix-dimension-y-help"></aui:input>
+						<aui:input 
+							name="dimensionY" 
+							label="dimension-y" 
+							type="number" 
+							value="<%= Validator.isNull(jsonDedicatedAttrs) ? 2 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.DIMENSION_Y, 2) %>" 
+							helpMessage="matrix-dimension-y-help"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 			</aui:container>

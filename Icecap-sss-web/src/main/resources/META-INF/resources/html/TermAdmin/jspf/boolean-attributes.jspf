@@ -1,16 +1,43 @@
+<%
+String checkedStyle = "";
+if(!Validator.isNull(jsonDedicatedAttrs)) {
+	checkedStyle = jsonDedicatedAttrs.getString(IcecapSSSTermAttributes.DISPLAY_STYLE, "");
+}
+%>
 <aui:fieldset-group markupView="lexicon">
 	<aui:fieldset label="boolean-attrinutes">
 		<aui:container>
 			<aui:fieldset label="display-style" helpMessage="display-style-help">
 				<aui:row>
 					<aui:col md="4">
-						<aui:input type="radio" name="displayStyle" value="checkbox" label="checkbox" checked="true"></aui:input>
+						<aui:input 
+							type="radio" 
+							name="displayStyle" 
+							value="checkbox" 
+							label="checkbox" 
+							checked="<%= Validator.isNull(jsonDedicatedAttrs) ? true : ( checkedStyle.equals("checkbox") ? true : false ) %>"
+							>
+						</aui:input>
 					</aui:col>
 					<aui:col md="4">
-						<aui:input type="radio" name="displayStyle" value="radio" label="radio-button" ></aui:input>
+						<aui:input 
+							type="radio" 
+							name="displayStyle" 
+							value="radio" 
+							label="radio-button"
+							checked="<%= Validator.isNull(jsonDedicatedAttrs) ? false : ( checkedStyle.equals("radio") ? true : false ) %>"
+							>
+						</aui:input>
 					</aui:col>
 					<aui:col md="4">
-						<aui:input type="radio" name="displayStyle" value="selectbox" label="selectbox" ></aui:input>
+						<aui:input 
+							type="radio" 
+							name="displayStyle" 
+							value="selectbox" 
+							label="selectbox" 
+							checked="<%= Validator.isNull(jsonDedicatedAttrs) ? false : ( checkedStyle.equals("selectbox") ? true : false ) %>"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 			</aui:fieldset>

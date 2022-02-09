@@ -1,37 +1,103 @@
+<%
+String arrayElementType = "";
+if(!Validator.isNull(jsonDedicatedAttrs)) {
+	arrayElementType = jsonDedicatedAttrs.getString(IcecapSSSTermAttributes.ELEMENT_TYPE, "");
+}
+%>
 	<aui:fieldset-group markupView="lexicon">
 		<aui:fieldset label="array-attrinutes">
 			<aui:container>
 				<aui:row>
-					<aui:col md="2">
-						<aui:input name="minLength" value="2" label="minimum-length" helpMessage="array-min-length-help"></aui:input>
+					<aui:col md="3">
+						<aui:input 
+							name="minLength"  
+							label="minimum-length" 
+							helpMessage="array-min-length-help"
+							value="<%= Validator.isNull(jsonDedicatedAttrs) ? 2 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MIN_LENGTH, 2) %>"
+							>
+						</aui:input>
 					</aui:col>
-					<aui:col md="2">
-						<aui:input name="maxLength" label="maximum-length" helpMessage="array-max-length-help"></aui:input>
+					<aui:col md="3">
+						<aui:input 
+							name="maxLength" 
+							label="maximum-length" 
+							helpMessage="array-max-length-help"
+							value="<%= Validator.isNull(jsonDedicatedAttrs) ? 2 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MAX_LENGTH, 2) %>"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 					<aui:fieldset label="element-type" helpMessage="array-element-types-help">
 				<aui:row>
 						<aui:col md= "2">
-							<aui:input type="radio" name="elementType" label="string" ></aui:input>
+							<aui:input 
+								type="radio" 
+								name="elementType"
+								value="string" 
+								label="string"
+								checked="<%= Validator.isNull(jsonDedicatedAttrs) ? true : ( arrayElementType.equals("string") ? true : false ) %>" 
+								>
+						</aui:input>
 						</aui:col>
 						<aui:col md= "2">
-							<aui:input type="radio" name="elementType" label="numeric" ></aui:input>
+							<aui:input 
+								type="radio" 
+								name="elementType" 
+								value="numeric"
+								label="numeric"
+								checked="<%= Validator.isNull(jsonDedicatedAttrs) ? false : ( arrayElementType.equals("numeric") ? true : false ) %>" 
+								>
+							</aui:input>
 						</aui:col>
 				</aui:row>
 					</aui:fieldset>
 				<aui:row>
-					<aui:col md="3">
-						<aui:input name="elementUnit" label="element-unit" helpMessage="array-element-unit-help"></aui:input>
+					<aui:col md="4">
+						<aui:input 
+							id="elementUnit" 
+							name="elementUnit" 
+							label="element-unit" 
+							helpMessage="array-element-unit-help"
+							value="<%= Validator.isNull(jsonDedicatedAttrs)? "" : jsonDedicatedAttrs.getString(IcecapSSSTermAttributes.ELEMENT_UNIT, "") %>" 
+							>
+						</aui:input>
 					</aui:col>
-					<aui:col md="2">
-						<aui:input name="elementUnitPreview" label="preview" disabled="true"></aui:input>
+					<aui:col md="4">
+						<aui:fieldset label="element-unit-preview">
+							<div id="elementUnitPreview" class="form-control"></div>
+						</aui:fieldset>
 					</aui:col>
 				</aui:row>
 				<aui:row>
 					<aui:col>
-						<aui:input type="checkbox" name="allowUncertainty" label="allow-uncertainty" helpMessage="array-allow-uncertainty-help"></aui:input>
+						<aui:input 
+							type="checkbox" 
+							name="elementUncertainty" 
+							label="allow-uncertainty" 
+							helpMessage="array-allow-uncertainty-help"
+							checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.ELEMENT_UNCERTAINTY, false) %>"
+							>
+						</aui:input>
 					</aui:col>
 				</aui:row>
 			</aui:container>
 		</aui:fieldset>
 	</aui:fieldset-group>
+
+<script>
+$(document).ready(function() {	
+	$('#<portlet:namespace/>elementUnit').on("change input", function() {
+		var input = $('#<portlet:namespace/>elementUnit');
+		
+		var html = katex.renderToString(input.val(), {
+		    throwOnError: false
+		});	
+		
+		var result = $('#elementUnitPreview');
+		
+		result.empty();
+		result.append(html);
+	});
+	
+});
+</script>

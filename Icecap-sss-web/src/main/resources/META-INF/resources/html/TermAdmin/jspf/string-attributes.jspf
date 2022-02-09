@@ -1,14 +1,13 @@
-<%@page import="com.liferay.portal.kernel.util.Validator"%>
 <aui:fieldset-group markupView="lexicon">
 	<aui:fieldset label="string-attrinutes">
 		<aui:container>
 			<aui:row>
 				<aui:col md="2">
-					<aui:input 
+					<aui:input  
 								name="minLength" 
 								label="min-length" 
 								type="number" 
-								value="<%= Validator.isNull(jsonDedicatedAttrs)? 1 : jsonDedicatedAttrs.getInt("minLength_", 1) %>" 
+								value="<%= Validator.isNull(jsonDedicatedAttrs)? 1 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MIN_LENGTH, 1) %>" 
 								helpMessage="string-min-length-help">
 					</aui:input>
 				</aui:col>
@@ -17,7 +16,7 @@
 								name="maxLength" 
 								label="max-length" 
 								type="number" 
-								value="<%= Validator.isNull(jsonDedicatedAttrs)? 1 : jsonDedicatedAttrs.getInt("maxLength_", 32) %>" 
+								value="<%= Validator.isNull(jsonDedicatedAttrs)? 1 : jsonDedicatedAttrs.getInt(IcecapSSSTermAttributes.MAX_LENGTH, 32) %>" 
 								helpMessage="string-max-length-help">
 					</aui:input>
 				</aui:col>
@@ -28,7 +27,7 @@
 								name="newLine" 
 								label="allow-multi-line" 
 								type="checkbox"
-								checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean("newLine_", false) %>" 
+								checked="<%= Validator.isNull(jsonDedicatedAttrs)? false : jsonDedicatedAttrs.getBoolean(IcecapSSSTermAttributes.NEW_LINE, false) %>" 
 								helpMessage="string-allow-multi-line-help">
 					</aui:input>
 				</aui:col>
@@ -39,7 +38,7 @@
 								name="validationRule" 
 								label="validation-rule" 
 								type="text" 
-								value="<%= Validator.isNull(jsonDedicatedAttrs)? "" : jsonDedicatedAttrs.getString("validationRule_", "") %>" 
+								value="<%= Validator.isNull(jsonDedicatedAttrs)? "" : jsonDedicatedAttrs.getString(IcecapSSSTermAttributes.VALIDATION_RULE, "") %>" 
 								helpMessage="string-validation-rule-help"></aui:input>
 				</aui:col>
 			</aui:row>

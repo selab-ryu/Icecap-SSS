@@ -28,6 +28,8 @@
 											renderRequest, 
 											IcecapSSSWebKeys.DISPLAY_STYLE, 
 											IcecapSSSConstants.VIEW_TYPE_TABLE);
+	
+	System.out.println("current : " + currentURL);
 %>
 
 <portlet:renderURL var="addTermURL">
@@ -195,6 +197,7 @@ Liferay.componentReady('termAdminManagementToolbar').then(function(
 		managementToolbar.on('actionItemClicked', function(event) {
 			confirm('confirm...');
 			console.log('Data CMD: ', event.data.item.data.cmd );
+			console.log('redirect: ' + '<%= currentURL %>' );
 			var form = document.getElementById('<portlet:namespace />fm');
 
 			Liferay.Util.postForm(form, {

@@ -274,6 +274,7 @@ public class TermAdminManagementToolbarDisplayContext
 				new DropdownItemList() {
 					{
 						if (_hasUpdatePermission( termId )) {
+							//System.out.println("action item redirect : " + _getRedirectURL());
 							add(dropdownItem -> {
 								dropdownItem.setHref(
 										getPortletURL(), 
